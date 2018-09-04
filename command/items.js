@@ -94,11 +94,10 @@ exports.commandItems = function(levels, message, args, character){
 		
 		var item = args[3];
 		var amount = 1;
-		if(args.length == 5) amount = args[4];
-		
 		var hasEnough = character.items.includes(item);
-		if(amount > 1){
+		if(args.length == 5 && hasEnough){
 			
+			amount = args[4];
 			//Count how much the user has of that particular item
 			var count = 0;
 			for(var i = 0; i < character.items.length; ++i){

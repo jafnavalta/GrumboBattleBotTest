@@ -13,6 +13,7 @@ let state = require('./state.js');
 let battlefunc = require('./command/battle.js');
 let challengefunc = require('./command/challenge.js');
 let itemsfunc = require('./command/items.js');
+let shopfunc = require('./command/shop.js');
 let activefunc = require('./command/active.js');
 
 client.on("ready", () => {
@@ -139,6 +140,13 @@ client.on("message", async message => {
 			itemsfunc.commandItems(levels, message, args, character);
 		}
 		
+		/////////////////
+		// !! ITEMS !! //
+		/////////////////
+		else if(args[1] == 'shop'){
+			
+			shopfunc.commandShop(levels, message, args, character);
+		}
 		
 		//////////////////
 		// !! BATTLE !! //
