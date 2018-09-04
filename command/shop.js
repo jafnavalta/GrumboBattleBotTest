@@ -11,6 +11,8 @@ let state = require('../state.js');
 
 exports.commandShop = function(levels, message, args, character){
 	
+	//TODO update shop
+	
 	//Display shop
 	if(args.length == 2 || (args.length == 3 && args[2] == 'display')){
 		
@@ -21,8 +23,6 @@ exports.commandShop = function(levels, message, args, character){
 			//Message channel
 			sender = message.channel;
 		}
-		
-		//TODO update shop
 		
 		//TODO display shop
 	}
