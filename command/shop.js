@@ -11,10 +11,10 @@ let state = require('../state.js');
 
 exports.commandShop = function(levels, message, args, character){
 	
-	//TODO update shop
-	
 	//Display shop
 	if(args.length == 2 || (args.length == 3 && args[2] == 'display')){
+		
+		//TODO update shop
 		
 		//DM user
 		var sender = message.author;
@@ -30,10 +30,13 @@ exports.commandShop = function(levels, message, args, character){
 	//Buy an item
 	else if(args[2] == 'buy' && (args.length == 4 || (args.length == 5 && isInteger(args[4])))){
 		
+		//TODO update shop
+		
 		var buyItem = args[3];
 		var amount = 1;
 		if(args.length == 5) amount = args[4];
-		//TODO buy 1 or multiple
+		
+		//TODO buy 1 or multiple from shop
 	}
 	
 	//Sell an item
