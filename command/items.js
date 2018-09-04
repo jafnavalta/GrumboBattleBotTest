@@ -90,10 +90,25 @@ exports.commandItems = function(levels, message, args, character){
 	}
 	
 	//Use an item
-	else if(args.length == 4 && args[2] == 'use'){
+	else if(args[2] == 'use' && (args.length == 4 || (args.length == 5 && isInteger(args[4])))){
 		
 		var item = args[3];
-		if(character.items.includes(item)){
+		var amount = 1;
+		if(args.length == 5) amount = args[4];
+		
+		var hasEnough = character.items.includes(item);
+		if(amount > 1){
+			
+			//Count how much the user has of that particular item
+			var count = 0;
+			for(var i = 0; i < character.items.length; ++i){
+				
+				if(items[i] == item) count++;
+			}
+			if(amount > count) hasEnough = false;
+		}
+		
+		if(hasEnough){
 			
 			//Determine item type
 			var details = itemList[item];
@@ -101,22 +116,22 @@ exports.commandItems = function(levels, message, args, character){
 				
 				case state.IMMEDIATE:
 				
-					state.immediate(levels, message, character, item, details.name);
+					state.immediate(levels, message, character, item, details, amount);
 					break;
 					
 				case state.CONSUME:
 				
-					state.consume(levels, message, character, item, details.name, details.battleState);
+					state.consume(levels, message, character, item, details, details.battleState, amount);
 					break;
 					
 				case state.NONCONSUME:
 				
-					state.nonconsume(levels, message, character, item, details.name);
+					state.nonconsume(levels, message, character, item, details);
 					break;
 					
 				case state.TOGGLE:
 				
-					state.toggle(levels, message, character, item, details.name, details.battleState);
+					state.toggle(levels, message, character, item, details, details.battleState);
 					break;
 					
 				default:
@@ -126,7 +141,7 @@ exports.commandItems = function(levels, message, args, character){
 		}
 		else{
 			
-			message.channel.send("You do not have the item " + item);
+			message.channel.send("You do not have enough of the item: " + item);
 		}
 	}
 	
@@ -135,4 +150,12 @@ exports.commandItems = function(levels, message, args, character){
 		
 		message.channel.send("Bad item command. Try '!grumbo help' for the correct command.");
 	}
+}
+
+/**
+* Determines if x is an integer.
+*/
+function isInteger(x){
+	
+	return !isNaN(x) && (x % 1 === 0);
 }

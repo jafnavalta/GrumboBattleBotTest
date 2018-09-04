@@ -321,7 +321,7 @@ function updateCharacters(){
 			
 			character.gold = 0;
 		}
-		if(character.battleLock == null){
+		if(character.battleLock == null || character.battleLock == true){
 			
 			character.battleLock = false;
 		}
@@ -329,9 +329,9 @@ function updateCharacters(){
 			
 			character.items = ['battle_ticket', 'challenge_ticket', 'battle_potion', 'battle_potion'];
 		}
-		if(character.active == null){
+		if(character.active == null || character.actve == []){
 			
-			character.active = [];
+			character.active = {};
 		}
 		if(character.prebattle == null){
 			
@@ -377,7 +377,7 @@ function createNewCharacter(message){
 		challengetime: 9999999999999,
 		gold: 0,
 		items: ['battle_ticket', 'challenge_ticket', 'battle_potion', 'battle_potion'],
-		active: [],
+		active: {},
 		prebattle: [],
 		preresults: [],
 		postresults: []

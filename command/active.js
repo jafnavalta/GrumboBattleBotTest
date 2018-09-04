@@ -17,21 +17,36 @@ exports.commandActive = function(character, message, args){
 			sender = message.channel;
 		}
 		
-		if(character.active.length == 0){
+		var noActives = true;
+		for(var id in character.active){
+			
+			if(character.active.hasOwnProperty(id)){
+				
+				noActives = false;
+				break;
+			}
+		}
+		
+		if(noActives){
 			
 			sender.send("You have no active effects " + message.member.displayName + "!");
 		}
 		else{
 			
 			var activeString = message.member.displayName + "'s active effects\n\n";
-			character.active.forEach(function(effect){
+			var actives = character.active;
+			for(var id in actives){
 				
-				if(itemList[effect] != undefined){
+				if(character.active.hasOwnProperty(id)){
 					
-					activeString += itemList[effect].name + "\n";
+					var activeObj = actives[id];
+					activeString += activeObj.name;
+					if(activeObj.duration != null){
+						
+						activeString += "  |  " + activeObj.duration + " battle(s)";
+					}
+					activeString += "\n";
 				}
-				//TODO else if effect, equip, etc. != undefined
-			})
 			
 			sender.send(activeString);
 		}
