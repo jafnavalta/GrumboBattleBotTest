@@ -64,7 +64,7 @@ exports.commandShop = function(levels, message, args, character){
 			var sellGold = details.value;
 			
 			//Sell given amount of item
-			for(int i = 0; i < amount; i++){
+			for(var i = 0; i < amount; i++){
 				
 				totalGold += sellGold;
 				var index = character.items.indexOf(sellItem);

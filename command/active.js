@@ -47,6 +47,7 @@ exports.commandActive = function(character, message, args){
 					}
 					activeString += "\n";
 				}
+			}
 			
 			sender.send(activeString);
 		}
