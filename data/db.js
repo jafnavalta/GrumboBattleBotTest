@@ -1,7 +1,7 @@
 //Initialize MongoDB
 const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
-const uri = 'mongodb://127.0.0.1:27017/grumbobattlebot';
+const uri = 'mongodb://127.0.0.1:27017/grumbobattlebottest';
 
 //For old character file
 const fs = require("fs");
