@@ -18,7 +18,7 @@ let weighedSpecial = [];
 let state = require('../state.js');
 
 const INTERVAL = 10800000 //3 hours in millis
-const rotationLimit = 2;
+const rotationLimit = 1;
 const specialLimit = 2;
 
 //Init shop
