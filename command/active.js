@@ -1,9 +1,9 @@
 //Initialize DB functions
 let dbfunc = require('../data/db.js');
 
-//Initialize list of items, effects, etc.
+//Initialize list of actives
 const fs = require("fs");
-let itemList = JSON.parse(fs.readFileSync("./values/items.json", "utf8"));
+let activesList = JSON.parse(fs.readFileSync("./values/actives.json", "utf8"));
 
 /**
 * Display list of current active effects.

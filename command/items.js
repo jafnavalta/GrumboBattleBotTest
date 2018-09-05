@@ -69,16 +69,17 @@ exports.commandItems = function(message, args, character){
 		if(details != null){
 			
 			detailsString = details.name + "  |  Command:  " + item + "\n"
-				+ details.description + "\n"
-				+ "Sell: " + details.value + " gold\n";
+				+ details.description + "\n";
 			if(details.max > 1){
 				
-				detailsString += "Can hold up to " + details.max;
+				detailsString += "Can hold up to " + details.max + "\n";
 			}
 			else{
 				
-				detailsString += "This is a unique item";
+				detailsString += "Can only hold 1\n";
 			}
+			detailsString += "Sell: " + details.value + " gold";
+			
 			sender.send(detailsString);
 		}
 		else{
@@ -119,7 +120,7 @@ exports.commandItems = function(message, args, character){
 					
 				case state.CONSUME:
 				
-					state.consume(message, character, item, details, details.battleState, amount);
+					state.consume(message, character, item, details, details.battleStates, amount);
 					break;
 					
 				case state.NONCONSUME:
@@ -129,7 +130,7 @@ exports.commandItems = function(message, args, character){
 					
 				case state.TOGGLE:
 				
-					state.toggle(message, character, item, details, details.battleState);
+					state.toggle(message, character, item, details, details.battleStates);
 					break;
 					
 				default:

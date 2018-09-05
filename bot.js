@@ -14,15 +14,22 @@ let itemsfunc = require('./command/items.js');
 let shopfunc = require('./command/shop.js');
 let activefunc = require('./command/active.js');
 
+let requestTimes = {}; //Store character request times so they can't request more than once every 1 second
+
 client.on("ready", () => {
 	
 	// This event will run if the bot starts, and logs in, successfully.
 	console.log(`Bot has begun battle, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`); 
 
-	// Example of changing the bot's playing game to something useful. `client.user` is what the
-	// docs refer to as the "ClientUser".
+	// What the bot is playing
 	client.user.setActivity(`Battling ${client.users.size} dudes in ${client.guilds.size} servers`);
 
+	//Could be long, should do on startup
+	shopfunc.initWeighedArrays();
+	battlefunc.initWeighedArrays();
+	
+	//TODO do same as above for different type of Grumbos
+	
 	dbfunc.connectToServer(function(error){
 		
 		listen();
@@ -43,17 +50,32 @@ function listen(){
 		// It will listen for messages that will start with `!grumbo`
 		if(message.content.substring(0, 9) == '!grumtest'){
 			
-			dbfunc.getDB().collection("characters").findOne({"_id": message.author.id}, function(err, character){
+			var lastRequest = requestTimes[message.author.id];
+			var currentTime = new Date().getTime();
+			if(lastRequest == null || (lastRequest != null && lastRequest > currentTime + 750)){
+			
+				requestTimes[message.author.id] = currentTime;
+				dbfunc.getDB().collection("characters").findOne({"_id": message.author.id}, function(err, character){
+					
+					//If character doesn't exist
+					if(character == null){
+						
+						dbfunc.createNewCharacter(function(error){
+			
+							parseCommand(message);
+						});
+					}
+					else{
+						
+						parseCommand(message);
+					}
+				});
+			}
+			else{
 				
-				if(character == null){
-					
-					createNewCharacter(message);
-				}
-				else{
-					
-					parseCommand(message);
-				}
-			});
+				//Don't allow requests from same person too quickly (1 every 0.75 seconds)
+				return;
+			}
 		 }
 		 else{
 			 
@@ -309,42 +331,6 @@ function displayLeaderboards(message, args){
 function isInteger(x){
 	
 	return !isNaN(x) && (x % 1 === 0);
-}
-
-/**
-* Create a new character and inserts it into the DB.
-*/
-function createNewCharacter(message){
-	
-	//Goes into 'characters' table
-	//The 'active' table for active effects is a separate table
-	var newCharacter = {
-				
-		level: 1,
-		experience: 0,
-		id: message.author.id,
-		wins: 0,
-		losses: 0,
-		winrate: 0,
-		battlesLeft: 3,
-		battletime: 9999999999999,
-		battleLock: false,
-		challengeWins: 0,
-		challengeLosses: 0,
-		challengeWinrate: 0,
-		challengesLeft: 3,
-		challengetime: 9999999999999,
-		gold: 0,
-		items: ['battle_ticket', 'challenge_ticket', 'battle_potion', 'battle_potion'],
-		prebattle: [],
-		preresults: [],
-		postresults: []
-	};
-	
-	dbfunc.getDB().collection("characters").insertOne(newCharacter, function(err, result){
-		
-		parseCommand(message);
-	});
 }
 
 client.login(auth.token);

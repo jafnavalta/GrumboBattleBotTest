@@ -1,0 +1,32 @@
+{
+	"special_1": {
+		"gameId": 30000,
+		"id": "special_1",
+		"name": "Battle Ticket Special",
+		"items": ["battle_ticket"],
+		"description": "A 20% off Battle Ticket",
+		"price": 400,
+		"stock": 2,
+		"weight": 20 
+	},
+	"special_2": {
+		"gameId": 30001,
+		"id": "special_2",
+		"name": "Challenge Ticket Special",
+		"items": ["challenge_ticket"],
+		"description": "A 20% off Challenge Ticket",
+		"price": 400,
+		"stock": 2,
+		"weight": 20 
+	},
+	"special_3": {
+		"gameId": 30002,
+		"id": "special_3",
+		"name": "Bundle o' Battle Pot"
+		"items": ["battle_potion", "battle_potion", "battle_potion"],
+		"description": "Tis' a bundle o' 3 Battle Pots",
+		"price": 325,
+		"stock": 2,
+		"weight": 20 
+	}
+}

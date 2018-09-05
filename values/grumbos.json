@@ -1,0 +1,41 @@
+{
+	"grumbo": {
+		"gameId": 1000,
+		"id": "grumbo",
+		"name": "Grumbo",
+		"prebattle": [],
+		"preresults": [],
+		"postresults": [],
+		"victory": "$name won!",
+		"loss": "$name lost! Maybe you should try harder my dude.",
+		"weight": 70,
+	},
+	"toxic_grumbo": {
+		"gameId": 1001,
+		"id": "toxic_grumbo",
+		"name": "Toxic Grumbo",
+		"prebattle": [],
+		"preresults": [],
+		"postresults": [
+			"poison"
+		],
+		"victory": "$name has overcome gaming toxicity!",
+		"loss": "$name lost all self-esteem after been constantly flamed by Toxic Grumbo.",
+		"weight": 20
+	},
+	"grumbo_thief": {
+		"gameId": 1002,
+		"id": "toxic_grumbo",
+		"name": "Grumbo Thief",
+		"description": "A thief who takes some gold if you lose. You also gain a little bit more gold for winning.",
+		"prebattle": [],
+		"preresults": [],
+		"postresults": [
+			"gold_boost_1",
+			"pilfer"
+		],
+		"victory": "$name avoided getting their lunch money taken!",
+		"loss": "$name had his pockets cut by Grumbo Thief!",
+		"weight": 10
+	}
+}
