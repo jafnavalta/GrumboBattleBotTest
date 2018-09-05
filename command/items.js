@@ -7,7 +7,7 @@ let itemList = JSON.parse(fs.readFileSync("./values/items.json", "utf8"));
 //Initialize state for state constants and functions
 let state = require('../state.js');
 
-exports.commandItems = function(levels, message, args, character){
+exports.commandItems = function(message, args, character){
 	
 	//Display list of items
 	if(args.length == 2 || (args.length == 3 && args[2] == 'display')){
@@ -68,7 +68,6 @@ exports.commandItems = function(levels, message, args, character){
 		var details = itemList[item];
 		if(details != null){
 			
-			//TODO display details of item
 			detailsString = details.name + "  |  Command:  " + item + "\n"
 				+ details.description + "\n"
 				+ "Sell: " + details.value + " gold\n";
@@ -97,40 +96,40 @@ exports.commandItems = function(levels, message, args, character){
 		var hasEnough = character.items.includes(item);
 		if(args.length == 5 && hasEnough){
 			
-			amount = args[4];
+			amount = args[4] * 1;
 			//Count how much the user has of that particular item
 			var count = 0;
 			for(var i = 0; i < character.items.length; ++i){
 				
-				if(items[i] == item) count++;
+				if(character.items[i] == item) count++;
 			}
 			if(amount > count) hasEnough = false;
 		}
 		
+		var details = itemList[item];
 		if(hasEnough){
 			
 			//Determine item type
-			var details = itemList[item];
 			switch(details.type){
 				
 				case state.IMMEDIATE:
 				
-					state.immediate(levels, message, character, item, details, amount);
+					state.immediate(message, character, item, details, amount);
 					break;
 					
 				case state.CONSUME:
 				
-					state.consume(levels, message, character, item, details, details.battleState, amount);
+					state.consume(message, character, item, details, details.battleState, amount);
 					break;
 					
 				case state.NONCONSUME:
 				
-					state.nonconsume(levels, message, character, item, details);
+					state.nonconsume(message, character, item, details);
 					break;
 					
 				case state.TOGGLE:
 				
-					state.toggle(levels, message, character, item, details, details.battleState);
+					state.toggle(message, character, item, details, details.battleState);
 					break;
 					
 				default:
@@ -138,9 +137,13 @@ exports.commandItems = function(levels, message, args, character){
 					break;
 			}
 		}
+		else if(details == null){
+			
+			sender.send(item + " does not exist.");
+		}
 		else{
 			
-			message.channel.send("You do not have enough of the item: " + item);
+			message.channel.send("You do not have enough of the item: " + details.name);
 		}
 	}
 	

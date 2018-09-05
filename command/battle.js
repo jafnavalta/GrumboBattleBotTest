@@ -1,13 +1,16 @@
 //Initialize fs
 const fs = require("fs");
 
+//Initialize DB functions
+let dbfunc = require('../data/db.js');
+
 //Initialize state for state constants and functions
 let state = require('../state.js');
 
 /**
 * Battle command
 */
-exports.commandBattle = function(levels, message, args, character){
+exports.commandBattle = function(message, args, character){
 	
 	if(args.length == 4 && isInteger(args[3])){
 		
@@ -46,7 +49,11 @@ exports.commandBattle = function(levels, message, args, character){
 			//BATTLE
 			else{
 				
-				doBattle(levels, message, args, character, currentTime);
+				//Get all character active effects
+				dbfunc.getDB().collection("actives").find({"character": character._id}).toArray(function(err, actives){
+					
+					doBattle(message, args, character, currentTime, actives);
+				});
 			}
 		}
 		else{
@@ -79,12 +86,14 @@ exports.restockBattles = function(currentTime, character){
 			character.battlesLeft = 3;
 		}
 	}
+	
+	dbfunc.updateCharacter(character);
 }
 
 /**
 * Do battle 
 */
-function doBattle(levels, message, args, character, currentTime){
+function doBattle(message, args, character, currentTime, actives){
 
 	//Don't allow user to battle multiple times at once
 	character.battleLock = true;
@@ -95,7 +104,7 @@ function doBattle(levels, message, args, character, currentTime){
 		levelDiff: 0, 
 		chance: 0
 	};
-	state.prebattle(levels, message, args, character, battleState);
+	state.prebattle(message, args, character, battleState, actives);
 	
 	if(character.battlesLeft == 3){
 		
@@ -150,10 +159,7 @@ function doBattle(levels, message, args, character, currentTime){
 		character.battleLock = false;
 		
 		//Save battle results
-		fs.writeFile("./levels.json", JSON.stringify(levels, null, 4), (err) => {
-			
-			if (err) console.error(err)
-		});
+		dbfunc.updateCharacter(character);
 	}, 5000);
 }
 

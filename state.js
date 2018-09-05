@@ -1,3 +1,6 @@
+//Initialize DB
+let dbfunc = require('./data/db.js');
+
 //Initialize items
 const fs = require("fs");
 let itemList = JSON.parse(fs.readFileSync("./values/items.json", "utf8"));
@@ -27,9 +30,9 @@ exports.POSTRESULTS = POSTRESULTS;
 /**
 * Do a particular function based on the eventId (item, equip, effect, skill, etc.) and consume eventId
 */
-exports.immediate = function(levels, message, character, eventId, event, amount){
+exports.immediate = function(message, character, eventId, event, amount){
 
-	var resultString = message.member.displayName + " has used " + event.name + " x" + amount;
+	var result = message.member.displayName + " has used " + event.name + " x" + amount;
 
 	switch(eventId){
 	
@@ -46,7 +49,7 @@ exports.immediate = function(levels, message, character, eventId, event, amount)
 			}
 			else{
 				
-				resultString = "You either already have all battle attempts available or attempted to use too many battle tickets.";
+				result = "You either already have all battle attempts available or attempted to use too many battle tickets.";
 			}
 			break;
 			
@@ -63,7 +66,7 @@ exports.immediate = function(levels, message, character, eventId, event, amount)
 			}
 			else{
 				
-				resultString = "You already have all challenge attempts available or attempted to use too many challenge tickets.";
+				result = "You already have all challenge attempts available or attempted to use too many challenge tickets.";
 			}
 			break;
 			
@@ -72,48 +75,49 @@ exports.immediate = function(levels, message, character, eventId, event, amount)
 			break;
 	}
 	
-	message.channel.send(resultString);
+	message.channel.send(result);
 	
 	//Save character
-	fs.writeFile("./levels.json", JSON.stringify(levels, null, 4), (err) => {
-		
-		if (err) console.error(err)
-	});
+	dbfunc.updateCharacter(character);
 }
 
 /**
 * Add consumed eventId to active list.
 */
-exports.consume = function(levels, message, character, eventId, event, eventState, amount){
+exports.consume = function(message, character, eventId, event, eventState, amount){
 
-	var resultString = message.member.displayName + " has used " + event.name;
+	var result = message.member.displayName + " has used " + event.name + " x" + amount;
 	
-	if(!character.active.hasOwnProperty(eventId)){
+	dbfunc.getDB().collection("actives").findOne({"_id": character._id + eventId, "character": character._id, "stateid": eventId}, function(err, active){
 		
-		pushToState(character, eventId, event, eventState);
-	}
-	else{
+		if(active == null){
+			
+			pushToState(character, eventId, event, eventState, amount);
+		}
+		else{
+			
+			//Extend duration of consumable
+			//All consume types should have a duration. Otherwise, it's an immediate
+			active.duration += event.duration * amount;
+			dbfunc.updateActive(active);
+		}
+		for(var i = 0; i < amount; i++){
+			
+			var index = character.items.indexOf(eventId);
+			character.items.splice(index, 1);
+		}
 		
-		//Extend duration of consumable
-		//All consume types should have a duration. Otherwise, it's an immediate
-		character.active[eventId].duration += event.duration * amount;
-	}
-	var index = character.items.indexOf(eventId);
-	character.items.splice(index, 1);
-	
-	message.channel.send(resultString);
-	
-	//Save character
-	fs.writeFile("./levels.json", JSON.stringify(levels, null, 4), (err) => {
+		message.channel.send(result);
 		
-		if (err) console.error(err)
+		//Save character
+		dbfunc.updateCharacter(character);
 	});
 }
 
 /**
 * Do a particular function based on the eventId (item, equip, effect, skill, etc.) without consuming eventId
 */
-exports.nonconsume = function(levels, message, character, eventId, event){
+exports.nonconsume = function(message, character, eventId, event){
 
 	//TODO add more item/equip functions
 }
@@ -121,32 +125,32 @@ exports.nonconsume = function(levels, message, character, eventId, event){
 /**
 * Activate or deactivate the eventId.
 */
-exports.toggle = function(levels, message, character, eventId, event, eventState){
+exports.toggle = function(message, character, eventId, event, eventState){
 
-	//Deactivate
-	if(character.active.hasOwnProperty(eventId)){
+	dbfunc.getDB().collection("actives").findOne({"_id": character._id + eventId, "character": character._id, "stateid": eventId}, function(err, active){
+
+		//Deactivate
+		if(active != null){
+			
+			spliceFromState(character, eventId, event, eventState, active);
+			message.channel.send(message.member.displayName + " has deactivated " + event.name);
+		}
+		//Activate
+		else{
+			
+			pushToState(character, eventId, event, eventState, null);
+			message.channel.send(message.member.displayName + " has activated " + event.name);
+		}
 		
-		spliceFromState(character, eventId, event, eventState);
-		message.channel.send(message.member.displayName + " has deactivated " + event.name);
-	}
-	//Activate
-	else{
-		
-		pushToState(character, eventId, event, eventState);
-		message.channel.send(message.member.displayName + " has activated " + event.name);
-	}
-	
-	//Save character
-	fs.writeFile("./levels.json", JSON.stringify(levels, null, 4), (err) => {
-		
-		if (err) console.error(err)
+		//Save character
+		dbfunc.updateCharacter(character);
 	});
 }
 
 /**
 * Pre battle calculations.
 */
-exports.prebattle = function(levels, message, args, character, battleState){
+exports.prebattle = function(message, args, character, battleState, actives){
 	
 	battleState.levelDiffActual = character.level - args[3];
 	
@@ -167,7 +171,7 @@ exports.prebattle = function(levels, message, args, character, battleState){
 				else if(battleState.levelDiffActual >= -15) chanceMod += 2;
 				else chanceMod += 1;
 				
-				reduceDuration(character, character.prebattle, eventId);
+				reduceDuration(character, character.prebattle, eventId, actives);
 				break;
 			
 			default:
@@ -181,7 +185,7 @@ exports.prebattle = function(levels, message, args, character, battleState){
 	battleState.chance = 50 + (battleState.levelDiff * 2) + Math.floor(Math.random() * 6) - 3; + chanceMod;
 	if(battleState.levelDiff < -15){
 		
-		battleState.chance -= (Math.floor(Math.random() * 6) + 1);
+		battleState.chance -= (Math.floor(Math.random() * 3) + 1);
 	}
 	if(battleState.chance > 95){
 		
@@ -198,14 +202,22 @@ exports.prebattle = function(levels, message, args, character, battleState){
 /**
 * Push to character state active.
 */
-function pushToState(character, eventId, event, eventState){
+function pushToState(character, eventId, event, eventState, amount){
 	
+	var totalDuration = event.duration;
+	if(amount != null){
+		
+		totalDuration = totalDuration * amount;
+	}
+	var id = character._id + eventId;
 	var newActive = {
 		
+		_id: id,
+		character: character._id,
+		stateid: eventId,
 		name: event.name,
-		duration: event.duration
+		duration: totalDuration
 	}
-	character.active[eventId] = newActive;
 	
 	switch(eventState){
 		
@@ -228,14 +240,14 @@ function pushToState(character, eventId, event, eventState){
 			//Do nothing
 			break;
 	}
+	
+	dbfunc.updateActive(newActive);
 }
 
 /**
 * Splice from character state active.
 */
-function spliceFromState(character, eventId, event, eventState){
-
-	delete character.active[eventId];
+function spliceFromState(character, eventId, event, eventState, active){
 
 	switch(eventState){
 		
@@ -261,22 +273,33 @@ function spliceFromState(character, eventId, event, eventState){
 			//Do nothing
 			break;
 	}
+	
+	dbfunc.removeActive(active);
 }
 
 /**
 * Reduce the duration of an active.
 */
-function reduceDuration(character, characterState, eventId){
+function reduceDuration(character, characterState, eventId, actives){
 	
-	var active = character.active[eventId];
+	var active;
+	for(var i = 0; i < actives.length; i++){
+		
+		if(actives[i].stateid == eventId){
+			
+			active = actives[i];
+			break;
+		}
+	}
 	if(active.duration <= 1){
 	
-		delete character.active[eventId];
-		var preIndex = characterState.indexOf(eventId);
-		characterState.splice(preIndex, 1);
+		var index = characterState.indexOf(eventId);
+		characterState.splice(index, 1);
+		dbfunc.removeActive(active);
 	}
 	else{
 		
 		active.duration -= 1;
+		dbfunc.updateActive(active);
 	}
 }

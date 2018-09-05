@@ -6,6 +6,8 @@
   "author": "James Navalta",
   "dependencies": {
     "discord.js": "^11.4.2",
+    "mongodb": "^3.1.4",
+    "npm": "^6.4.1",
     "winston": "^3.0.0"
   }
 }

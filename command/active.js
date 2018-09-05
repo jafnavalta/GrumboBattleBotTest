@@ -1,3 +1,6 @@
+//Initialize DB functions
+let dbfunc = require('../data/db.js');
+
 //Initialize list of items, effects, etc.
 const fs = require("fs");
 let itemList = JSON.parse(fs.readFileSync("./values/items.json", "utf8"));
@@ -18,39 +21,30 @@ exports.commandActive = function(character, message, args){
 		}
 		
 		var noActives = true;
-		for(var id in character.active){
-			
-			if(character.active.hasOwnProperty(id)){
-				
-				noActives = false;
-				break;
-			}
-		}
 		
-		if(noActives){
+		//Get character
+		dbfunc.getDB().collection("actives").find({"character": character._id}).toArray(function(err, actives){	
 			
-			sender.send("You have no active effects " + message.member.displayName + "!");
-		}
-		else{
-			
-			var activeString = message.member.displayName + "'s active effects\n\n";
-			var actives = character.active;
-			for(var id in actives){
+			if(actives.length == 0){
 				
-				if(character.active.hasOwnProperty(id)){
-					
-					var activeObj = actives[id];
+				sender.send("You have no active effects " + message.member.displayName + "!");	
+			}
+			else{
+				
+				var activeString = message.member.displayName + "'s active effects\n\n";
+				actives.forEach(function(activeObj){
+						
 					activeString += activeObj.name;
 					if(activeObj.duration != null){
 						
 						activeString += "  |  " + activeObj.duration + " battle(s)";
 					}
 					activeString += "\n";
-				}
+				});
+				
+				sender.send(activeString);
 			}
-			
-			sender.send(activeString);
-		}
+		});
 	}
 	else{
 		

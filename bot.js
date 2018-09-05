@@ -1,12 +1,10 @@
+//Initialize Discord Bot
 var Discord = require('discord.js');
 var auth = require('./auth.json');
-
-//Initialize Discord Bot
 const client = new Discord.Client();
 
-//Initialize characters
-const fs = require("fs");
-let levels = JSON.parse(fs.readFileSync("./levels.json", "utf8"));
+//Initialize DB functions
+let dbfunc = require('./data/db.js');
 
 //Initialize game functions
 let state = require('./state.js');
@@ -18,36 +16,63 @@ let activefunc = require('./command/active.js');
 
 client.on("ready", () => {
 	
-  // This event will run if the bot starts, and logs in, successfully.
-  console.log(`Bot has begun battle, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`); 
-  
-  // Example of changing the bot's playing game to something useful. `client.user` is what the
-  // docs refer to as the "ClientUser".
-  client.user.setActivity(`Battling ${client.users.size} dudes in ${client.guilds.size} servers`);
-  
-  //Update characters when bot is restarted in case of updates.
-  updateCharacters();
+	// This event will run if the bot starts, and logs in, successfully.
+	console.log(`Bot has begun battle, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`); 
+
+	// Example of changing the bot's playing game to something useful. `client.user` is what the
+	// docs refer to as the "ClientUser".
+	client.user.setActivity(`Battling ${client.users.size} dudes in ${client.guilds.size} servers`);
+
+	dbfunc.connectToServer(function(error){
+		
+		listen();
+	});
 });
 
-client.on("message", async message => {
+/**
+* Listen for commands.
+*/
+function listen(){
+
+	client.on("message", async message => {
+		
+		// Ignore self
+		if(message.author.bot) return;
+		
+		// Our bot needs to know if it will execute a command
+		// It will listen for messages that will start with `!grumbo`
+		if(message.content.substring(0, 9) == '!grumtest'){
+			
+			dbfunc.getDB().collection("characters").findOne({"_id": message.author.id}, function(err, character){
+				
+				if(character == null){
+					
+					createNewCharacter(message);
+				}
+				else{
+					
+					parseCommand(message);
+				}
+			});
+		 }
+		 else{
+			 
+			 //Ignore all other messages that don't begin with the !grumbo prefix
+			 return;
+		 }
+	});
+}
+
+/**
+* Parses command.
+*/
+function parseCommand(message){
 	
-	// Ignore self
-	if(message.author.bot) return;
-	
-    // Our bot needs to know if it will execute a command
-    // It will listen for messages that will start with `!grumbo`
-    if(message.content.substring(0, 9) == '!grumtest'){
+	//Get character
+	dbfunc.getDB().collection("characters").findOne({"_id": message.author.id}, function(err, character){
 		
-		//If this is the first time the user has commanded Grumbo, initialize character
-		if (!levels[message.author.id]){ 
-		
-			createNewCharacter(message);
-		}
-		
-		//Get character stats, parse command and get users name
-		var character = levels[message.author.id];
 		var args = message.content.split(' ');
-		
+	
 		/////////////////////
 		// !! HELP MENU !! //
 		/////////////////////
@@ -137,7 +162,7 @@ client.on("message", async message => {
 		/////////////////
 		else if(args[1] == 'items'){
 			
-			itemsfunc.commandItems(levels, message, args, character);
+			itemsfunc.commandItems(message, args, character);
 		}
 		
 		/////////////////
@@ -145,7 +170,7 @@ client.on("message", async message => {
 		/////////////////
 		else if(args[1] == 'shop'){
 			
-			shopfunc.commandShop(levels, message, args, character);
+			shopfunc.commandShop(message, args, character);
 		}
 		
 		//////////////////
@@ -153,7 +178,7 @@ client.on("message", async message => {
 		//////////////////
 		else if(args[1] == 'battle'){
 			
-			battlefunc.commandBattle(levels, message, args, character);
+			battlefunc.commandBattle(message, args, character);
 		}
 		
 		/////////////////////
@@ -161,7 +186,7 @@ client.on("message", async message => {
 		/////////////////////
 		else if(args.length == 5 && args[1] == 'challenge'){
 			
-			challengefunc.commandChallenge(levels, message, args, character);
+			challengefunc.commandChallenge(message, args, character);
 		}
 		
 		// Bad command
@@ -169,13 +194,8 @@ client.on("message", async message => {
 			
 			message.channel.send('Invalid Grumbo command. Type !grumbo help to see a list of commands.');
 		}
-     }
-	 else{
-		 
-		 //Ignore all other messages that don't begin with the !grumbo prefix
-		 return;
-	 }
-});
+	 });
+}
 
 /**
 * Display stats. Also calculate how many battles you currently have.
@@ -219,10 +239,7 @@ function displayStats(character, message, args){
 		sender.send(statsString);
 
 		//Save battle results
-		fs.writeFile("./levels.json", JSON.stringify(levels, null, 4), (err) => {
-			
-			if (err) console.error(err)
-		});
+		dbfunc.updateCharacter(character);
 	}
 	else{
 		
@@ -237,51 +254,48 @@ function displayLeaderboards(message, args){
 	
 	if(args.length == 2 || (args.length == 3 && args[2] == 'display')){
 	
-		//DM user
-		var sender = message.author;
-		if(args.length == 3){
-			
-			//Message channel
-			sender = message.channel;
-		}
-		
-		var characters = [];
-		for(var key in levels){
-			
-			characters.push(levels[key]);
-		}
-		
-		//Sort based on level first, then experience
-		characters.sort(function(a, b){
-			var keyA = a.level,
-				keyB = b.level,
-				xpA = a.experience,
-				xpB = b.experience;
+		dbfunc.getDB().collection("characters").find().toArray(function(err, characters){
+					
+			//DM user
+			var sender = message.author;
+			if(args.length == 3){
 				
-			//Compare the users
-			if(keyA < keyB) return 1;
-			if(keyA > keyB) return -1;
-			if(xpA < xpB) return 1;
-			if(xpA > xpB) return -1;
-			return 0;
-		});
-		
-		var leaderboards = "------LEADERBOARDS------\n\n"
-		var count = 1;
-		characters.forEach(function(sortedCharacter){
-			
-			//Only show people in the server
-			if(message.guild.members.get(sortedCharacter.id) != undefined){
-				
-				leaderboards = leaderboards + "[" + count + "] " + message.guild.members.get(sortedCharacter.id).displayName + "   Lv" + sortedCharacter.level + "  |  " 
-					+ sortedCharacter.experience + " EXP  |  " + sortedCharacter.gold + " Gold"
-					+ "\n      Battle          Wins " + sortedCharacter.wins + "  |  Losses " + sortedCharacter.losses + "  |  Win% " + sortedCharacter.winrate
-					+ "\n      Challenge  Wins " + sortedCharacter.challengeWins + "  |  Losses " + sortedCharacter.challengeLosses + "  |  Win% " + sortedCharacter.challengeWinrate + "\n";
-				count += 1;
+				//Message channel
+				sender = message.channel;
 			}
+			
+			//Sort based on level first, then experience
+			characters.sort(function(a, b){
+				var keyA = a.level,
+					keyB = b.level,
+					xpA = a.experience,
+					xpB = b.experience;
+					
+				//Compare the users
+				if(keyA < keyB) return 1;
+				if(keyA > keyB) return -1;
+				if(xpA < xpB) return 1;
+				if(xpA > xpB) return -1;
+				return 0;
+			});
+			
+			var leaderboards = "------LEADERBOARDS------\n\n"
+			var count = 1;
+			characters.forEach(function(sortedCharacter){
+				
+				//Only show people in the server
+				if(message.guild.members.get(sortedCharacter._id) != undefined){
+					
+					leaderboards = leaderboards + "[" + count + "] " + message.guild.members.get(sortedCharacter._id).displayName + "   Lv" + sortedCharacter.level + "  |  " 
+						+ sortedCharacter.experience + " EXP  |  " + sortedCharacter.gold + " Gold"
+						+ "\n      Battle          Wins " + sortedCharacter.wins + "  |  Losses " + sortedCharacter.losses + "  |  Win% " + sortedCharacter.winrate
+						+ "\n      Challenge  Wins " + sortedCharacter.challengeWins + "  |  Losses " + sortedCharacter.challengeLosses + "  |  Win% " + sortedCharacter.challengeWinrate + "\n";
+					count += 1;
+				}
+			});
+			leaderboards = leaderboards + "\n--------------------------------"
+			sender.send(leaderboards);
 		});
-		leaderboards = leaderboards + "\n--------------------------------"
-		sender.send(leaderboards);
 	}
 	else{
 		
@@ -298,76 +312,13 @@ function isInteger(x){
 }
 
 /**
-* Updates any outdated characters with missing fields.
-*/
-function updateCharacters(){
-	
-	for(var key in levels){
-		
-		var character = levels[key];
-		if(character.challengesLeft == null){
-			
-			character.challengesLeft = 3;
-		}
-		if(character.challengeWins == null){
-			
-			character.challengeWins = 0;
-		}
-		if(character.challengeLosses == null){
-			
-			character.challengeLosses = 0;
-		}
-		if(character.challengeWinrate == null){
-			
-			character.challengeWinrate = 0;
-		}
-		if(character.challengetime == null){
-			
-			character.challengetime = 9999999999999;
-		}
-		if(character.gold == null){
-			
-			character.gold = 0;
-		}
-		if(character.battleLock == null || character.battleLock == true){
-			
-			character.battleLock = false;
-		}
-		if(character.items == null){
-			
-			character.items = ['battle_ticket', 'challenge_ticket', 'battle_potion', 'battle_potion'];
-		}
-		if(character.active == null || character.actve == []){
-			
-			character.active = {};
-		}
-		if(character.prebattle == null){
-			
-			character.prebattle = [];
-		}
-		if(character.preresults == null){
-			
-			character.preresults = [];
-		}
-		if(character.postresults == null){
-			
-			character.postresults = [];
-		}
-	}
-	
-	//Save updated characters
-	fs.writeFile("./levels.json", JSON.stringify(levels, null, 4), (err) => {
-		
-		if (err) console.error(err)
-	});
-}
-
-/**
-* Create a new character and save it.
+* Create a new character and inserts it into the DB.
 */
 function createNewCharacter(message){
 	
-	levels[message.author.id] = {
+	//Goes into 'characters' table
+	//The 'active' table for active effects is a separate table
+	var newCharacter = {
 				
 		level: 1,
 		experience: 0,
@@ -376,7 +327,7 @@ function createNewCharacter(message){
 		losses: 0,
 		winrate: 0,
 		battlesLeft: 3,
-		battletsime: 9999999999999,
+		battletime: 9999999999999,
 		battleLock: false,
 		challengeWins: 0,
 		challengeLosses: 0,
@@ -385,16 +336,14 @@ function createNewCharacter(message){
 		challengetime: 9999999999999,
 		gold: 0,
 		items: ['battle_ticket', 'challenge_ticket', 'battle_potion', 'battle_potion'],
-		active: {},
 		prebattle: [],
 		preresults: [],
 		postresults: []
 	};
-
-	//Save new character
-	fs.writeFile("./levels.json", JSON.stringify(levels, null, 4), (err) => {
-				
-		if (err) console.error(err)
+	
+	dbfunc.getDB().collection("characters").insertOne(newCharacter, function(err, result){
+		
+		parseCommand(message);
 	});
 }
 

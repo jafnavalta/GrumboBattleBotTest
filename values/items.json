@@ -1,6 +1,7 @@
 {
 	"battle_ticket": {
 		"id": 1000,
+		"stateid": "battle_ticket",
 		"name": "Battle Ticket",
 		"command": "!grumbo items use battle_ticket",
 		"type": "immediate",
@@ -14,6 +15,7 @@
 	},
 	"challenge_ticket": {
 		"id": 1001,
+		"stateid": "challenge_ticket",
 		"name": "Challenge Ticket",
 		"command": "!grumbo items use challenge_ticket",
 		"type": "immediate",
@@ -27,6 +29,7 @@
 	},
 	"battle_potion": {
 		"id": 1002,
+		"stateid": "battle_potion",
 		"name": "Battle Potion",
 		"command": "!grumbo items use battle_potion",
 		"type": "consume",
