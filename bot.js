@@ -52,7 +52,7 @@ function listen(){
 			
 			var lastRequest = requestTimes[message.author.id];
 			var currentTime = new Date().getTime();
-			if(lastRequest == null || (lastRequest != null && lastRequest > currentTime + 750)){
+			if(lastRequest == null || (lastRequest != null && lastRequest + 750 < currentTime)){
 			
 				requestTimes[message.author.id] = currentTime;
 				dbfunc.getDB().collection("characters").findOne({"_id": message.author.id}, function(err, character){

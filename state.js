@@ -87,7 +87,7 @@ exports.immediate = function(message, character, eventId, event, amount){
 				}
 				dbfunc.removeActive(active);
 				
-				result = message.member.displayName " has used an antidote";
+				result = message.member.displayName + " has used an antidote";
 			}
 			else{
 				
@@ -267,7 +267,7 @@ exports.preresults = function(message, character, battleState, actives, grumbo){
 	});
 	
 	//Preresults character active functions
-	character.prebattle.forEach(function(eventId){
+	character.preresults.forEach(function(eventId){
 		
 		switch(eventId){
 			
@@ -303,7 +303,7 @@ exports.postresults = function(message, character, battleState, actives, grumbo)
 	});
 	
 	//Postresults character active functions
-	character.postbattle.forEach(function(eventId){
+	character.postresults.forEach(function(eventId){
 		
 		switch(eventId){
 			

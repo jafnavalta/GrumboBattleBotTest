@@ -25,7 +25,7 @@ exports.commandActive = function(character, message, args){
 		//Get character
 		dbfunc.getDB().collection("actives").find({"character": character._id}).toArray(function(err, actives){	
 			
-			if(actives.length == 0){
+			if(actives.length == 0 || actives == null){
 				
 				sender.send("You have no active effects " + message.member.displayName + "!");	
 			}

@@ -1,6 +1,9 @@
 //Initialize DB functions
 let dbfunc = require('../data/db.js');
 
+//Initialize fs
+const fs = require("fs");
+
 //Initialize state for state constants and functions
 let state = require('../state.js');
 
@@ -17,7 +20,7 @@ exports.initWeighedArrays = function(){
 	
 	for(var key in grumboList){
 		
-		var grumbo = rotationList[key];
+		var grumbo = grumboList[key];
 		for(var i = 0; i < grumbo.weight; i++){
 			
 			weighedGrumbos.push(grumbo.id);

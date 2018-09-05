@@ -22,7 +22,7 @@
 	"special_3": {
 		"gameId": 30002,
 		"id": "special_3",
-		"name": "Bundle o' Battle Pot"
+		"name": "Bundle o' Battle Pot",
 		"items": ["battle_potion", "battle_potion", "battle_potion"],
 		"description": "Tis' a bundle o' 3 Battle Pots",
 		"price": 325,

@@ -8,7 +8,7 @@
 		"postresults": [],
 		"victory": "$name won!",
 		"loss": "$name lost! Maybe you should try harder my dude.",
-		"weight": 70,
+		"weight": 70
 	},
 	"toxic_grumbo": {
 		"gameId": 1001,

@@ -33,7 +33,10 @@ module.exports = {
 			}
 			else{
 				
-				callback();
+				db.collection("characters").updateMany({}, {$set: {"battleLock": false}}, {upsert: true}, function (err, result){
+				
+					callback();
+				});
 			}
 		});
 	},
@@ -105,7 +108,7 @@ module.exports = {
 		db.collection("actives").deleteOne(
 			{"_id": active._id}
 		);
-	}
+	},
 	
 	//Update the rotation and special shops
 	updateRotationSpecial: function(rotation, special, callback){
@@ -117,7 +120,7 @@ module.exports = {
 				callback();
 			});
 		});
-	}
+	},
 	
 	//Update a rotation item
 	updateRotationItem: function(item){
@@ -126,8 +129,8 @@ module.exports = {
 			{"shop": "rotation", "id": item.id},
 			{$set: item},
 			{upsert: true}
-		});
-	}
+		);
+	},
 	
 	//Update a rotation item
 	updateSpecialItem: function(item){
@@ -136,7 +139,7 @@ module.exports = {
 			{"shop": "special", "id": item.id},
 			{$set: item},
 			{upsert: true}
-		});
+		);
 	}
 }
 

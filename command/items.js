@@ -27,7 +27,7 @@ exports.commandItems = function(message, args, character){
 		}
 		else{
 			
-			var itemsString = message.member.displayName + "'s items\n\n";
+			var itemsString = message.member.displayName + "'s Items\n\n";
 			var unique = [...new Set(items)];
 			unique.forEach(function(item){
 				
@@ -70,6 +70,7 @@ exports.commandItems = function(message, args, character){
 			
 			detailsString = details.name + "  |  Command:  " + item + "\n"
 				+ details.description + "\n";
+			detailsString += "Sell: " + details.value + " gold  |  ";
 			if(details.max > 1){
 				
 				detailsString += "Can hold up to " + details.max + "\n";
@@ -78,7 +79,6 @@ exports.commandItems = function(message, args, character){
 				
 				detailsString += "Can only hold 1\n";
 			}
-			detailsString += "Sell: " + details.value + " gold";
 			
 			sender.send(detailsString);
 		}

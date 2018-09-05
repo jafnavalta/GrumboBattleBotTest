@@ -18,8 +18,8 @@ let weighedSpecial = [];
 let state = require('../state.js');
 
 const INTERVAL = 10800000 //3 hours in millis
-const rotationLimit = 1;
-const specialLimit = 2;
+const ROTATION_LIMIT = 1;
+const SPECIAL_LIMIT = 2;
 
 //Init shop
 let standardShop = JSON.parse(fs.readFileSync("./values/shop_standard.json", "utf8"));
@@ -58,14 +58,14 @@ exports.commandShop = function(message, args, character){
 	if(args.length == 2 || (args.length == 3 && args[2] == 'display')){
 		
 		//Update then display
-		updateShop(displayShop(message, args, character));
+		updateShop(function(){ displayShop(message, args, character) });
 	}
 	
 	//Buy an item
 	else if(args[2] == 'buy' && (args.length == 4 || (args.length == 5 && isInteger(args[4])))){
 		
 		//Update then buy
-		updateShop(buy(message, args, character));
+		updateShop(function(){ buy(message, args, character) });
 	}
 	
 	//Sell an item
@@ -91,11 +91,11 @@ function updateShop(shopFunction){
 	//Init shop if empty
 	if(shop.standard.length == 0){
 			
-		initShop(shopFunction);
+		initShop(function(){ shopFunction() });
 	}
 	else{
 		
-		updateRotationSpecial(shopFunction);
+		updateRotationSpecial(function(){ shopFunction() });
 	}
 }
 
@@ -123,10 +123,10 @@ function initShop(shopFunction){
 					shop.special.push(specialItem);
 				});
 			}
-			updateRotationSpecial(shopFunction);
-		}
+			updateRotationSpecial(function(){ shopFunction() });
+		});
+	});
 	
-	}
 }
 
 /**
@@ -151,14 +151,14 @@ function updateRotationSpecial(shopFunction){
 				shop.special = [];
 				
 				//Populate rotation
-				while(shop.rotation.length < rotationLimit){
+				while(shop.rotation.length < ROTATION_LIMIT){
 					
 					var random = Math.floor(Math.random() * (weighedRotation.length - 1));
 					var rotationId = weighedRotation[random];
 					var included = false;
-					for(var i = 0; i < rotationIds.length; i++){
+					for(var i = 0; i < shop.rotation.length; i++){
 						
-						if(rotationIds[i] == rotationId){ 
+						if(shop.rotation[i].id == rotationId){ 
 						
 							included = true;
 							break;
@@ -166,21 +166,21 @@ function updateRotationSpecial(shopFunction){
 					};
 					if(!included){
 						
-						var item = rotationItemsList[rotationId];
+						var item = rotationList[rotationId];
 						item.shop = "rotation";
 						shop.rotation.push(item);
 					}
 				}
 				
 				//Populate special
-				while(shop.special.length < specialLimit){
+				while(shop.special.length < SPECIAL_LIMIT){
 					
 					var random = Math.floor(Math.random() * (weighedSpecial.length - 1));
 					var specialId = weighedSpecial[random];
 					var included = false;
-					for(var i = 0; i < specialIds.length; i++){
+					for(var i = 0; i < shop.special.length; i++){
 						
-						if(specialIds[i] == specialId){ 
+						if(shop.special[i].id == specialId){ 
 						
 							included = true;
 							break;
@@ -188,16 +188,14 @@ function updateRotationSpecial(shopFunction){
 					};
 					if(!included){
 						
-						var item = {
-							shop: "special",
-							id: specialId
-						}
+						var item = specialList[specialId];
+						item.shop = "special";
 						shop.special.push(item);
 					}
 				}
 				
 				//Update db with new rotation and special and then perform shop function
-				dbfunc.updateRotationSpecial(shop.rotation, shop.special, shopFunction());
+				dbfunc.updateRotationSpecial(shop.rotation, shop.special, function(){ shopFunction() });
 			});
 		});
 	}
@@ -221,21 +219,22 @@ function displayShop(message, args, character){
 		sender = message.channel;
 	}
 	
-	var shopString = "------ THE GRUMBO SHOP ------\n\n"
-		+ "[ STANDARD ITEMS ]\n";
-	shop.standard.forEach(function(item){
+	var shopString = "---------- THE GRUMBO SHOP ----------\n\n"
+		+ "[--- STANDARD ITEMS ---]\n\n";
+	shop.standard.forEach(function(itemId){
 		
+		var item = itemList[itemId];
 		shopString += item.name + "  |  Buy:  " + item.id + "\n"
 			+ item.description + "\n";
+		shopString += "Price: " + item.price + " gold  |  ";
 		if(item.max > 1){
 		
-			shopString += "Can hold up to " + item.max + "\n";
+			shopString += "Can hold up to " + item.max + "\n\n";
 		}
 		else{
 			
-			shopString += "Can only hold 1\n";
+			shopString += "Can only hold 1\n\n";
 		}
-		shopString += "Price: " + item.price + " gold\n\n";
 	});
 	
 	var currentTime = new Date().getTime();
@@ -243,11 +242,12 @@ function displayShop(message, args, character){
 	var hours = Math.floor(timeUntilRotationInMillis/3600000);
 	var minutes = Math.floor((timeUntilRotationInMillis % 3600000) / 60000);
 	
-	var shopString = "[ ROTATING ITEMS ]   The next item/special rotation is in " + hours + " hours " + minutes + " minutes\n\n";
+	shopString += "[--- ROTATING ITEMS ---]\nThe next item/special rotation is in " + hours + " hours " + minutes + " minutes\n\n";
 	shop.rotation.forEach(function(item){
 		
 		shopString += item.name + "  |  Buy:  " + item.id + "\n"
 			+ item.description + "\n";
+		shopString += "Price: " + item.price + " gold  |  ";
 		if(item.max > 1){
 		
 			shopString += "Can hold up to " + item.max + "\n";
@@ -256,11 +256,10 @@ function displayShop(message, args, character){
 			
 			shopString += "Can only hold 1\n";
 		}
-		shopString += "Price: " + item.price + " gold\n"
-			+ "Stock: " + item.stock + "\n\n";
+		shopString += "Stock: " + item.stock + "\n\n";
 	});
 	
-	var shopString = "[ SPECIALS ]   The next item/special rotation is in " + hours + " hours " + minutes + " minutes\n\n";
+	shopString += "[--- SPECIALS ---]\nThe next item/special rotation is in " + hours + " hours " + minutes + " minutes\n\n";
 	shop.special.forEach(function(special){
 		
 		shopString += special.name + "  |  Buy:  " + special.id + "\n"
@@ -268,18 +267,21 @@ function displayShop(message, args, character){
 		var itemsString = "Contains: [";
 		for(var i = 0; i < special.items.length; i++){
 			
-			if(i == special.length - 1){
+			if(i == special.items.length - 1){
 				
-				itemsString += special.items[i] + "]\n";
+				itemsString += itemList[special.items[i]].name + "]\n";
 			}
 			else{
 				
-				itemsString += special.items[i] + " ";
+				itemsString += itemList[special.items[i]].name + ", ";
 			}
 		}
+		shopString += itemsString;
 		shopString += "Price: " + special.price + " gold\n"
 			+ "Stock: " + special.stock + "\n\n";
 	});
+	
+	sender.send(shopString);
 }
 
 /**
@@ -344,7 +346,7 @@ function buy(message, args, character){
 */
 function buyStandardItem(message, character, item, amount){
 	
-	if(character.gold < (item.price * amount)){
+	if(character.gold > (item.price * amount)){
 	
 		var hasCount = 0;
 		character.items.forEach(function(charItem){
@@ -385,7 +387,7 @@ function buyStandardItem(message, character, item, amount){
 */
 function buyRotationItem(message, character, item, amount){
 	
-	if(character.gold < (item.price * amount)){
+	if(character.gold > (item.price * amount)){
 	
 		var hasCount = 0;
 		character.items.forEach(function(charItem){
@@ -433,11 +435,11 @@ function buyRotationItem(message, character, item, amount){
 */
 function buySpecialItem(message, character, special, amount){
 	
-	if(character.gold < (special.price * amount)){
+	if(character.gold > (special.price * amount)){
 	
-		if(item.stock < amount){
+		if(special.stock < amount){
 			
-			message.channel.send("Sorry! There aren't enough " + item.name + "(s) in stock.");
+			message.channel.send("Sorry! There aren't enough " + special.name + "(s) in stock.");
 		}
 		else{
 			
@@ -450,7 +452,7 @@ function buySpecialItem(message, character, special, amount){
 				unique.forEach(function(uniqueItem2){
 				
 					if(uniqueItem == uniqueItem2) countInSpecial++;
-				}
+				});
 				
 				var hasCount = 0;
 				character.items.forEach(function(charItem){
@@ -475,28 +477,28 @@ function buySpecialItem(message, character, special, amount){
 					}
 				}
 				
-				var spent = item.price * amount;
+				var spent = special.price * amount;
 				character.gold -= spent;
 				character.items.sort();
 				dbfunc.updateCharacter(character);
 				
-				item.stock -= amount;
-				dbfunc.updateSpecialItem(item);
+				special.stock -= amount;
+				dbfunc.updateSpecialItem(special);
 				
-				message.channel.send(message.member.displayName + " has bought x" + amount + " " + item.name + "(s) with " + spent + " gold!\n"
+				message.channel.send(message.member.displayName + " has bought x" + amount + " " + special.name + "(s) with " + spent + " gold!\n"
 					+ "You now have " + character.gold + " gold");
 			}
 			else{
 				
 				//Too many to hold
-				message.channel.send(message.member.displayName + ", you don't have enough space for x" + amount + " " + item.name + "(s)");
+				message.channel.send(message.member.displayName + ", you don't have enough space for x" + amount + " " + special.name + "(s)");
 			}
 		}
 	}
 	else{
 		
 		//Not enough gold
-		message.channel.send(message.member.displayName + ", you do not have enough gold to buy x" + amount + " " + item.name + "(s)");
+		message.channel.send(message.member.displayName + ", you do not have enough gold to buy x" + amount + " " + special.name + "(s)");
 	}
 }
 
@@ -544,4 +546,12 @@ function sell(message, args, character){
 		
 		message.channel.send("You do not have enough of the item: " + sellItem);
 	}
+}
+
+/**
+* Determines if x is an integer.
+*/
+function isInteger(x){
+	
+	return !isNaN(x) && (x % 1 === 0);
 }
