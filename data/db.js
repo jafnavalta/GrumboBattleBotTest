@@ -48,7 +48,7 @@ module.exports = {
 	},
 	
 	//Create new character and insert into DB. Finish with callback.
-	createNewCharacter: function(callback){
+	createNewCharacter: function(message, callback){
 		
 		//Goes into 'characters' table
 		//The 'active' table for active effects is a separate table

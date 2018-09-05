@@ -60,7 +60,7 @@ function listen(){
 					//If character doesn't exist
 					if(character == null){
 						
-						dbfunc.createNewCharacter(function(error){
+						dbfunc.createNewCharacter(message, function(error){
 			
 							parseCommand(message);
 						});
