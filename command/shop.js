@@ -219,7 +219,7 @@ function displayShop(message, args, character){
 		sender = message.channel;
 	}
 	
-	var shopString = "---------- THE GRUMBO SHOP ----------\n\n"
+	var shopString = "---------- THE GRUMBO SHOP ----------\n " + message.member.displayName + ": " + character.gold + " gold\n\n"
 		+ "[--- STANDARD ITEMS ---]\n\n";
 	shop.standard.forEach(function(itemId){
 		
@@ -240,7 +240,7 @@ function displayShop(message, args, character){
 	var currentTime = new Date().getTime();
 	var timeUntilRotationInMillis = (INTERVAL * (LR.lastRotation + 1)) - currentTime;
 	var hours = Math.floor(timeUntilRotationInMillis/3600000);
-	var minutes = Math.floor((timeUntilRotationInMillis % 3600000) / 60000);
+	var minutes = Math.ceil((timeUntilRotationInMillis % 3600000) / 60000);
 	
 	shopString += "[--- ROTATING ITEMS ---]\nThe next item/special rotation is in " + hours + " hours " + minutes + " minutes\n\n";
 	shop.rotation.forEach(function(item){

@@ -1,7 +1,7 @@
 //Initialize MongoDB
 const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
-const uri = 'mongodb://127.0.0.1:27017/grumbobattlebottest';
+const uri = 'mongodb://127.0.0.1:27017/grumbobattlebottestdb';
 
 //For old character file
 const fs = require("fs");
@@ -56,7 +56,7 @@ module.exports = {
 					
 			level: 1,
 			experience: 0,
-			id: message.author.id,
+			_id: message.author.id,
 			wins: 0,
 			losses: 0,
 			winrate: 0,
