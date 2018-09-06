@@ -16,6 +16,10 @@ exports.postresults = {};
 ////////////////////////////////
 // GRUMBO PREBATTLE FUNCTIONS //
 ////////////////////////////////
+exports.prebattle.wumbo = function(character, battleState, eventId, actives){
+	
+	battleState.maxMod -= 25;
+}
 
 /////////////////////////////////
 // GRUMBO PRERESULTS FUNCTIONS //
@@ -77,5 +81,14 @@ exports.postresults.gold_boost_1 = function(character, battleState, eventId, act
 		var gainGold = Math.floor(Math.random() * (50 - 20 + 1)) + 20;
 		character.gold += gainGold;
 		battleState.endMessages.push(gainGold + " extra gold was gained!");
+	}
+}
+
+exports.postresults.assassinate = function(character, battleState, eventId, actives){
+	
+	if(!battleState.win){
+					
+		character.battlesLeft -= character.battlesLeft - 1;
+		battleState.endMessages.push("The Grumbassassin stabbed your remaining battle stocks right out of you!");
 	}
 }

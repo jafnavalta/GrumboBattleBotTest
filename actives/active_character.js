@@ -34,7 +34,7 @@ exports.prebattle.battle_potion = function(character, battleState, eventId, acti
 
 exports.prebattle.charm_of_wumbo = function(character, battleState, eventId, actives){
 	
-	battleState.minMod = 15;
+	battleState.minMod += 15;
 	state.reduceDuration(character, [character.prebattle], eventId, actives);
 }
 
