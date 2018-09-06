@@ -36,6 +36,6 @@
 		],
 		"victory": "$name avoided getting their lunch money taken!",
 		"loss": "$name had his pockets cut by Grumbo Thief!",
-		"weight": 10
+		"weight": 9999
 	}
 }

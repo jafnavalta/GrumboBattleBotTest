@@ -6,8 +6,8 @@ const fs = require("fs");
 
 //Initialize list of items file
 let itemList = JSON.parse(fs.readFileSync("./values/items.json", "utf8"));
-let rotationList = JSON.parse(fs.readFileSync("./values/rotationItemsList.json", "utf8"));
-let specialList = JSON.parse(fs.readFileSync("./values/specialItemsList.json", "utf8"));
+let rotationList = JSON.parse(fs.readFileSync("./values/rotation_items_list.json", "utf8"));
+let specialList = JSON.parse(fs.readFileSync("./values/special_items_list.json", "utf8"));
 let LR = JSON.parse(fs.readFileSync("./values/shop_lastrotation.json", "utf8")); //Set value in this file to 0 to force shop rotation
 
 //Weighted Arrays for randomly choosig items for rotation/special shop
@@ -55,7 +55,7 @@ exports.initWeighedArrays = function(){
 exports.commandShop = function(message, args, character){
 	
 	//Display shop
-	if(args.length == 2 || (args.length == 3 && args[2] == 'display')){
+	if(args.length == 2 || (args.length == 3 && args[2] == '-d')){
 		
 		//Update then display
 		updateShop(function(){ displayShop(message, args, character) });
@@ -509,7 +509,7 @@ function sell(message, args, character){
 	
 	var sellItem = args[3];
 	var amount = 1;
-	var hasEnough = character.items.includes(item);
+	var hasEnough = character.items.includes(sellItem);
 	if(args.length == 5 && hasEnough){ 
 	
 		amount = args[4];
@@ -517,7 +517,7 @@ function sell(message, args, character){
 		var count = 0;
 		for(var i = 0; i < character.items.length; ++i){
 			
-			if(items[i] == item) count++;
+			if(character.items[i] == sellItem) count++;
 		}
 		if(amount > count) hasEnough = false;
 	}

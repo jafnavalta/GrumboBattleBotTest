@@ -3,6 +3,9 @@ var Discord = require('discord.js');
 var auth = require('./auth.json');
 const client = new Discord.Client();
 
+//Config
+let config = require('./config.js');
+
 //Initialize DB functions
 let dbfunc = require('./data/db.js');
 
@@ -13,6 +16,14 @@ let challengefunc = require('./command/challenge.js');
 let itemsfunc = require('./command/items.js');
 let shopfunc = require('./command/shop.js');
 let activefunc = require('./command/actives.js');
+
+//Text
+let fs = require('fs');
+let help = fs.readFileSync("./text/help.txt", "utf8");
+let guide = fs.readFileSync("./text/guide.txt", "utf8");
+let guide2 = fs.readFileSync("./text/guide2.txt", "utf8");
+let guide3 = fs.readFileSync("./text/guide3.txt", "utf8");
+let patchnotes = fs.readFileSync("./text/patchnotes.txt", "utf8");
 
 let requestTimes = {}; //Store character request times so they can't request more than once every 1 second
 
@@ -46,7 +57,7 @@ function listen(){
 		
 		// Our bot needs to know if it will execute a command
 		// It will listen for messages that will start with `!grumbo`
-		if(message.content.substring(0, 9) == '!grumtest'){
+		if(message.content.substring(0, config.COMMAND.length) == config.COMMAND){
 			
 			var lastRequest = requestTimes[message.author.id];
 			var currentTime = new Date().getTime();
@@ -96,61 +107,48 @@ function parseCommand(message){
 		/////////////////////
 		// !! HELP MENU !! //
 		/////////////////////
-		if(args[1] == 'help' && args.length == 2){
-			
-			message.channel.send("Try your chance in battle with me, gain experience, level up, and be the strongest on the server :^ )\n\n"
-				+ "GRUMBO HELP: COMMANDS\n"
-				+ "!grumbo battle level <number>  |  Battle a level <number> Grumbo. The higher the level compared to yours, the lower the chance of winning (but higher chance of more experience!)\n"
-				+ "!grumbo challenge @mention <number> exp/gold  |  Challenge another user by mentionning them with @ and putting <number> experience/gold on the line!\n"
-				+ "!grumbo challenge accept <number> exp/gold  |  If you've been challenged, you can accept it with this command. <number> must match the challenger's wager.\n"
-				+ "!grumbo stats  |  See your grumbo stats (Level, exp, gold, wins, losses, win rate) and how many battles/challenges you have left\n"
-				+ "!grumbo leaderboards  |  See the stats of everyone on the server who has interacted with GrumboBattleBot, sorted by level\n"
-				+ "!grumbo patchnotes  |  Show the recent patch notes\n"
-				+ "!grumbo guide  |  Show guide about game mechanics like battles, experience and gold scaling, etc.\n"
-				+ "!grumbo help  |  Show this help menu"); 
+		if(args[1] == 'help' && (args.length == 2 || (args.length == 3 && args[2] == '-d'))){
+		
+			//DM user
+			var sender = message.author;
+			if(args.length == 3){
+				
+				//Message channel
+				sender = message.channel;
+			}
+			sender.send(help); 
 		}
 		
 		///////////////////////
 		// !! PATCH NOTES !! //
 		///////////////////////
-		else if(args[1] == 'patchnotes' && args.length == 2){
+		else if(args[1] == 'patchnotes' && (args.length == 2 || (args.length == 3 && args[2] == '-d'))){
 			
-			message.channel.send("GRUMBO PATCH NOTES\n\n"
-			
-				+ "- Users can now battle at the same time. Challenges are still one at a time.\n"
-				+ "- Stats and leaderboards are now private messages.\n"
-				+ "- Added gold challenges. Item shop is probably next on the roadmap.\n"
-				+ "- Changed challenge commands to accomodate gold challenges.\n\n"
-			
-				+ "OLDER NOTES\n"
-				+ "- Added gold. Gold challenges to be added in next update. Item shop probably follows that.\n"
-				+ "- Maximum victory chance changed from 99% to 95%\n"
-				+ "- Added guide command for further help.\n"
-				+ "- Decreased exp gained in won battles by your current level.\n"
-				+ "- Added PvP with the challenge command. Wager experience.\n"
-				+ "- Changed xp scaling for higher level Grumbos\n"
-				+ "- Minimum victory chance changed from 10% to 5%");
+			//DM user
+			var sender = message.author;
+			if(args.length == 3){
+				
+				//Message channel
+				sender = message.channel;
+			}
+			sender.send(patchnotes);
 		}
 		
 		/////////////////
 		// !! GUIDE !! //
 		/////////////////
-		else if(args[1] == 'guide' && args.length == 2){
+		else if(args[1] == 'guide' && (args.length == 2 || (args.length == 3 && args[2] == '-d'))){
 			
-			message.channel.send("GRUMBO BATTLE BOT GUIDE\n\n"
-			
-				+ "BATTLES\n"
-				+ "You can battle any Grumbo whose level is up to 20 levels higher than you. The experience, gold and chance of victory are based on the level difference between "
-				+ "your current level and the Grumbo level. As the level of the Grumbo increases, experience increases, but gold and chance of victory decrease. The min victory "
-				+ "chance is 5% and the max is 95%. Experience is also decreased independently based on how high your level is. While you get more gold the lower the level of the Grumbo, " 
-				+ "you will only get 10 gold if you fight a Grumbo who is over 20 levels lower than you.\n"
-				+ "Battle attempts recover 1 stock every hour up to a maximum of 3.\n\n"
+			//DM user
+			var sender = message.author;
+			if(args.length == 3){
 				
-				+ "CHALLENGES\n"
-				+ "Challenge users to a wager.\n"
-				+ "Exp challenge: The loser will always lose the wager they bet, but the winner will win a wager based on the chance of victory. This can be less than what was wagered but can also be more.\n"
-				+ "Gold challenge: The chance of winning is always a 50/50. You always win/lose exactly what was bet.\n"
-				+ "Challenge attempts recover 1 stock every hour up to a maximum of 3.");
+				//Message channel
+				sender = message.channel;
+			}
+			sender.send(guide);
+			sender.send("\n" + guide2);
+			sender.send("\n" + guide3);
 		}
 		
 		/////////////////
@@ -222,7 +220,7 @@ function parseCommand(message){
 */
 function displayStats(character, message, args){
 	
-	if(args.length == 2 || (args.length == 3 && args[2] == 'display')){
+	if(args.length == 2 || (args.length == 3 && args[2] == '-d')){
 		
 		//DM user
 		var sender = message.author;
@@ -272,7 +270,7 @@ function displayStats(character, message, args){
 */
 function displayLeaderboards(message, args){
 	
-	if(args.length == 2 || (args.length == 3 && args[2] == 'display')){
+	if(args.length == 2 || (args.length == 3 && args[2] == '-d')){
 	
 		dbfunc.getDB().collection("characters").find().toArray(function(err, characters){
 					
@@ -308,8 +306,8 @@ function displayLeaderboards(message, args){
 					
 					leaderboards = leaderboards + "[" + count + "] " + message.guild.members.get(sortedCharacter._id).displayName + "   Lv" + sortedCharacter.level + "  |  " 
 						+ sortedCharacter.experience + " EXP  |  " + sortedCharacter.gold + " Gold"
-						+ "\n      Battle          Wins " + sortedCharacter.wins + "  |  Losses " + sortedCharacter.losses + "  |  Win% " + sortedCharacter.winrate
-						+ "\n      Challenge  Wins " + sortedCharacter.challengeWins + "  |  Losses " + sortedCharacter.challengeLosses + "  |  Win% " + sortedCharacter.challengeWinrate + "\n";
+						+ "\n       Battle          Wins " + sortedCharacter.wins + "  |  Losses " + sortedCharacter.losses + "  |  Win% " + sortedCharacter.winrate
+						+ "\n       Challenge  Wins " + sortedCharacter.challengeWins + "  |  Losses " + sortedCharacter.challengeLosses + "  |  Win% " + sortedCharacter.challengeWinrate + "\n";
 					count += 1;
 				}
 			});

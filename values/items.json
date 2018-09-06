@@ -69,12 +69,12 @@
 		"id": "fools_gold",
 		"name": "Fools Gold",
 		"command": "!grumbo items use fools_gold",
-		"type": "consume",
+		"type": "indefinite",
 		"battleStates": [
 			"preresults",
 			"postresults"
 		],
-		"description": "Only 1 time, if you were to lose gold in battle (not challenge), the Fools Gold will be lost instead. Consumed after use.",
+		"description": "Only 1 time, if you were to lose gold in battle (not challenge), the Fools Gold will be lost instead. Can only have one active at a time. Consumed after use.",
 		"effect": "good",
 		"duration": null,
 		"price": 1,

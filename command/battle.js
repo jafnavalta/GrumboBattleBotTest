@@ -142,7 +142,7 @@ function doBattle(message, args, character, currentTime, actives){
 		setTimeout(function(){
 			
 			//Determine battle results
-			var result = Math.floor(Math.random() * 100) + 1;
+			var result = Math.floor(Math.random() * (101));
 			
 			//If victory
 			if(result <= battleState.chance){

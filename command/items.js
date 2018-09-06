@@ -10,7 +10,7 @@ let state = require('../state.js');
 exports.commandItems = function(message, args, character){
 	
 	//Display list of items
-	if(args.length == 2 || (args.length == 3 && args[2] == 'display')){
+	if(args.length == 2 || (args.length == 3 && args[2] == '-d')){
 		
 		//DM user
 		var sender = message.author;
@@ -54,7 +54,7 @@ exports.commandItems = function(message, args, character){
 	}
 	
 	//Check item details
-	else if(args[2] == 'details' && (args.length == 4 || (args.length == 5 && args[4] == 'display'))){
+	else if(args[2] == 'details' && (args.length == 4 || (args.length == 5 && args[4] == '-d'))){
 		
 		//DM user
 		var sender = message.author;
@@ -110,33 +110,8 @@ exports.commandItems = function(message, args, character){
 		var details = itemList[item];
 		if(hasEnough){
 			
-			//Determine item type
-			switch(details.type){
-				
-				case state.IMMEDIATE:
-				
-					state.immediate(message, character, item, details, amount);
-					break;
-					
-				case state.CONSUME:
-				
-					state.consume(message, character, item, details, details.battleStates, amount);
-					break;
-					
-				case state.NONCONSUME:
-				
-					state.nonconsume(message, character, item, details);
-					break;
-					
-				case state.TOGGLE:
-				
-					state.toggle(message, character, item, details, details.battleStates);
-					break;
-					
-				default:
-					//Do nothing
-					break;
-			}
+			//Use item
+			state[details.type](message, character, item, details, amount);
 		}
 		else if(details == null){
 			

@@ -1,7 +1,9 @@
 //Initialize MongoDB
 const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
-const uri = 'mongodb://127.0.0.1:27017/grumbobattlebottest';
+
+//Config
+let config = require('../config.js');
 
 //For old character file
 const fs = require("fs");
@@ -13,7 +15,7 @@ module.exports = {
 	//Connect to db server and set DB. Finish with callback.
 	connectToServer: function(callback){
 		
-		MongoClient.connect(uri, { useNewUrlParser: true }, function(error, client){
+		MongoClient.connect(config.DBURI, { useNewUrlParser: true }, function(error, client){
 	  
 			assert.equal(null, error);
 			db = client.db();
@@ -98,14 +100,7 @@ module.exports = {
 		db.collection("actives").updateOne(
 			{"_id": active._id},
 			{$set: active},
-			{upsert: true}, function(error, result){
-				
-				console.log("Result remove:" + result);
-				if(result && result.modifiedCount === 0){
-					
-					console.log("We made it here remove");
-				}
-			}
+			{upsert: true}
 		);
 	},
 	
@@ -113,14 +108,7 @@ module.exports = {
 	removeActive: function(active){
 		
 		db.collection("actives").deleteOne(
-			{"_id": active._id}, function(error, result){
-				
-				console.log("Result update:" + result);
-				if(result && result.modifiedCount === 0){
-					
-					console.log("We made it here update");
-				}
-			}
+			{"_id": active._id}
 		);
 	},
 	

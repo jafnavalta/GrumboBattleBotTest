@@ -10,7 +10,7 @@ let activesList = JSON.parse(fs.readFileSync("./values/actives.json", "utf8"));
 */
 exports.commandActives = function(character, message, args){
 	
-	if(args.length == 2 || (args.length == 3 && args[2] == 'display')){
+	if(args.length == 2 || (args.length == 3 && args[2] == '-d')){
 	
 		//DM user
 		var sender = message.author;

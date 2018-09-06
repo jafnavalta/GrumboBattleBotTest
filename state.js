@@ -6,25 +6,34 @@ const fs = require("fs");
 let itemList = JSON.parse(fs.readFileSync("./values/items.json", "utf8"));
 let activesList = JSON.parse(fs.readFileSync("./values/actives.json", "utf8"));
 
+
 //CONSTANTS
 //Item types
 const IMMEDIATE = "immediate"; //Consume with no active state, no duration
 const CONSUME = "consume"; //Consume with active state, has duration
-const NONCONSUME = "non-consume"; //Don't consume with no active state, could have duration
-const TOGGLE = "toggle"; //Don't consume with active state. Stays active until used again.
+const NONCONSUME = "nonconsume"; //Don't consume with no active state, could have duration
+const TOGGLE = "toggle"; //Don't consume with active state. Stays active until used again
+const INDEFINITE = "indefinite"; //Consume with active state, no duration
 
 //Battle states
 const PREBATTLE = "prebattle"; //Before battle begins
 const PRERESULTS = "preresults"; //After battle ends but before results are calculated
 const POSTRESULTS = "postresults"; //After results are calculated
 
+//Battle functions
 let battlefunc = require('./command/battle.js');
+
+//Active functions
+let characterfunc = require('./actives/active_character.js');
+let grumbofunc = require('./actives/active_grumbo.js');
+let usefunc = require('./actives/active_use.js');
 
 //EXPORTS
 exports.IMMEDIATE = IMMEDIATE;
 exports.CONSUME = CONSUME;
 exports.NONCONSUME = NONCONSUME;
 exports.TOGGLE = TOGGLE;
+exports.INDEFINITE = INDEFINITE;
 
 exports.PREBATTLE = PREBATTLE;
 exports.PRERESULTS = PRERESULTS;
@@ -35,72 +44,13 @@ exports.POSTRESULTS = POSTRESULTS;
 */
 exports.immediate = function(message, character, eventId, event, amount){
 
-	var result = message.member.displayName + " has used " + event.name + " x" + amount;
-
-	switch(eventId){
-	
-		case 'battle_ticket':
+	var state = {
 		
-			if((character.battlesLeft + amount) <= 3){
-				
-				for(var i = 0; i < amount; i++){
-					
-					var index = character.items.indexOf(eventId);
-					character.items.splice(index, 1);
-				}
-				character.battletime -= 3600000 * amount;
-			}
-			else{
-				
-				result = "You either already have all battle attempts available or attempted to use too many battle tickets.";
-			}
-			break;
-			
-		case 'challenge_ticket':
-		
-			if((character.challengesLeft + amount) <= 3){
-				
-				for(var i = 0; i < amount; i++){
-					
-					var index = character.items.indexOf(eventId);
-					character.items.splice(index, 1);
-				}
-				character.challengetime -= 3600000 * amount;
-			}
-			else{
-				
-				result = "You already have all challenge attempts available or attempted to use too many challenge tickets.";
-			}
-			break;
-			
-		case 'antidote':
-		
-			if(character.prebattle.includes('poison')){
-				
-				var index = character.items.indexOf(eventId);
-				character.items.splice(index, 1);
-				index = character.prebattle.indexOf('poison');
-				character.prebattle.splice(index, 1);
-				var _id = character._id + 'poison';
-				var active = {
-					"_id": _id
-				}
-				dbfunc.removeActive(active);
-				
-				result = message.member.displayName + " has used an antidote";
-			}
-			else{
-				
-				result = "You are not poisoned at this moment";
-			}
-			break;
-			
-		default:
-			//Do nothing
-			break;
+		result: message.member.displayName + " has used " + event.name + " x" + amount
 	}
+	usefunc.immediate[eventId](message, character, state, eventId, event, amount);
 	
-	message.channel.send(result);
+	message.channel.send(state.result);
 	
 	//Save character
 	dbfunc.updateCharacter(character);
@@ -109,8 +59,8 @@ exports.immediate = function(message, character, eventId, event, amount){
 /**
 * Add consumed eventId to active list.
 */
-exports.consume = function(message, character, eventId, event, eventStates, amount){
-
+exports.consume = function(message, character, eventId, event, amount){
+	
 	var result = message.member.displayName + " has used " + event.name + " x" + amount;
 	
 	dbfunc.getDB().collection("actives").findOne({"_id": character._id + eventId, "character": character._id, "id": eventId}, function(err, active){
@@ -118,12 +68,12 @@ exports.consume = function(message, character, eventId, event, eventStates, amou
 		var wasConsumed = true;
 		if(active == null){
 			
-			pushToState(character, eventId, event, eventStates, amount);
+			exports.pushToState(character, eventId, event, event.battleStates, amount);
 		}
 		else{
 			
 			//Extend duration of consumable
-			//All consume types should have a duration. Otherwise, it's an immediate
+			//If duration is 0, don't allow use of item. Duration will be 0 if null.
 			if(active.duration == 10 || active.duration + (event.duration * amount) > 10){
 				
 				result = "You can't have an active for longer than 10 battles";
@@ -154,7 +104,7 @@ exports.consume = function(message, character, eventId, event, eventStates, amou
 /**
 * Do a particular function based on the eventId (item, equip, effect, skill, etc.) without consuming eventId
 */
-exports.nonconsume = function(message, character, eventId, event){
+exports.nonconsume = function(message, character, eventId, event, amount){
 
 	//None right now
 }
@@ -162,22 +112,54 @@ exports.nonconsume = function(message, character, eventId, event){
 /**
 * Activate or deactivate the eventId.
 */
-exports.toggle = function(message, character, eventId, event, eventStates){
+exports.toggle = function(message, character, eventId, event, amount){
 
 	dbfunc.getDB().collection("actives").findOne({"_id": character._id + eventId, "character": character._id, "id": eventId}, function(err, active){
 
 		//Deactivate
 		if(active != null){
 			
-			spliceFromState(character, eventId, event, eventStates, active);
+			exports.spliceFromState(character, eventId, event, event.battleStates, active);
 			message.channel.send(message.member.displayName + " has deactivated " + event.name);
 		}
 		//Activate
 		else{
 			
-			pushToState(character, eventId, event, eventStates, null);
+			exports.pushToState(character, eventId, event, event.battleStates, null);
 			message.channel.send(message.member.displayName + " has activated " + event.name);
 		}
+		
+		//Save character
+		dbfunc.updateCharacter(character);
+	});
+}
+
+/**
+* Add indefinite eventId to active list.
+*/
+exports.indefinite = function(message, character, eventId, event, amount){
+	
+	var result = message.member.displayName + " has used " + event.name;
+	
+	dbfunc.getDB().collection("actives").findOne({"_id": character._id + eventId, "character": character._id, "id": eventId}, function(err, active){
+		
+		var wasConsumed = true;
+		if(active == null){
+			
+			exports.pushToState(character, eventId, event, event.battleStates, amount);
+		}
+		else{
+			
+			result = message.member.displayName + " already has " + event.name + " active!";
+			wasConsumed = false;
+		}
+		if(wasConsumed){
+				
+			var index = character.items.indexOf(eventId);
+			character.items.splice(index, 1);
+		}
+		
+		message.channel.send(result);
 		
 		//Save character
 		dbfunc.updateCharacter(character);
@@ -192,20 +174,16 @@ exports.prebattle = function(message, args, character, battleState, actives, gru
 	battleState.levelDiffActual = character.level - args[3];
 	
 	//Prebattle base/modifiers
-	var chanceMod = 0;
-	var levelDiffMod = 0;
+	battleState.chanceMod = 0;
+	battleState.levelDiffMod = 0;
 	
 	//Prebattle Grumbo effects
 	for(var i = grumbo.prebattle.length - 1; i >= 0; i--){
 		
 		var eventId = grumbo.prebattle[i];
-		switch(eventId){
+		if(grumbofunc.prebattle[eventId] != null){
 			
-			//None right now
-			
-			default:
-				//Do nothing
-				break;
+			grumbofunc.prebattle[eventId](character, battleState, eventId, actives);
 		}
 	};
 	
@@ -213,33 +191,15 @@ exports.prebattle = function(message, args, character, battleState, actives, gru
 	for(var i = character.prebattle.length - 1; i >= 0; i--){
 		
 		var eventId = character.prebattle[i];
-		switch(eventId){
+		if(characterfunc.prebattle[eventId] != null){
 			
-			case 'battle_potion':
-			
-				if(battleState.levelDiffActual >= 0) chanceMod += 5;
-				else if(battleState.levelDiffActual >= -5) chanceMod += 4;
-				else if(battleState.levelDiffActual >= -10) chanceMod += 3;
-				else if(battleState.levelDiffActual >= -15) chanceMod += 2;
-				else chanceMod += 1;
-				reduceDuration(character, character.prebattle, eventId, actives);
-				break;
-				
-			case 'poison':
-			
-				chanceMod -= 5;
-				reduceDuration(character, character.prebattle, eventId, actives);
-				break;
-			
-			default:
-				//Do nothing
-				break;
+			characterfunc.prebattle[eventId](character, battleState, eventId, actives);
 		}
 	};
 	
 	//Calculate prebattle variables
-	battleState.levelDiff = character.level - args[3] + levelDiffMod;
-	battleState.chance = 50 + (battleState.levelDiff * 2) + Math.floor(Math.random() * 6) - 3 + chanceMod;
+	battleState.levelDiff = character.level - args[3] + battleState.levelDiffMod;
+	battleState.chance = 50 + (battleState.levelDiff * 2) + Math.floor(Math.random() * 6) - 3 + battleState.chanceMod;
 	if(battleState.levelDiff < -15){
 		
 		battleState.chance -= (Math.floor(Math.random() * 3) + 1);
@@ -266,13 +226,9 @@ exports.preresults = function(message, character, battleState, actives, grumbo){
 	for(var i = grumbo.preresults.length - 1; i >= 0; i--){
 		
 		var eventId = grumbo.preresults[i];
-		switch(eventId){
+		if(grumbofunc.preresults[eventId] != null){
 			
-			//None right now
-			
-			default:
-				//Do nothing
-				break;
+			grumbofunc.preresults[eventId](character, battleState, eventId, actives);
 		}
 	};
 	
@@ -280,14 +236,9 @@ exports.preresults = function(message, character, battleState, actives, grumbo){
 	for(var i = character.preresults.length - 1; i >= 0; i--){
 		
 		var eventId = character.preresults[i];
-		
-		switch(eventId){
+		if(characterfunc.preresults[eventId] != null){
 			
-			//None right now
-			
-			default:
-				//Do nothing
-				break;
+			characterfunc.preresults[eventId](character, battleState, eventId, actives);
 		}
 	};
 	
@@ -311,81 +262,19 @@ exports.postresults = function(message, character, battleState, actives, grumbo)
 	for(var i = grumbo.postresults.length - 1; i >= 0; i--){
 		
 		var eventId = grumbo.postresults[i];
-		switch(eventId){
+		if(grumbofunc.postresults[eventId] != null){
 			
-			case 'poison':
-			
-				if(!battleState.win){
-					
-					var active;
-					if(character.prebattle.includes('poison')){
-						for(var i = 0; i < actives.length; i++){
-							
-							if(actives[i].id == eventId){
-								
-								active = actives[i];
-								active.duration += activesList[eventId].duration;
-								if(active.duration > 10) active.duration = 10;
-								dbfunc.updateActive(active);
-								break;
-							}
-						}
-					}
-					else{
-						
-						active = activesList[eventId];
-						pushToState(character, eventId, active, active.battleStates, 1);
-					}
-					battleState.endMessages.push("You have been poisoned!");
-				}
-				break;
-				
-			case 'pilfer':
-			
-				if(!battleState.win){
-					
-					if(character.postresults.includes('fools_gold')){
-						
-						reduceDuration(character, character.postresults, 'fools_gold', actives);
-						battleState.endMessages.push("Fools Gold was taken!");
-					}
-					else{
-						
-						var loseGold = Math.floor(Math.random() * (100 - 50 + 1)) + 50;
-						character.gold -= loseGold;
-						if(character.gold < 0) character.gold = 0;
-						battleState.endMessages.push(loseGold + " gold was pilfered!");
-					}
-				}
-				break;
-				
-			case 'gold_boost_1':
-			
-				if(battleState.win){
-					
-					var gainGold = Math.floor(Math.random() * (50 - 20 + 1)) + 20;
-					character.gold += gainGold;
-					battleState.endMessages.push(gainGold + " extra gold was gained!");
-				}
-				break;
-			
-			default:
-				//Do nothing
-				break;
-		}
+			grumbofunc.postresults[eventId](character, battleState, eventId, actives);
+		}	
 	};
 	
 	//Postresults character active functions
 	for(var i = character.postresults.length - 1; i >= 0; i--){
 		
 		var eventId = character.postresults[i];
-		switch(eventId){
+		if(characterfunc.postresults[eventId] != null){
 			
-			//None right now
-			
-			default:
-				//Do nothing
-				break;
+			characterfunc.postresults[eventId](character, battleState, eventId, actives);
 		}
 	};
 	
@@ -415,11 +304,12 @@ exports.postresults = function(message, character, battleState, actives, grumbo)
 /**
 * Push to character state active.
 */
-function pushToState(character, eventId, event, eventStates, amount){
+exports.pushToState = function(character, eventId, event, eventStates, amount){
 	
 	var totalDuration = event.duration;
 	if(amount != null){
 		
+		//If totalDuration is null, this will make it 0
 		totalDuration = totalDuration * amount;
 	}
 	var id = character._id + eventId;
@@ -435,27 +325,7 @@ function pushToState(character, eventId, event, eventStates, amount){
 	
 	eventStates.forEach(function(eventState){
 		
-		switch(eventState){
-			
-			case PREBATTLE:
-			
-				character.prebattle.push(eventId);
-				break;
-				
-			case PRERESULTS:
-			
-				character.preresults.push(eventId);
-				break;
-				
-			case POSTRESULTS:
-			
-				character.postresults.push(eventId);
-				break;
-				
-			default:
-				//Do nothing
-				break;
-		}
+		character[eventState].push(eventId);
 	});
 	
 	dbfunc.updateActive(newActive);
@@ -464,43 +334,21 @@ function pushToState(character, eventId, event, eventStates, amount){
 /**
 * Splice from character state active.
 */
-function spliceFromState(character, eventId, event, eventStates, active){
+exports.spliceFromState = function(character, eventId, event, eventStates, active){
 
 	eventStates.forEach(function(eventState){
 
-		switch(eventStates){
-			
-			case PREBATTLE:
-			
-				var index = character.prebattle.indexOf(eventId);
-				character.prebattle.splice(index, 1);
-				break;
-				
-			case PRERESULTS:
-			
-				var index = character.preresults.indexOf(eventId);
-				character.preresults.splice(index, 1);
-				break;
-				
-			case POSTRESULTS:
-			
-				var index = character.postresults.indexOf(eventId);
-				character.postresults.splice(index, 1);
-				break;
-				
-			default:
-				//Do nothing
-				break;
-		}
+		var index = character[eventState].indexOf(eventId);
+		character[eventState].splice(index, 1);
 	});
 	
 	dbfunc.removeActive(active);
 }
 
 /**
-* Reduce the duration of an active.
+* Reduce the duration of an active and its states.
 */
-function reduceDuration(character, characterState, eventId, actives){
+exports.reduceDuration = function(character, characterStates, eventId, actives){
 	
 	var active;
 	for(var i = 0; i < actives.length; i++){
@@ -513,9 +361,13 @@ function reduceDuration(character, characterState, eventId, actives){
 	}
 	if(active.duration <= 1){
 	
-		var index = characterState.indexOf(eventId);
-		characterState.splice(index, 1);
-		dbfunc.removeActive(active);
+		for(var i = 0; i < characterStates.length; i++){
+			
+			var characterState = characterStates[i];
+			var index = characterState.indexOf(eventId);
+			characterState.splice(index, 1);
+			dbfunc.removeActive(active);
+		}
 	}
 	else{
 		
