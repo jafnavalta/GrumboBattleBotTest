@@ -31,11 +31,7 @@ exports.commandChallenge = function(message, args, character){
 	//User issued a challenge
 	else if(opponent != null && isInteger(args[3])){
 		
-		if(message.author.id == opponent.id){
-			
-			message.channel.send("You can't challenge yourself bud.");
-		}
-		else if(!onChallenge && !onChallengeAccept){
+		if(!onChallenge && !onChallengeAccept){
 			
 			//Exp challenge
 			if(args[4] == 'exp'){
@@ -86,7 +82,11 @@ exports.commandChallenge = function(message, args, character){
 	//User accepted a challenge
 	else if(args[2] == 'accept' && isInteger(args[3])){
 		
-		if(message.author.id == opponentID){
+		if(message.author.id == opponent.id){
+			
+			message.channel.send("You can't challenge yourself bud.");
+		}
+		else if(message.author.id == opponentID){
 			
 			if(args[4] == 'exp' && wagerType == 'exp'){
 				
@@ -158,6 +158,8 @@ exports.restockChallenges = function(currentTime, character){
 			character.challengesLeft = 3;
 		}
 	}
+	
+	dbfunc.updateCharacter(character);
 }
 
 /**
@@ -200,7 +202,7 @@ function issueChallenge(message, opponent, args){
 function doChallenge(message, character, currentTime){
 	
 	onChallengeAccept = true;
-	db.collection("characters").findOne({"_id": challengerID}, function(err, challenger){
+	dbfunc.getDB().collection("characters").findOne({"_id": challengerID}, function(err, challenger){
 		
 		//Determine how many challenges they should have left
 		exports.restockChallenges(currentTime, challenger);

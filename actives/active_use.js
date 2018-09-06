@@ -72,6 +72,39 @@ exports.immediate.antidote = function(message, character, state, eventId, event,
 	}
 }
 
+exports.immediate.grumbo_ticket = function(message, character, state, eventId, event, amount){
+	
+	if(character.battlesLeft < 3 || character.challengesLeft < 3){
+				
+		character.battlesLeft = 3;
+		character.challengesLeft = 3;
+		var index = character.items.indexOf(eventId);
+		character.items.splice(index, 1);
+	}
+	else{
+		
+		state.result = "You already have all battle/challenge attempts available.";
+	}
+}
+
+exports.immediate.duel_converter = function(message, character, state, eventId, event, amount){
+	
+	if((character.battlesLeft - amount) >= 0 && (character.challengesLeft + amount) <= 3){
+				
+		for(var i = 0; i < amount; i++){
+			
+			var index = character.items.indexOf(eventId);
+			character.items.splice(index, 1);
+		}
+		character.battlesLeft -= 1;
+		character.challengetime -= (3600000 * amount);
+	}
+	else{
+		
+		state.result = "You either have all challenge attempts or no battle attempts available.";
+	}
+}
+
 //////////////////////////
 // NONCONSUME FUNCTIONS //
 //////////////////////////

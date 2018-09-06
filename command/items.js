@@ -45,7 +45,7 @@ exports.commandItems = function(message, args, character){
 				}
 				else{
 					
-					itemsString += details.name + "\n";
+					itemsString += details.name + "  |  Command:  " + item + "\n";
 				}
 			});
 			

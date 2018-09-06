@@ -49,5 +49,15 @@
 		],
 		"description": "Gain between 20-50 gold when you win a battle.",
 		"duration": 1
+	},
+	"charm_of_wumbo": {
+		"gameId": 70005,
+		"id": "charm_of_wumbo",
+		"name": "Charm of Wumbo",
+		"battleStates": [
+			"prebattle"
+		],
+		"description": "Increases minimum battle victory chance to 20%. Calculated after all other chance modifiers.",
+		"duration": 1
 	}
 }

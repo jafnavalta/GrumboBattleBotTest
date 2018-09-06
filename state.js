@@ -176,6 +176,8 @@ exports.prebattle = function(message, args, character, battleState, actives, gru
 	//Prebattle base/modifiers
 	battleState.chanceMod = 0;
 	battleState.levelDiffMod = 0;
+	battleState.minMod = 0;
+	battleState.maxMod = 0;
 	
 	//Prebattle Grumbo effects
 	for(var i = grumbo.prebattle.length - 1; i >= 0; i--){
@@ -200,17 +202,19 @@ exports.prebattle = function(message, args, character, battleState, actives, gru
 	//Calculate prebattle variables
 	battleState.levelDiff = character.level - args[3] + battleState.levelDiffMod;
 	battleState.chance = 50 + (battleState.levelDiff * 2) + Math.floor(Math.random() * 6) - 3 + battleState.chanceMod;
+	var max = 95 + battleState.maxMod;
+	var min = 5 + battleState.minMod;
 	if(battleState.levelDiff < -15){
 		
 		battleState.chance -= (Math.floor(Math.random() * 3) + 1);
 	}
-	if(battleState.chance > 95){
+	if(battleState.chance > max){
 		
-		battleState.chance = 95;
+		battleState.chance = max;
 	}
-	else if(battleState.chance < 5){
+	else if(battleState.chance < min){
 		
-		battleState.chance = 5;
+		battleState.chance = min;
 	}
 }
 
