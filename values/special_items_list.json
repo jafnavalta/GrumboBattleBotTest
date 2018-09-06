@@ -38,5 +38,15 @@
 		"price": 600,
 		"stock": 2,
 		"weight": 10
+	},
+	"special_5": {
+		"gameId": 30004,
+		"id": "special_5",
+		"name": "2 Flimsy Ropes",
+		"items": ["flimsy_rope", "flimsy_rope"],
+		"description": "Maybe together, they make 1 non-flimsy rope.",
+		"price": 400,
+		"stock": 3,
+		"weight": 10
 	}
 }

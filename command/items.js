@@ -115,7 +115,7 @@ exports.commandItems = function(message, args, character){
 		}
 		else if(details == null){
 			
-			sender.send(item + " does not exist.");
+			message.channel.send(item + " does not exist.");
 		}
 		else{
 			

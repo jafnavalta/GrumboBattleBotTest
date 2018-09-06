@@ -49,5 +49,39 @@
 		"max": 10,
 		"stock": 3,
 		"weight": 20
+	},
+	"gamblers_coin": {
+		"gameId": 10008,
+		"id": "gamblers_coin",
+		"name": "Gambler's Coin",
+		"command": "!grumbo items use gambler_coin",
+		"type": "immediate",
+		"battleStates": null,
+		"description": "Can only use 1 at a time. Gain 80 exp... or maybe lose 80 exp... or maybe...",
+		"effect": "neutral",
+		"duration": null,
+		"price": 300,
+		"value": 50,
+		"max": 10,
+		"stock": 3,
+		"weight": 15
+	},
+	"berserk_potion": {
+		"gameId": 10010,
+		"id": "berserk_potion",
+		"name": "Berserk Potion",
+		"command": "!grumbo items use berserk_potion",
+		"type": "consume",
+		"battleStates": [
+			"prebattle"
+		],
+		"description": "Increases victory chance by 5%. Every battle, the victory chance increased goes down by 1%, all the way down to -5% in the last battle. Can only have 1 active at a time.",
+		"effect": "good",
+		"duration": 10,
+		"price": 375,
+		"value": 70,
+		"max": 1,
+		"stock": 1,
+		"weight": 10
 	}
 }

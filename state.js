@@ -261,16 +261,7 @@ exports.postresults = function(message, character, battleState, actives, grumbo)
 		
 	//Postresults base/modifiers
 	battleState.endMessages = [];
-	
-	//Postresults Grumbo effects
-	for(var i = grumbo.postresults.length - 1; i >= 0; i--){
-		
-		var eventId = grumbo.postresults[i];
-		if(grumbofunc.postresults[eventId] != null){
-			
-			grumbofunc.postresults[eventId](character, battleState, eventId, actives);
-		}	
-	};
+	battleState.avoidPostResults = false;
 	
 	//Postresults character active functions
 	for(var i = character.postresults.length - 1; i >= 0; i--){
@@ -281,6 +272,23 @@ exports.postresults = function(message, character, battleState, actives, grumbo)
 			characterfunc.postresults[eventId](character, battleState, eventId, actives);
 		}
 	};
+	
+	if(!battleState.avoidPostResults){
+	
+		//Postresults Grumbo effects
+		for(var i = grumbo.postresults.length - 1; i >= 0; i--){
+			
+			var eventId = grumbo.postresults[i];
+			if(grumbofunc.postresults[eventId] != null){
+				
+				grumbofunc.postresults[eventId](character, battleState, eventId, actives);
+			}	
+		};
+	}
+	else{
+		
+		battleState.endMessages.push("You avoided post battle effects!");
+	}
 	
 	//Calculate postresults variables
 	if(battleState.win){

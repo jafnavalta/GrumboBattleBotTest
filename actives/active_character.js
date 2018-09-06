@@ -38,6 +38,20 @@ exports.prebattle.charm_of_wumbo = function(character, battleState, eventId, act
 	state.reduceDuration(character, [character.prebattle], eventId, actives);
 }
 
+exports.prebattle.berserk_potion = function(character, battleState, eventId, actives){
+	
+	for(var i = 0; i < actives.length; i++){
+		
+		if(actives[i].id == eventId){
+			
+			battleState.chanceMod += actives[i].duration;
+			battleState.chanceMod -= 5;
+			break;
+		}
+	}
+	state.reduceDuration(character, [character.prebattle], eventId, actives);
+}
+
 ////////////////////////////////////
 // CHARACTER PRERESULTS FUNCTIONS //
 ////////////////////////////////////
@@ -45,3 +59,12 @@ exports.prebattle.charm_of_wumbo = function(character, battleState, eventId, act
 /////////////////////////////////////
 // CHARACTER POSTRESULTS FUNCTIONS //
 /////////////////////////////////////
+exports.postresults.flimsy_rope = function(character, battleState, eventId, actives){
+	
+	var random = Math.random() * 100;
+	if(random < 50){
+		
+		battleState.avoidPostResults = true;
+	}
+	state.reduceDuration(character, [character.postresults], eventId, actives);
+}

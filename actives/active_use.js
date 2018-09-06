@@ -105,6 +105,47 @@ exports.immediate.duel_converter = function(message, character, state, eventId, 
 	}
 }
 
+exports.immediate.gamblers_coin = function(message, character, state, eventId, event, amount){
+	
+	var index = character.items.indexOf(eventId);
+	character.items.splice(index, 1);
+	var random = Math.random() * 100;
+	if(random < 49.5){
+		
+		//Gain
+		var leftover = (80 + character.experience) % 100;
+		var gains = Math.floor(((80 + character.experience)/100));
+		var newLevel = character.level + gains;
+		character.level = newLevel;
+		character.experience = leftover;
+		state.result = "The coin flips a fortune of 80 experience!";
+	}
+	else if(random < 99){
+		
+		//Lose
+		var leftover = character.experience - 80;
+		if(leftover < 0){
+			
+			if(character.level == 1){
+				
+				character.experience = 0;
+			}
+			else{
+				
+				character.experience = 100 + leftover;
+				character.level -= 1;
+			}
+		}
+		state.result = "You dropped 80 experience with the coin. How unlucky.";
+	}
+	else{
+		
+		//Hit the jackpot
+		character.gold += 7777;
+		state.result = "Wow! The coin landed on its side, broke the very foundation below you, and revealed 7777 gold buried deep beneath the ground!"
+	}
+}
+
 //////////////////////////
 // NONCONSUME FUNCTIONS //
 //////////////////////////
