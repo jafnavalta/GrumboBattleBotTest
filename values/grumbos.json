@@ -25,7 +25,7 @@
 	},
 	"grumbo_thief": {
 		"gameId": 1002,
-		"id": "toxic_grumbo",
+		"id": "grumbo_thief",
 		"name": "Grumbo Thief",
 		"description": "A thief who takes some gold if you lose. You also gain a little bit more gold for winning.",
 		"prebattle": [],

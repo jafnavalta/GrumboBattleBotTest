@@ -123,6 +123,7 @@ function doBattle(message, args, character, currentTime, actives){
 			{$set: {"battleLock": character.battleLock}},
 		function(error, result){
 
+		//Prebattle determinations
 		var grumbo = getRandomGrumbo();
 		var battleState = {};
 		state.prebattle(message, args, character, battleState, actives, grumbo);
@@ -146,51 +147,47 @@ function doBattle(message, args, character, currentTime, actives){
 			//If victory
 			if(result <= battleState.chance){
 				
+				//Preresults determinations
 				battleState.win = true;
 				state.preresults(message, character, battleState, actives, grumbo);
 				
-				//Calculate experience gained
-				var exp = calculateBattleExp(character, battleState.levelDiff);
-				var gold = calculateBattleGold(character, battleState.levelDiff);
-				var leftover = (exp + character.experience) % 100;
-				var gains = Math.floor(((exp + character.experience)/100));
-				var newLevel = character.level + gains;
-				
-				//Win message and results
-				character.battlesLeft -= 1;
-				character.wins += 1;
-				character.level = newLevel;
-				character.experience = leftover;
-				character.gold += gold;
-				character.winrate = Math.floor(((character.wins / (character.wins + character.losses)) * 100));
-				
+				//Postresults determinations
 				state.postresults(message, character, battleState, actives, grumbo);
 				
 				//TODO customize message
-				message.channel.send(username + " won! You gained " + exp + " experience for " + gains + " level(s)! You also gained " + gold + " gold! Here are your current stats:\n"
-					+ username + " Lv" + character.level + "  |  " + character.experience + " EXP  |  " + character.gold + " Gold  |  Wins " + character.wins 
+				var endMessageString = grumbo.victory.replace('$name', username) + "\n";
+				endMessageString += "You gained " + battleState.exp + " experience for " + battleState.gains + " level(s)! You also gained " + battleState.gold + " gold!\n";
+				battleState.endMessages.forEach(function(endMessage){
+					
+					endMessageString += endMessage + "\n";
+				});
+				endMessageString += "Here are your current stats:\n" + username + " Lv" + character.level + "  |  " 
+					+ character.experience + " EXP  |  " + character.gold + " Gold  |  Wins " + character.wins 
 					+ "  |  Losses " + character.losses + "   |   Win% " + character.winrate + "\n"
-					+ "You have " + character.battlesLeft + "/3 battles left");
+					+ "You have " + character.battlesLeft + "/3 battles left"
+				message.channel.send(endMessageString);
 			}
 			//If loss
 			else{
 				
+				//Preresults determinations
 				battleState.win = false;
 				state.preresults(message, character, battleState, actives, grumbo);
 				
-				character.battlesLeft -= 1;
-				character.losses += 1;
-				character.winrate = Math.floor(((character.wins / (character.wins + character.losses)) * 100));
-				
+				//Postresults determinations
 				state.postresults(message, character, battleState, actives, grumbo);
 				
 				//customize message
-				message.channel.send(username + " lost! Maybe you should try harder my dude. Here are your current stats:"
-					+ "\n" + username + " Lv" + character.level + "  |  " + character.experience + " EXP  |  " + character.gold + " Gold  |  Wins " + character.wins 
-					+ "  |  Losses " + character.losses + "   |   Win% " + character.winrate 
-					+ "\nYou have " + character.battlesLeft + "/3 battles left");
+				var endMessageString = grumbo.loss.replace('$name', username) + "\n";
+				battleState.endMessages.forEach(function(endMessage){
 					
-				
+					endMessageString += endMessage + "\n";
+				});
+				endMessageString += "Here are your current stats:\n" + username + " Lv" + character.level + "  |  " 
+					+ character.experience + " EXP  |  " + character.gold + " Gold  |  Wins " + character.wins 
+					+ "  |  Losses " + character.losses + "   |   Win% " + character.winrate + "\n"
+					+ "You have " + character.battlesLeft + "/3 battles left"
+				message.channel.send(endMessageString);
 			}
 			
 			character.battleLock = false;
@@ -204,7 +201,7 @@ function doBattle(message, args, character, currentTime, actives){
 /**
 * Calculate battle experience gained.
 */
-function calculateBattleExp(character, levelDiff){
+exports.calculateBattleExp = function(character, levelDiff){
 	
 	var exp = 100;
 	//Low level Grumbo
@@ -282,7 +279,7 @@ function calculateHighLevelExp(exp, levelDiff){
 /**
 * Calculate battle gold gained.
 */
-function calculateBattleGold(character, levelDiff){
+exports.calculateBattleGold = function(character, levelDiff){
 	
 	var gold = 120 + Math.floor(Math.random() * 25) + levelDiff;
 	if(levelDiff > 20){

@@ -8,7 +8,7 @@ let activesList = JSON.parse(fs.readFileSync("./values/actives.json", "utf8"));
 /**
 * Display list of current active effects.
 */
-exports.commandActive = function(character, message, args){
+exports.commandActives = function(character, message, args){
 	
 	if(args.length == 2 || (args.length == 3 && args[2] == 'display')){
 	
@@ -35,7 +35,7 @@ exports.commandActive = function(character, message, args){
 				actives.forEach(function(activeObj){
 						
 					activeString += activeObj.name;
-					if(activeObj.duration != null){
+					if(activeObj.duration != null && activeObj.duration > 0){
 						
 						activeString += "  |  " + activeObj.duration + " battle(s)";
 					}

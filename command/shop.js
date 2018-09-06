@@ -354,7 +354,7 @@ function buyStandardItem(message, character, item, amount){
 			if(charItem == item.id) hasCount++;
 		});
 		
-		if((hasCount + amount) <= item.max){
+		if((hasCount + parseInt(amount)) <= item.max){
 			
 			for(var i = 0; i < amount; i++){
 				
@@ -399,7 +399,7 @@ function buyRotationItem(message, character, item, amount){
 			
 			message.channel.send("Sorry! There aren't enough " + item.name + "(s) in stock.");
 		}
-		else if((hasCount + amount) <= item.max){
+		else if((hasCount + parseInt(amount)) <= item.max){
 			
 			for(var i = 0; i < amount; i++){
 				

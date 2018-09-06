@@ -1,7 +1,7 @@
 //Initialize MongoDB
 const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
-const uri = 'mongodb://127.0.0.1:27017/grumbobattlebottestdb';
+const uri = 'mongodb://127.0.0.1:27017/grumbobattlebottest';
 
 //For old character file
 const fs = require("fs");
@@ -98,7 +98,14 @@ module.exports = {
 		db.collection("actives").updateOne(
 			{"_id": active._id},
 			{$set: active},
-			{upsert: true}
+			{upsert: true}, function(error, result){
+				
+				console.log("Result remove:" + result);
+				if(result && result.modifiedCount === 0){
+					
+					console.log("We made it here remove");
+				}
+			}
 		);
 	},
 	
@@ -106,7 +113,14 @@ module.exports = {
 	removeActive: function(active){
 		
 		db.collection("actives").deleteOne(
-			{"_id": active._id}
+			{"_id": active._id}, function(error, result){
+				
+				console.log("Result update:" + result);
+				if(result && result.modifiedCount === 0){
+					
+					console.log("We made it here update");
+				}
+			}
 		);
 	},
 	

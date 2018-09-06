@@ -14,9 +14,9 @@ const NONCONSUME = "non-consume"; //Don't consume with no active state, could ha
 const TOGGLE = "toggle"; //Don't consume with active state. Stays active until used again.
 
 //Battle states
-const PREBATTLE = "pre-battle"; //Before battle begins
-const PRERESULTS = "pre-results"; //After battle ends but before results are calculated
-const POSTRESULTS = "post-results"; //After results are calculated
+const PREBATTLE = "prebattle"; //Before battle begins
+const PRERESULTS = "preresults"; //After battle ends but before results are calculated
+const POSTRESULTS = "postresults"; //After results are calculated
 
 let battlefunc = require('./command/battle.js');
 
@@ -156,7 +156,7 @@ exports.consume = function(message, character, eventId, event, eventStates, amou
 */
 exports.nonconsume = function(message, character, eventId, event){
 
-	//TODO add more item/equip functions
+	//None right now
 }
 
 /**
@@ -191,13 +191,14 @@ exports.prebattle = function(message, args, character, battleState, actives, gru
 	
 	battleState.levelDiffActual = character.level - args[3];
 	
-	//Prebattle modifiers
+	//Prebattle base/modifiers
 	var chanceMod = 0;
 	var levelDiffMod = 0;
 	
 	//Prebattle Grumbo effects
-	grumbo.prebattle.forEach(function(eventId){
+	for(var i = grumbo.prebattle.length - 1; i >= 0; i--){
 		
+		var eventId = grumbo.prebattle[i];
 		switch(eventId){
 			
 			//None right now
@@ -206,11 +207,12 @@ exports.prebattle = function(message, args, character, battleState, actives, gru
 				//Do nothing
 				break;
 		}
-	});
+	};
 	
 	//Prebattle character active functions
-	character.prebattle.forEach(function(eventId){
+	for(var i = character.prebattle.length - 1; i >= 0; i--){
 		
+		var eventId = character.prebattle[i];
 		switch(eventId){
 			
 			case 'battle_potion':
@@ -222,16 +224,22 @@ exports.prebattle = function(message, args, character, battleState, actives, gru
 				else chanceMod += 1;
 				reduceDuration(character, character.prebattle, eventId, actives);
 				break;
+				
+			case 'poison':
+			
+				chanceMod -= 5;
+				reduceDuration(character, character.prebattle, eventId, actives);
+				break;
 			
 			default:
 				//Do nothing
 				break;
 		}
-	});
+	};
 	
 	//Calculate prebattle variables
 	battleState.levelDiff = character.level - args[3] + levelDiffMod;
-	battleState.chance = 50 + (battleState.levelDiff * 2) + Math.floor(Math.random() * 6) - 3; + chanceMod;
+	battleState.chance = 50 + (battleState.levelDiff * 2) + Math.floor(Math.random() * 6) - 3 + chanceMod;
 	if(battleState.levelDiff < -15){
 		
 		battleState.chance -= (Math.floor(Math.random() * 3) + 1);
@@ -251,11 +259,13 @@ exports.prebattle = function(message, args, character, battleState, actives, gru
 */
 exports.preresults = function(message, character, battleState, actives, grumbo){
 		
-	//Preresults modifiers
+	//Preresults base/modifiers
+	//None right now
 	
 	//Preresults Grumbo effects
-	grumbo.preresults.forEach(function(eventId){
+	for(var i = grumbo.preresults.length - 1; i >= 0; i--){
 		
+		var eventId = grumbo.preresults[i];
 		switch(eventId){
 			
 			//None right now
@@ -264,10 +274,12 @@ exports.preresults = function(message, character, battleState, actives, grumbo){
 				//Do nothing
 				break;
 		}
-	});
+	};
 	
 	//Preresults character active functions
-	character.preresults.forEach(function(eventId){
+	for(var i = character.preresults.length - 1; i >= 0; i--){
+		
+		var eventId = character.preresults[i];
 		
 		switch(eventId){
 			
@@ -277,9 +289,14 @@ exports.preresults = function(message, character, battleState, actives, grumbo){
 				//Do nothing
 				break;
 		}
-	});
+	};
 	
 	//Calculate preresults variables
+	if(battleState.win){
+		
+		battleState.exp = battlefunc.calculateBattleExp(character, battleState.levelDiff);
+		battleState.gold = battlefunc.calculateBattleGold(character, battleState.levelDiff);
+	}
 }
 
 /**
@@ -287,24 +304,81 @@ exports.preresults = function(message, character, battleState, actives, grumbo){
 */
 exports.postresults = function(message, character, battleState, actives, grumbo){
 		
-	//Postresults modifiers
+	//Postresults base/modifiers
+	battleState.endMessages = [];
 	
 	//Postresults Grumbo effects
-	grumbo.postresults.forEach(function(eventId){
+	for(var i = grumbo.postresults.length - 1; i >= 0; i--){
 		
+		var eventId = grumbo.postresults[i];
 		switch(eventId){
 			
-			//None right now
+			case 'poison':
+			
+				if(!battleState.win){
+					
+					var active;
+					if(character.prebattle.includes('poison')){
+						for(var i = 0; i < actives.length; i++){
+							
+							if(actives[i].id == eventId){
+								
+								active = actives[i];
+								active.duration += activesList[eventId].duration;
+								if(active.duration > 10) active.duration = 10;
+								dbfunc.updateActive(active);
+								break;
+							}
+						}
+					}
+					else{
+						
+						active = activesList[eventId];
+						pushToState(character, eventId, active, active.battleStates, 1);
+					}
+					battleState.endMessages.push("You have been poisoned!");
+				}
+				break;
+				
+			case 'pilfer':
+			
+				if(!battleState.win){
+					
+					if(character.postresults.includes('fools_gold')){
+						
+						reduceDuration(character, character.postresults, 'fools_gold', actives);
+						battleState.endMessages.push("Fools Gold was taken!");
+					}
+					else{
+						
+						var loseGold = Math.floor(Math.random() * (100 - 50 + 1)) + 50;
+						character.gold -= loseGold;
+						if(character.gold < 0) character.gold = 0;
+						battleState.endMessages.push(loseGold + " gold was pilfered!");
+					}
+				}
+				break;
+				
+			case 'gold_boost_1':
+			
+				if(battleState.win){
+					
+					var gainGold = Math.floor(Math.random() * (50 - 20 + 1)) + 20;
+					character.gold += gainGold;
+					battleState.endMessages.push(gainGold + " extra gold was gained!");
+				}
+				break;
 			
 			default:
 				//Do nothing
 				break;
 		}
-	});
+	};
 	
 	//Postresults character active functions
-	character.postresults.forEach(function(eventId){
+	for(var i = character.postresults.length - 1; i >= 0; i--){
 		
+		var eventId = character.postresults[i];
 		switch(eventId){
 			
 			//None right now
@@ -313,9 +387,29 @@ exports.postresults = function(message, character, battleState, actives, grumbo)
 				//Do nothing
 				break;
 		}
-	});
+	};
 	
 	//Calculate postresults variables
+	if(battleState.win){
+		
+		var leftover = (battleState.exp + character.experience) % 100;
+		battleState.gains = Math.floor(((battleState.exp + character.experience)/100));
+		var newLevel = character.level + battleState.gains;
+		
+		//Win message and results
+		character.battlesLeft -= 1;
+		character.wins += 1;
+		character.level = newLevel;
+		character.experience = leftover;
+		character.gold += battleState.gold;
+		character.winrate = Math.floor(((character.wins / (character.wins + character.losses)) * 100));
+	}
+	else{
+		
+		character.battlesLeft -= 1;
+		character.losses += 1;
+		character.winrate = Math.floor(((character.wins / (character.wins + character.losses)) * 100));
+	}
 }
 
 /**
@@ -334,6 +428,7 @@ function pushToState(character, eventId, event, eventStates, amount){
 		_id: id,
 		character: character._id,
 		id: eventId,
+		battleStates: event.battleStates,
 		name: event.name,
 		duration: totalDuration
 	}

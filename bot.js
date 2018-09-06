@@ -12,7 +12,7 @@ let battlefunc = require('./command/battle.js');
 let challengefunc = require('./command/challenge.js');
 let itemsfunc = require('./command/items.js');
 let shopfunc = require('./command/shop.js');
-let activefunc = require('./command/active.js');
+let activefunc = require('./command/actives.js');
 
 let requestTimes = {}; //Store character request times so they can't request more than once every 1 second
 
@@ -27,8 +27,6 @@ client.on("ready", () => {
 	//Could be long, should do on startup
 	shopfunc.initWeighedArrays();
 	battlefunc.initWeighedArrays();
-	
-	//TODO do same as above for different type of Grumbos
 	
 	dbfunc.connectToServer(function(error){
 		
@@ -174,9 +172,9 @@ function parseCommand(message){
 		//////////////////////////
 		// !! ACTIVE EFFECTS !! // 
 		//////////////////////////
-		else if(args[1] == 'active'){
+		else if(args[1] == 'actives'){
 			
-			activefunc.commandActive(character, message, args);
+			activefunc.commandActives(character, message, args);
 		}
 		
 		/////////////////
