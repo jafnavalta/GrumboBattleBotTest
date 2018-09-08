@@ -5,6 +5,9 @@ const assert = require('assert');
 //Config
 let config = require('../config.js');
 
+//Character.js for new characters and migrations
+let charfunc = require('../character/character.js');
+
 //For old character file
 const fs = require("fs");
 
@@ -30,14 +33,15 @@ module.exports = {
 				db.dropDatabase();
 				db.collection("characters").insertMany(characters, function (err, result){
 					
-					callback();
+					checkVersion(callback);
 				});
 			}
 			else{
 				
+				//Unlock characters
 				db.collection("characters").updateMany({}, {$set: {"battleLock": false}}, {upsert: true}, function (err, result){
 				
-					callback();
+					checkVersion(callback);
 				});
 			}
 		});
@@ -59,10 +63,22 @@ module.exports = {
 			level: 1,
 			experience: 0,
 			_id: message.author.id,
+			powMod: 0, //Permanent mods to stats. Base is calculated below. When switching classes/leveling up these factor in last in calculations
+			wisMod: 0,
+			defMod: 0,
+			resMod: 0,
+			spdMod: 0,
+			lukMod: 0,
+			powEq: 0, //Equip mods to stats. When switching classes/leveling up these factor in second last in calculations
+			wisEq: 0,
+			defEq: 0,
+			resEq: 0,
+			spdEq: 0,
+			lukEq: 0,
 			wins: 0,
 			losses: 0,
 			winrate: 0,
-			battlesLeft: 3,
+			battlesLeft: 5,
 			battletime: 9999999999999,
 			battleLock: false,
 			challengeWins: 0,
@@ -76,6 +92,9 @@ module.exports = {
 			preresults: [],
 			postresults: []
 		};
+		
+		newCharacter.hp = charfunc.calculateBaseHP(newCharacter);
+		charfunc.calculateStats(newCharacter);
 		
 		db.collection("characters").insertOne(newCharacter, function(err, result){
 			
@@ -175,4 +194,120 @@ function migrateCharacters(levels, characters){
 	}
 
 	fs.unlinkSync("./levels.json");
+}
+
+/**
+* Checks version of DB and updates game accordingly.
+*/
+function checkVersion(callback){
+	
+	db.collection("version").findOne(function(error, version){
+		
+		if(version == null){
+			
+			db.collection("characters").findOne(function(error, character){
+				
+				if(character == null){
+					
+					//New game, set version to config.VERSION, run game as usual
+					var newVersion = {
+						
+						_id: 1,
+						version: config.VERSION
+					}
+					db.collection("version").insertOne(newVersion, function(error, result){
+						
+						callback();
+					});
+				}
+				else{
+					
+					//DB is at version 1, run recursive migration method with version 1
+					var newVersion = {
+						
+						_id: 1,
+						version: 1
+					}
+					runMigrations(newVersion, callback);
+				}
+			});
+		}
+		else{
+			
+			//Run every migration from current version to config.VERSION using recursive migration method
+			runMigrations(version, callback);
+		}
+	});
+}
+
+/**
+* 
+*/
+function runMigrations(version, callback){
+	
+	//Migration 1 to 3
+	if(version.version <= 3){
+		
+		db.collection("characters").find().toArray(function(error, characters){
+			
+			for(var i = 0; i < characters.length; i++){
+				
+				var character = characters[i];
+				character.hp = charfunc.calculateBaseHP(character);
+				character.pow = charfunc.calculateBasePOW(character);
+				character.wis = charfunc.calculateBaseWIS(character);
+				character.def = charfunc.calculateBaseDEF(character);
+				character.res = charfunc.calculateBaseRES(character);
+				character.spd = charfunc.calculateBaseSPD(character);
+				character.luk = charfunc.calculateBaseLUK(character);
+				character.powMod = 0;
+				character.wisMod = 0;
+				character.defMod = 0;
+				character.resMod = 0;
+				character.spdMod = 0;
+				character.lukMod = 0;
+				character.powEq = 0;
+				character.wisEq = 0;
+				character.defEq = 0;
+				character.resEq = 0;
+				character.spdEq = 0;
+				character.lukEq = 0;
+				if(character.prebattle.includes('poison')){
+					
+					character.postresults.push('poison');
+				}
+				
+				if(i == characters.length - 1){
+					
+					//final character to update, finish this migration
+					db.collection("characters").updateOne(
+						{"_id": character._id},
+						{$set: character},
+						{upsert: true},
+						function(){
+							
+							version.version = 4;
+							runMigrations(version, callback);
+					});
+				}
+				else{
+					
+					module.exports.updateCharacter(character);
+				}
+			};	
+		});
+	}
+	//Add more migrations here
+	//If gets to else, DB is up to date
+	else{
+		
+		db.collection("version").updateOne(
+			{"_id": version._id},
+			{$set: version},
+			{upsert: true}, 
+			function(error, result){
+						
+			callback();
+		});
+	}
 }

@@ -15,6 +15,11 @@ const NONCONSUME = "nonconsume"; //Don't consume with no active state, could hav
 const TOGGLE = "toggle"; //Don't consume with active state. Stays active until used again
 const INDEFINITE = "indefinite"; //Consume with active state, no duration
 
+//Active types
+const GOOD = "good";
+const BAD = "bad";
+const NEUTRAL = "neutral";
+
 //Battle states
 const PREBATTLE = "prebattle"; //Before battle begins
 const PRERESULTS = "preresults"; //After battle ends but before results are calculated
@@ -28,12 +33,19 @@ let characterfunc = require('./actives/active_character.js');
 let grumbofunc = require('./actives/active_grumbo.js');
 let usefunc = require('./actives/active_use.js');
 
+//Character functions, not to be confused with the active character functions, characterfunc
+let charfunc = require('./character/character.js');
+
 //EXPORTS
 exports.IMMEDIATE = IMMEDIATE;
 exports.CONSUME = CONSUME;
 exports.NONCONSUME = NONCONSUME;
 exports.TOGGLE = TOGGLE;
 exports.INDEFINITE = INDEFINITE;
+
+exports.GOOD = GOOD;
+exports.BAD = BAD;
+exports.NEUTRAL = NEUTRAL;
 
 exports.PREBATTLE = PREBATTLE;
 exports.PRERESULTS = PRERESULTS;
@@ -174,18 +186,33 @@ exports.prebattle = function(message, args, character, battleState, actives, gru
 	battleState.levelDiffActual = character.level - args[3];
 	
 	//Prebattle base/modifiers
+	battleState.preMessages = [];
 	battleState.chanceMod = 0;
 	battleState.levelDiffMod = 0;
 	battleState.minMod = 0;
 	battleState.maxMod = 0;
+	battleState.hpMod = 0;
+	battleState.powMod = 0;
+	battleState.wisMod = 0;
+	
+	battlefunc.calculateCharacterMods(message, args, character, battleState, actives, grumbo);
 	
 	//Prebattle Grumbo effects
 	for(var i = grumbo.prebattle.length - 1; i >= 0; i--){
 		
 		var eventId = grumbo.prebattle[i];
+		var eventActive = activesList[eventId];
 		if(grumbofunc.prebattle[eventId] != null){
 			
-			grumbofunc.prebattle[eventId](character, battleState, eventId, actives);
+			var random = Math.random() * 100;
+			if(random < character.res && eventActive.effect == exports.BAD){
+				
+				battleState.preMessages.push(charfunc.resistMessage(eventActive.name));
+			}
+			else{
+				
+				grumbofunc.prebattle[eventId](character, battleState, eventId, actives);
+			}
 		}
 	};
 	
@@ -201,7 +228,7 @@ exports.prebattle = function(message, args, character, battleState, actives, gru
 	
 	//Calculate prebattle variables
 	battleState.levelDiff = character.level - args[3] + battleState.levelDiffMod;
-	battleState.chance = 50 + (battleState.levelDiff * 2) + Math.floor(Math.random() * 6) - 3 + battleState.chanceMod;
+	battleState.chance = 50 + (battleState.levelDiff * 2) + Math.floor(Math.random() * 4) - 2 + battleState.chanceMod + battleState.powMod + battleState.wisMod + battleState.hpMod;
 	var max = 95 + battleState.maxMod;
 	var min = 5 + battleState.minMod;
 	if(battleState.levelDiff < -15){
@@ -219,20 +246,30 @@ exports.prebattle = function(message, args, character, battleState, actives, gru
 }
 
 /**
-* Pre results calculations. //TODO
+* Pre results calculations.
 */
 exports.preresults = function(message, character, battleState, actives, grumbo){
 		
 	//Preresults base/modifiers
+	battleState.preMessages = [];
 	//None right now
 	
 	//Preresults Grumbo effects
 	for(var i = grumbo.preresults.length - 1; i >= 0; i--){
 		
 		var eventId = grumbo.preresults[i];
+		var eventActive = activesList[eventId];
 		if(grumbofunc.preresults[eventId] != null){
 			
-			grumbofunc.preresults[eventId](character, battleState, eventId, actives);
+			var random = Math.random() * 100;
+			if(random < character.res && eventActive.effect == exports.BAD){
+				
+				battleState.preResMessages.push(charfunc.resistMessage(eventActive.name));
+			}
+			else{
+				
+				grumbofunc.preresults[eventId](character, battleState, eventId, actives);
+			}
 		}
 	};
 	
@@ -250,18 +287,21 @@ exports.preresults = function(message, character, battleState, actives, grumbo){
 	if(battleState.win){
 		
 		battleState.exp = battlefunc.calculateBattleExp(character, battleState.levelDiff);
-		battleState.gold = battlefunc.calculateBattleGold(character, battleState.levelDiff);
+		battleState.gold = battlefunc.calculateBattleGold(character, battleState.levelDiff) * (1 + (character.luk / 100));
 	}
 }
 
 /**
-* Post results calculations. //TODO
+* Post results calculations.
 */
 exports.postresults = function(message, character, battleState, actives, grumbo){
 		
 	//Postresults base/modifiers
 	battleState.endMessages = [];
 	battleState.avoidPostResults = false;
+	battleState.hpLoss = 3;
+
+	battlefunc.calculateHPLoss(message, character, battleState, actives, grumbo);
 	
 	//Postresults character active functions
 	for(var i = character.postresults.length - 1; i >= 0; i--){
@@ -273,34 +313,35 @@ exports.postresults = function(message, character, battleState, actives, grumbo)
 		}
 	};
 	
-	if(!battleState.avoidPostResults){
-	
-		//Postresults Grumbo effects
-		for(var i = grumbo.postresults.length - 1; i >= 0; i--){
+	//Postresults Grumbo effects
+	for(var i = grumbo.postresults.length - 1; i >= 0; i--){
+		
+		var eventId = grumbo.postresults[i];
+		var eventActive = activesList[eventId];
+		if(grumbofunc.postresults[eventId] != null && !battleState.avoidPostResults){
 			
-			var eventId = grumbo.postresults[i];
-			if(grumbofunc.postresults[eventId] != null){
+			var random = Math.random() * 100;
+			if(random < character.res && eventActive.effect == exports.BAD){
+				
+				battleState.endMessages.push(charfunc.resistMessage(eventActive.name));
+			}
+			else{
 				
 				grumbofunc.postresults[eventId](character, battleState, eventId, actives);
-			}	
-		};
-	}
-	else{
-		
-		battleState.endMessages.push("You avoided post battle effects!");
-	}
+			}
+		}	
+	};
 	
 	//Calculate postresults variables
 	if(battleState.win){
 		
 		var leftover = (battleState.exp + character.experience) % 100;
 		battleState.gains = Math.floor(((battleState.exp + character.experience)/100));
-		var newLevel = character.level + battleState.gains;
 		
 		//Win message and results
 		character.battlesLeft -= 1;
 		character.wins += 1;
-		character.level = newLevel;
+		charfunc.levelChange(character, battleState.gains);
 		character.experience = leftover;
 		character.gold += battleState.gold;
 		character.winrate = Math.floor(((character.wins / (character.wins + character.losses)) * 100));
@@ -311,6 +352,9 @@ exports.postresults = function(message, character, battleState, actives, grumbo)
 		character.losses += 1;
 		character.winrate = Math.floor(((character.wins / (character.wins + character.losses)) * 100));
 	}
+	character.hp -= battleState.hpLoss;
+	if(character.hp < 0) character.hp = 0;
+	else if(character.hp > charfunc.MAX_HP) character.hp = charfunc.MAX_HP;
 }
 
 /**

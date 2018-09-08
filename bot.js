@@ -16,13 +16,17 @@ let challengefunc = require('./command/challenge.js');
 let itemsfunc = require('./command/items.js');
 let shopfunc = require('./command/shop.js');
 let activefunc = require('./command/actives.js');
+let enemyfunc = require('./command/enemy.js');
+let charfunc = require('./character/character.js');
 
 //Text
 let fs = require('fs');
 let help = fs.readFileSync("./text/help.txt", "utf8");
+let help2 = fs.readFileSync("./text/help2.txt", "utf8");
 let guide = fs.readFileSync("./text/guide.txt", "utf8");
 let guide2 = fs.readFileSync("./text/guide2.txt", "utf8");
 let guide3 = fs.readFileSync("./text/guide3.txt", "utf8");
+let guide4 = fs.readFileSync("./text/guide4.txt", "utf8");
 let patchnotes = fs.readFileSync("./text/patchnotes.txt", "utf8");
 
 let requestTimes = {}; //Store character request times so they can't request more than once every 1 second
@@ -103,7 +107,7 @@ function parseCommand(message){
 	dbfunc.getDB().collection("characters").findOne({"_id": message.author.id}, function(err, character){
 		
 		var args = message.content.split(' ');
-	
+		
 		/////////////////////
 		// !! HELP MENU !! //
 		/////////////////////
@@ -116,7 +120,8 @@ function parseCommand(message){
 				//Message channel
 				sender = message.channel;
 			}
-			sender.send(help); 
+			sender.send(help);
+			sender.send(help2);
 		}
 		
 		///////////////////////
@@ -147,8 +152,9 @@ function parseCommand(message){
 				sender = message.channel;
 			}
 			sender.send(guide);
-			sender.send("\n" + guide2);
-			sender.send("\n" + guide3);
+			sender.send(guide2);
+			sender.send(guide3);
+			sender.send(guide4);
 		}
 		
 		/////////////////
@@ -173,6 +179,14 @@ function parseCommand(message){
 		else if(args[1] == 'actives'){
 			
 			activefunc.commandActives(character, message, args);
+		}
+		
+		//////////////////////
+		// !! ENEMY INFO !! // 
+		//////////////////////
+		else if(args[1] == 'enemy'){
+			
+			enemyfunc.commandEnemy(character, message, args);
 		}
 		
 		/////////////////
@@ -240,18 +254,21 @@ function displayStats(character, message, args){
 		
 		var username = message.member.displayName;
 		var statsString = username + " Lv" + character.level + " with " + character.experience + " EXP  |  " + character.gold + " Gold"
-						+ "\nBattle          Wins " + character.wins + "  |  Losses " + character.losses + "  |  Win% " + character.winrate
+						+ "\nHP " + character.hp + "/100"
+						+ "\nPOW " + character.pow + "  |  WIS " + character.wis + "  |  DEF " + character.def
+						+ "\nRES " + character.res + "  |  SPD " + character.spd + "  |  LUK " + character.luk
+						+ "\nBattle         Wins " + character.wins + "  |  Losses " + character.losses + "  |  Win% " + character.winrate
 						+ "\nChallenge  Wins " + character.challengeWins + "  |  Losses " + character.challengeLosses + "  |  Win% " + character.challengeWinrate
-						+ "\nYou have " + character.battlesLeft + "/3 battles left"
+						+ "\nYou have " + character.battlesLeft + "/5 battles left"
 						+ "\nYou have " + character.challengesLeft + "/3 challenges left";
-		if(character.battlesLeft < 3){
+		if(character.battlesLeft < 5){
 			
-			var timeUntilNextBattleInMinutes = Math.ceil((character.battletime + 3600000 - currentTime)/60000);
+			var timeUntilNextBattleInMinutes = Math.ceil((character.battletime + charfunc.calculateWaitTime(character) - currentTime)/60000);
 			statsString = statsString + "\nYou will gain another battle chance in " + timeUntilNextBattleInMinutes + " minutes";
 		}
 		if(character.challengesLeft < 3){
 			
-			var timeUntilNextChallengeInMinutes = Math.ceil((character.challengetime + 3600000 - currentTime)/60000);
+			var timeUntilNextChallengeInMinutes = Math.ceil((character.challengetime + charfunc.calculateWaitTime(character) - currentTime)/60000);
 			statsString = statsString + "\nYou will gain another challenge in " + timeUntilNextChallengeInMinutes + " minutes";
 		}
 		sender.send(statsString);

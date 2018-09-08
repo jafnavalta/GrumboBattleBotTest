@@ -4,6 +4,9 @@ const fs = require("fs");
 //Initialize DB functions
 let dbfunc = require('../data/db.js');
 
+//Initialize functions
+let charfunc = require('../character/character.js');
+
 //Locks for challenges (PvP)
 var onChallenge = false;
 var onChallengeAccept = false;
@@ -24,14 +27,18 @@ exports.commandChallenge = function(message, args, character){
 	//No challenges left
 	if(character.challengesLeft <= 0){
 		
-		var timeUntilNextChallengeInMinutes = Math.ceil((character.challengetime + 3600000 - currentTime)/60000);
+		var timeUntilNextChallengeInMinutes = Math.ceil((character.challengetime + charfunc.calculateWaitTime(character) - currentTime)/60000);
 		message.channel.send("You don't have any challenges left. You get a challenge every 1 hour up to a maximum stock of 3 challenges. You can challenge again in "
 			+ timeUntilNextChallengeInMinutes + " minutes");
 	}
 	//User issued a challenge
 	else if(opponent != null && isInteger(args[3])){
 		
-		if(!onChallenge && !onChallengeAccept){
+		if(message.author.id == opponent.id){
+			
+			message.channel.send("You can't challenge yourself bud.");
+		}
+		else if(!onChallenge && !onChallengeAccept){
 			
 			//Exp challenge
 			if(args[4] == 'exp'){
@@ -82,11 +89,7 @@ exports.commandChallenge = function(message, args, character){
 	//User accepted a challenge
 	else if(args[2] == 'accept' && isInteger(args[3])){
 		
-		if(message.author.id == opponent.id){
-			
-			message.channel.send("You can't challenge yourself bud.");
-		}
-		else if(message.author.id == opponentID){
+		if(message.author.id == opponentID){
 			
 			if(args[4] == 'exp' && wagerType == 'exp'){
 				
@@ -145,13 +148,13 @@ exports.commandChallenge = function(message, args, character){
 exports.restockChallenges = function(currentTime, character){
 	
 	var timeSinceLastChallenge = currentTime - character.challengetime;
-	var addChallenges = Math.floor(timeSinceLastChallenge/3600000);
+	var addChallenges = Math.floor(timeSinceLastChallenge/charfunc.calculateWaitTime(character));
 	if(addChallenges > 0){
 		
 		character.challengesLeft += addChallenges;
 		if(character.challengesLeft < 3){
 			
-			character.challengetime = character.challengetime + (addChallenges * 3600000);
+			character.challengetime = character.challengetime + (addChallenges * charfunc.calculateWaitTime(character));
 		}
 		if(character.challengesLeft >= 3){
 			

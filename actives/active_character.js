@@ -19,6 +19,16 @@ exports.postresults = {};
 exports.prebattle.poison = function(character, battleState, eventId, actives){
 	
 	battleState.chanceMod -= 5;
+}
+
+exports.prebattle.fear = function(character, battleState, eventId, actives){
+	
+	var fearResults = Math.random() * 100;
+	if(fearResults < 10){
+		
+		battleState.chanceMod -= 100;
+		battleState.preMessages.push("You were overcome with fear!");
+	}
 	state.reduceDuration(character, [character.prebattle], eventId, actives);
 }
 
@@ -59,12 +69,19 @@ exports.prebattle.berserk_potion = function(character, battleState, eventId, act
 /////////////////////////////////////
 // CHARACTER POSTRESULTS FUNCTIONS //
 /////////////////////////////////////
+exports.prebattle.poison = function(character, battleState, eventId, actives){
+	
+	battleState.hpLoss += 5;
+	state.reduceDuration(character, [character.prebattle, character.postresults], eventId, actives);
+}
+
 exports.postresults.flimsy_rope = function(character, battleState, eventId, actives){
 	
 	var random = Math.random() * 100;
 	if(random < 50){
 		
 		battleState.avoidPostResults = true;
+		battleState.endMessages.push("Flimsy rope activated and let you avoid post battle effects!");
 	}
 	state.reduceDuration(character, [character.postresults], eventId, actives);
 }

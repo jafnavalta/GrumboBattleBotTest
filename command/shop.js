@@ -219,50 +219,54 @@ function displayShop(message, args, character){
 		sender = message.channel;
 	}
 	
-	var shopString = "---------- THE GRUMBO SHOP ----------\n " + message.member.displayName + ": " + character.gold + " gold\n\n"
-		+ "[--- STANDARD ITEMS ---]\n\n";
+	var shopString = "---------- THE GRUMBO SHOP ----------\n " + message.member.displayName + ": " + character.gold + " gold\n"
+		+ "|\n[--- STANDARD ITEMS ---]";
 	shop.standard.forEach(function(itemId){
 		
 		var item = itemList[itemId];
-		shopString += item.name + "  |  Buy:  " + item.id + "\n"
+		shopString += "\n|\n" + item.name + "  |  Buy:  " + item.id + "\n"
 			+ item.description + "\n";
 		shopString += "Price: " + item.price + " gold  |  ";
 		if(item.max > 1){
 		
-			shopString += "Can hold up to " + item.max + "\n\n";
+			shopString += "Can hold up to " + item.max;
 		}
 		else{
 			
-			shopString += "Can only hold 1\n\n";
+			shopString += "Can only hold 1";
 		}
 	});
+	
+	sender.send(shopString);
 	
 	var currentTime = new Date().getTime();
 	var timeUntilRotationInMillis = (INTERVAL * (LR.lastRotation + 1)) - currentTime;
 	var hours = Math.floor(timeUntilRotationInMillis/3600000);
 	var minutes = Math.ceil((timeUntilRotationInMillis % 3600000) / 60000);
 	
-	shopString += "[--- ROTATING ITEMS ---]\nThe next item/special rotation is in " + hours + " hours " + minutes + " minutes\n\n";
+	var shopString2 = "|\n[--- ROTATING ITEMS ---]\nThe next item/special rotation is in " + hours + " hours " + minutes + " minutes";
 	shop.rotation.forEach(function(item){
 		
-		shopString += item.name + "  |  Buy:  " + item.id + "\n"
+		shopString2 += "\n|\n" + item.name + "  |  Buy:  " + item.id + "\n"
 			+ item.description + "\n";
-		shopString += "Price: " + item.price + " gold  |  ";
+		shopString2 += "Price: " + item.price + " gold  |  ";
 		if(item.max > 1){
 		
-			shopString += "Can hold up to " + item.max + "\n";
+			shopString2 += "Can hold up to " + item.max + "\n";
 		}
 		else{
 			
-			shopString += "Can only hold 1\n";
+			shopString2 += "Can only hold 1\n";
 		}
-		shopString += "Stock: " + item.stock + "\n\n";
+		shopString2 += "Stock: " + item.stock;
 	});
 	
-	shopString += "[--- SPECIALS ---]\nThe next item/special rotation is in " + hours + " hours " + minutes + " minutes\n\n";
+	sender.send(shopString2);
+	
+	var shopString3 = "|\n[--- SPECIALS ---]\nThe next item/special rotation is in " + hours + " hours " + minutes + " minutes";
 	shop.special.forEach(function(special){
 		
-		shopString += special.name + "  |  Buy:  " + special.id + "\n"
+		shopString3 += "\n|\n" + special.name + "  |  Buy:  " + special.id + "\n"
 			+ special.description + "\n";
 		var itemsString = "Contains: [";
 		for(var i = 0; i < special.items.length; i++){
@@ -276,12 +280,12 @@ function displayShop(message, args, character){
 				itemsString += itemList[special.items[i]].name + ", ";
 			}
 		}
-		shopString += itemsString;
-		shopString += "Price: " + special.price + " gold\n"
-			+ "Stock: " + special.stock + "\n\n";
+		shopString3 += itemsString;
+		shopString3 += "Price: " + special.price + " gold\n"
+			+ "Stock: " + special.stock;
 	});
 	
-	sender.send(shopString);
+	sender.send(shopString3);
 }
 
 /**
@@ -449,7 +453,7 @@ function buySpecialItem(message, character, special, amount){
 				
 				var uniqueItem = unique[x]
 				var countInSpecial = 0;
-				unique.forEach(function(uniqueItem2){
+				special.items.forEach(function(uniqueItem2){
 				
 					if(uniqueItem == uniqueItem2) countInSpecial++;
 				});

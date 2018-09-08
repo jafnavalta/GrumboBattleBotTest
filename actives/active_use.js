@@ -5,8 +5,9 @@ let dbfunc = require('../data/db.js');
 const fs = require("fs");
 let activesList = JSON.parse(fs.readFileSync("./values/actives.json", "utf8"));
 
-//Initialize state for state constants and functions
+//Initialize functions
 let state = require('../state.js');
+let charfunc = require('../character/character.js');
 
 //Initialize states
 //consume/toggle use regular active effects
@@ -16,16 +17,39 @@ exports.nonconsume = {};
 /////////////////////////
 // IMMEDIATE FUNCTIONS //
 /////////////////////////
+exports.immediate.medicine = function(message, character, state, eventId, event, amount){
+	
+	if(character.hp < 100){
+		
+		var used = 0;
+		for(var i = 0; i < amount; i++){
+			
+			character.hp += 40;
+			used++;
+			if(character.hp >= 100){
+				
+				character.hp = 100;
+				break;
+			}
+		}
+		state.result = message.member.displayName + " has used " + event.name + " x" + used;
+	}
+	else{
+		
+		state.result = "You are already at max HP.";
+	}
+}
+
 exports.immediate.battle_ticket = function(message, character, state, eventId, event, amount){
 	
-	if((character.battlesLeft + amount) <= 3){
+	if((character.battlesLeft + amount) <= 5){
 				
 		for(var i = 0; i < amount; i++){
 			
 			var index = character.items.indexOf(eventId);
 			character.items.splice(index, 1);
 		}
-		character.battletime -= 3600000 * amount;
+		character.battletime -= charfunc.calculateWaitTime(character) * amount;
 	}
 	else{
 		
@@ -42,7 +66,7 @@ exports.immediate.challenge_ticket = function(message, character, state, eventId
 			var index = character.items.indexOf(eventId);
 			character.items.splice(index, 1);
 		}
-		character.challengetime -= 3600000 * amount;
+		character.challengetime -= charfunc.calculateWaitTime(character) * amount;
 	}
 	else{
 		
@@ -74,9 +98,9 @@ exports.immediate.antidote = function(message, character, state, eventId, event,
 
 exports.immediate.grumbo_ticket = function(message, character, state, eventId, event, amount){
 	
-	if(character.battlesLeft < 3 || character.challengesLeft < 3){
+	if(character.battlesLeft < 5 || character.challengesLeft < 3){
 				
-		character.battlesLeft = 3;
+		character.battlesLeft = 5;
 		character.challengesLeft = 3;
 		var index = character.items.indexOf(eventId);
 		character.items.splice(index, 1);
@@ -97,7 +121,7 @@ exports.immediate.duel_converter = function(message, character, state, eventId, 
 			character.items.splice(index, 1);
 		}
 		character.battlesLeft -= 1;
-		character.challengetime -= (3600000 * amount);
+		character.challengetime -= (charfunc.calculateWaitTime(character) * amount);
 	}
 	else{
 		
@@ -115,8 +139,7 @@ exports.immediate.gamblers_coin = function(message, character, state, eventId, e
 		//Gain
 		var leftover = (80 + character.experience) % 100;
 		var gains = Math.floor(((80 + character.experience)/100));
-		var newLevel = character.level + gains;
-		character.level = newLevel;
+		charfunc.levelChange(character, gains);
 		character.experience = leftover;
 		state.result = "The coin flips a fortune of 80 experience!";
 	}
@@ -133,7 +156,7 @@ exports.immediate.gamblers_coin = function(message, character, state, eventId, e
 			else{
 				
 				character.experience = 100 + leftover;
-				character.level -= 1;
+				charfunc.levelChange(character, -1);
 			}
 		}
 		state.result = "You dropped 80 experience with the coin. How unlucky.";

@@ -4,8 +4,9 @@ let dbfunc = require('../data/db.js');
 //Initialize fs
 const fs = require("fs");
 
-//Initialize state for state constants and functions
+//Initialize functions
 let state = require('../state.js');
+let charfunc = require('../character/character.js');
 
 //Initialize list of grumbos file
 let grumboList = JSON.parse(fs.readFileSync("./values/grumbos.json", "utf8"));
@@ -61,10 +62,10 @@ exports.commandBattle = function(message, args, character){
 				message.channel.send("Pick a fight up to 20 levels higher than your own level you fool\nYour current limit is Grumbo Lv" + maxLevel);
 			}
 			//No battles left
-			else if(character.battlesLeft == 0){
+			else if(character.battlesLeft <= 0){
 				
-				var timeUntilNextBattleInMinutes = Math.ceil((character.battletime + 3600000 - currentTime)/60000);
-				message.channel.send("You don't have any battles left. You get a battle chance every 1 hour up to a maximum stock of 3 battles. You can battle again in "
+				var timeUntilNextBattleInMinutes = Math.ceil((character.battletime + charfunc.calculateWaitTime(character) - currentTime)/60000);
+				message.channel.send("You don't have any battles left. You get a battle chance every 1 hour up (reduced by SPD) to a maximum stock of 5 battles. You can battle again in "
 					+ timeUntilNextBattleInMinutes + " minutes");
 			}
 			//BATTLE
@@ -94,17 +95,17 @@ exports.commandBattle = function(message, args, character){
 exports.restockBattles = function(currentTime, character){
 	
 	var timeSinceLastBattle = currentTime - character.battletime;
-	var addBattles = Math.floor(timeSinceLastBattle/3600000);
+	var addBattles = Math.floor(timeSinceLastBattle/charfunc.calculateWaitTime(character));
 	if(addBattles > 0){
 		
 		character.battlesLeft += addBattles;
-		if(character.battlesLeft < 3){
+		if(character.battlesLeft < 5){
 			
-			character.battletime = character.battletime + (addBattles * 3600000);
+			character.battletime = character.battletime + (addBattles * charfunc.calculateWaitTime(character));
 		}
-		if(character.battlesLeft >= 3){
+		if(character.battlesLeft >= 5){
 			
-			character.battlesLeft = 3;
+			character.battlesLeft = 5;
 		}
 	}
 	
@@ -124,19 +125,26 @@ function doBattle(message, args, character, currentTime, actives){
 		function(error, result){
 
 		//Prebattle determinations
-		var grumbo = getRandomGrumbo();
+		var grumbo = getRandomGrumbo(args[3]);
 		var battleState = {};
 		state.prebattle(message, args, character, battleState, actives, grumbo);
 		
-		if(character.battlesLeft == 3){
+		if(character.battlesLeft == 5){
 			
 			character.battletime = currentTime;
 		}
 		
 		var username = message.member.displayName;
-		message.channel.send(username + " Lv" + character.level + "   VS   " + grumbo.name + " Lv" + args[3] + "\n"
-			+ username + " has a " + battleState.chance + "% chance of victory\n"
-			+ "Battle in progress, please wait a moment...\n");
+		var preMessageString = username + " Lv" + character.level + "   VS   " + grumbo.name + " Lv" + args[3] + "\n"
+			+ "POW   " + character.pow + "   |   " + grumbo.pow + "\n"
+			+ "WIS    " + character.wis + "   |   " + grumbo.wis + "\n";	
+		battleState.preMessages.forEach(function(preMessage){
+					
+			preMessageString += preMessage + "\n";
+		});
+		preMessageString += username + " has a " + battleState.chance + "% chance of victory\n"
+			+ "Battle in progress, please wait a moment...\n";
+		message.channel.send(preMessageString);
 			
 		//Wait 5 seconds before determining/displaying battle results
 		setTimeout(function(){
@@ -145,6 +153,7 @@ function doBattle(message, args, character, currentTime, actives){
 			var result = Math.floor(Math.random() * (101));
 			
 			//If victory
+			var endMessageString = "";
 			if(result <= battleState.chance){
 				
 				//Preresults determinations
@@ -154,18 +163,12 @@ function doBattle(message, args, character, currentTime, actives){
 				//Postresults determinations
 				state.postresults(message, character, battleState, actives, grumbo);
 				
-				//TODO customize message
-				var endMessageString = grumbo.victory.replace('$name', username) + "\n";
-				endMessageString += "You gained " + battleState.exp + " experience for " + battleState.gains + " level(s)! You also gained " + battleState.gold + " gold!\n";
+				endMessageString += grumbo.victory.replace('$name', username) + "\n";
+				endMessageString += "You gained " + battleState.exp + " experience and " + battleState.gold + " gold!\nYou took " + battleState.hpLoss + " chip damage.\n";
 				battleState.endMessages.forEach(function(endMessage){
 					
 					endMessageString += endMessage + "\n";
 				});
-				endMessageString += "Here are your current stats:\n" + username + " Lv" + character.level + "  |  " 
-					+ character.experience + " EXP  |  " + character.gold + " Gold  |  Wins " + character.wins 
-					+ "  |  Losses " + character.losses + "   |   Win% " + character.winrate + "\n"
-					+ "You have " + character.battlesLeft + "/3 battles left"
-				message.channel.send(endMessageString);
 			}
 			//If loss
 			else{
@@ -176,19 +179,20 @@ function doBattle(message, args, character, currentTime, actives){
 				
 				//Postresults determinations
 				state.postresults(message, character, battleState, actives, grumbo);
-				
-				//customize message
-				var endMessageString = grumbo.loss.replace('$name', username) + "\n";
+
+				endMessageString += grumbo.loss.replace('$name', username) + "\n";
 				battleState.endMessages.forEach(function(endMessage){
 					
 					endMessageString += endMessage + "\n";
 				});
-				endMessageString += "Here are your current stats:\n" + username + " Lv" + character.level + "  |  " 
-					+ character.experience + " EXP  |  " + character.gold + " Gold  |  Wins " + character.wins 
-					+ "  |  Losses " + character.losses + "   |   Win% " + character.winrate + "\n"
-					+ "You have " + character.battlesLeft + "/3 battles left"
-				message.channel.send(endMessageString);
+				endMessageString += "You took " + battleState.hpLoss + " damage!\n";
 			}
+			
+			endMessageString += "Here are your current stats:\n" + username + " Lv" + character.level + "  |  " 
+					+ character.experience + " EXP  |  " + character.hp + " HP  |  " + character.gold + " Gold  |  Wins " + character.wins 
+					+ "  |  Losses " + character.losses + "   |   Win% " + character.winrate + "\n"
+					+ "You have " + character.battlesLeft + "/5 battles left"
+			message.channel.send(endMessageString);
 			
 			character.battleLock = false;
 			
@@ -252,26 +256,26 @@ function calculateLowLevelExp(exp, levelDiff){
 */
 function calculateHighLevelExp(exp, levelDiff){
 	
-	exp = exp - Math.ceil(levelDiff * Math.pow(1.135, Math.abs(levelDiff))) + Math.floor(Math.random() * 25) + 5;
+	exp = exp - Math.ceil(levelDiff * Math.pow(1.142, Math.abs(levelDiff))) + Math.floor(Math.random() * 25) + 5;
 	if(levelDiff < -3){
 		
-		exp = exp + Math.floor(Math.random() * 20) + 5;
+		exp = exp + Math.floor(Math.random() * 20) + 10;
 	}
 	if(levelDiff < -7){
 		
-		exp = exp + Math.floor(Math.random() * 25) + 10;
+		exp = exp + Math.floor(Math.random() * 25) + 15;
 	}
 	if(levelDiff < -12){
 		
-		exp = exp + Math.floor(Math.random() * 35) + 15;
+		exp = exp + Math.floor(Math.random() * 35) + 20;
 	}
 	if(levelDiff < -16){
 		
-		exp = exp + Math.floor(Math.random() * 35) + 15;
+		exp = exp + Math.floor(Math.random() * 40) + 25;
 	}
 	if(levelDiff == -20){
 		
-		exp = exp + Math.floor(Math.random() * 40) + 20;
+		exp = exp + Math.floor(Math.random() * 45) + 30;
 	}
 	return exp;
 }
@@ -281,25 +285,25 @@ function calculateHighLevelExp(exp, levelDiff){
 */
 exports.calculateBattleGold = function(character, levelDiff){
 	
-	var gold = 120 + Math.floor(Math.random() * 25) + levelDiff;
+	var gold = 150 + Math.floor(Math.random() * 60) + levelDiff;
 	if(levelDiff > 20){
 		
-		//Only get 1 gold if you fight a Grumbo who is less than 20 levels under you
-		gold = 1;
+		//Only get 10 gold if you fight a Grumbo who is less than 20 levels under you
+		gold = 10;
 	}
 	else if(levelDiff < 15 && levelDiff >= 10){
 		
-		gold = gold - (Math.random() * 25) - 15;
+		gold = gold - (Math.random() * 25) - 10;
 	}
 	else if(levelDiff < 10 && levelDiff >= 5){
 		
-		gold = gold - (Math.random() * 35) - 30;
+		gold = gold - (Math.random() * 35) - 25;
 	}
 	else if(levelDiff < 5 && levelDiff >= 0){
 		
 		gold = gold - (Math.random() * 45) - 60 - ((5 - levelDiff) * 2);
 	}
-	//Grumbo is higher level than you, lower gold amount significantlys
+	//Grumbo is higher level than you, lower gold amount significantly
 	else if(levelDiff < 0){
 		
 		gold = gold - (Math.random() * 40) - 75 + (levelDiff * 1.5);
@@ -312,13 +316,93 @@ exports.calculateBattleGold = function(character, levelDiff){
 }
 
 /**
+* Calculates the prebattle character mods.
+*/
+exports.calculateCharacterMods = function(message, args, character, battleState, actives, grumbo){
+	
+	exports.calculateHPMod(character, battleState);
+	exports.calculatePOWMod(character, grumbo, battleState);
+	exports.calculateWISMod(character, grumbo, battleState);
+}
+
+/**
+* Calculates the hp chance mod.
+*/
+exports.calculateHPMod = function(character, battleState){
+	
+	if(character.hp >= charfunc.MAX_HP - 5){
+		
+		battleState.hpMod += 5;
+	}
+	else if(character.hp <= 0){
+		
+		battleState.hpMod -= 50;
+	}
+	else if(character.hp <= 5){
+		
+		battleState.hpMod -= 25;
+	}
+	else if(character.hp <= 20){
+		
+		battleState.hpMod -= 10;
+	}
+	else if(character.hp <= 45){
+		
+		battleState.hpMod -= 5;
+	}
+}
+
+/**
+* Calculates the pow chance mod. Max 10 before actives.
+*/
+exports.calculatePOWMod = function(character, grumbo, battleState){
+	
+	battleState.powMod += Math.ceil((character.pow - grumbo.pow)/4);
+	if(battleState.powMod > 10)	battleState.powMod = 10;
+}
+
+/**
+* Calculates the wis chance mod. Max 10 before actives.
+*/
+exports.calculateWISMod = function(character, grumbo, battleState){
+	
+	battleState.powMod += Math.ceil((character.wis - grumbo.wis)/6);
+	if(battleState.wisMod > 10) battleState.wisMod = 10;
+}
+
+/**
+* Calculates HP Loss. Max 50 before actives.
+*/
+exports.calculateHPLoss = function(message, character, battleState, actives, grumbo){
+	
+	if(!battleState.win){
+		
+		var dmg = Math.floor((grumbo.pow - character.def)/2.2);
+		if(dmg < 0) dmg = 0;
+		battleState.hpLoss += dmg;
+	}
+}
+
+/**
 * Randomize Grumbo.
 */
-function getRandomGrumbo(){
+function getRandomGrumbo(grumboLevel){
 	
 	var random = Math.floor(Math.random() * (weighedGrumbos.length - 1));
 	var grumboId = weighedGrumbos[random];
-	return grumboList[grumboId];
+	var grumbo = grumboList[grumboId];
+	calculateGrumboStats(grumbo, grumboLevel);
+	
+	return grumbo;
+}
+
+/**
+* Calculate Grumbo stats.
+*/
+function calculateGrumboStats(grumbo, grumboLevel){
+	
+	grumbo.pow = Math.ceil((grumbo.powBase + (grumboLevel*1)) * grumbo.powX) + Math.floor(Math.random() * 4) - 2;
+	grumbo.wis = Math.ceil((grumbo.wisBase + (grumboLevel*1)) * grumbo.wisX) + Math.floor(Math.random() * 4) - 2;
 }
 
 

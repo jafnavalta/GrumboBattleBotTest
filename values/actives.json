@@ -3,6 +3,7 @@
 		"gameId": 70000,
 		"id": "battle_potion",
 		"name": "Battle Potion",
+		"effect": "good",
 		"battleStates": [
 			"prebattle"
 		],
@@ -13,16 +14,19 @@
 		"gameId": 70001,
 		"id": "poison",
 		"name": "Poison",
+		"effect": "bad",
 		"battleStates": [
-			"prebattle"
+			"prebattle",
+			"postresults"
 		],
-		"description": "Decreases chance of victory by 5 for the next battle.",
+		"description": "Decreases chance of victory by 5 for the next battle. Lose 5 extra HP per battle.",
 		"duration": 3
 	},
 	"fools_gold": {
 		"gameId": 70002,
 		"id": "fools_gold",
 		"name": "Fools Gold",
+		"effect": "good",
 		"battleStates": [
 			"preresults",
 			"postresults"
@@ -34,6 +38,7 @@
 		"gameId": 70003,
 		"id": "pilfer",
 		"name": "Pilfer",
+		"effect": "bad",
 		"battleStates": [
 			"postresults"
 		],
@@ -44,6 +49,7 @@
 		"gameId": 70004,
 		"id": "pilfer",
 		"name": "Gold Boost 1",
+		"effect": "good",
 		"battleStates": [
 			"prebattle"
 		],
@@ -64,6 +70,7 @@
 		"gameId": 70006,
 		"id": "flimsy_rope",
 		"name": "Flimsy Rope",
+		"effect": "good",
 		"battleStates": [
 			"postresults"
 		],
@@ -74,10 +81,44 @@
 		"gameId": 70007,
 		"id": "berserk_potion",
 		"name": "Berserk Potion",
+		"effect": "good",
 		"battleStates": [
 			"prebattle"
 		],
 		"description": "Increases victory chance by 5%. Every battle, the victory chance increased goes down by 1%, all the way down to -5% in the last battle. Can only have 1 active at a time.",
 		"duration": 10
+	},
+	"fear": {
+		"gameId": 70008,
+		"id": "fear",
+		"name": "Fear",
+		"effect": "bad",
+		"battleStates": [
+			"prebattle"
+		],
+		"description": "10% chance to decrease chance of victory by 100%.",
+		"duration": 3
+	},
+	"poison_charm": {
+		"gameId": 70009,
+		"id": "poison_charm",
+		"name": "Poison Charm",
+		"effect": "good",
+		"battleStates": [
+			"postresults"
+		],
+		"description": "Prevents poison. Poison that is already active will remain active. Use to activate indefinitely. Use again to deactivate.",
+		"duration": null
+	},
+	"assassinate": {
+		"gameId": 70010,
+		"id": "assassinate",
+		"name": "Assassinate",
+		"effect": "bad",
+		"battleStates": [
+			"postresults"
+		],
+		"description": "Reduces battle stock and HP to 0.",
+		"duration": null
 	}
 }
