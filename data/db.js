@@ -14,52 +14,52 @@ const fs = require("fs");
 var db;
 
 module.exports = {
-	
+
 	//Connect to db server and set DB. Finish with callback.
 	connectToServer: function(callback){
-		
+
 		MongoClient.connect(config.DBURI, { useNewUrlParser: true }, function(error, client){
-	  
+
 			assert.equal(null, error);
 			db = client.db();
-			
+
 			if(fs.existsSync("./levels.json")){
-			
+
 				//If levels.json still exists, use it for DB
 				let levels = JSON.parse(fs.readFileSync("./levels.json", "utf8"));
 				let characters = [];
 				migrateCharacters(levels, characters);
-				
+
 				db.dropDatabase();
 				db.collection("characters").insertMany(characters, function (err, result){
-					
+
 					checkVersion(callback);
 				});
 			}
 			else{
-				
+
 				//Unlock characters
 				db.collection("characters").updateMany({}, {$set: {"battleLock": false}}, {upsert: true}, function (err, result){
-				
+
 					checkVersion(callback);
 				});
 			}
 		});
 	},
-	
+
 	//Get the DB
 	getDB: function(){
-		
+
 		return db;
 	},
-	
+
 	//Create new character and insert into DB. Finish with callback.
 	createNewCharacter: function(message, callback){
-		
+
 		//Goes into 'characters' table
 		//The 'active' table for active effects is a separate table
 		var newCharacter = {
-					
+
 			level: 1,
 			experience: 0,
 			_id: message.author.id,
@@ -69,7 +69,7 @@ module.exports = {
 			resMod: 0,
 			spdMod: 0,
 			lukMod: 0,
-			powEq: 0, //Equip mods to stats. When switching classes/leveling up these factor in second last in calculations
+			powEq: 0, //Equip/Temp mods to stats. When switching classes/leveling up these factor in second last in calculations
 			wisEq: 0,
 			defEq: 0,
 			resEq: 0,
@@ -90,106 +90,202 @@ module.exports = {
 			items: ['battle_ticket', 'challenge_ticket', 'battle_potion', 'battle_potion'],
 			prebattle: [],
 			preresults: [],
-			postresults: []
+			postresults: [],
+			head: "",
+			armor: "",
+			bottom: "",
+			weapon: "",
+			equips: [],
+			classId: "adventurer",
+			classLevel: 1,
+			classExp: 0,
+			classTime: 0,
+			skills: [] //TODO
 		};
-		
+
 		newCharacter.hp = charfunc.calculateBaseHP(newCharacter);
 		charfunc.calculateStats(newCharacter);
-		
+
 		db.collection("characters").insertOne(newCharacter, function(err, result){
-			
+
 			callback();
 		});
 	},
-	
+
 	//Update character in DB
 	updateCharacter: function(character){
-		
+
 		db.collection("characters").updateOne(
 			{"_id": character._id},
 			{$set: character},
 			{upsert: true}
 		);
 	},
-	
+
+	//Update class in DB
+	updateClass: function(classObj){
+
+		db.collection("classes").updateOne(
+			{"_id": classObj._id},
+			{$set: classObj},
+			{upsert: true}
+		);
+	},
+
 	//ACTIVES: active._id is a concatenation of character._id and active.id. Both are also included in the active collection individually.
 	//Update character actives in DB
 	updateActive: function(active){
-		
+
 		db.collection("actives").updateOne(
 			{"_id": active._id},
 			{$set: active},
 			{upsert: true}
 		);
 	},
-	
+
 	//Remove a character active from DB
 	removeActive: function(active){
-		
+
 		db.collection("actives").deleteOne(
 			{"_id": active._id}
 		);
 	},
-	
+
 	//Update the rotation and special shops
 	updateRotationSpecial: function(rotation, special, callback){
-		
+
 		db.collection("shop_rotation").insertMany(rotation, function (err, result){
-						
+
 			db.collection("shop_special").insertMany(special, function (err, result){
-						
+
 				callback();
 			});
 		});
 	},
-	
+
 	//Update a rotation item
 	updateRotationItem: function(item){
-		
+
 		db.collection("shop_rotation").updateOne(
 			{"shop": "rotation", "id": item.id},
 			{$set: item},
 			{upsert: true}
 		);
 	},
-	
+
 	//Update a rotation item
 	updateSpecialItem: function(item){
-		
+
 		db.collection("shop_special").updateOne(
 			{"shop": "special", "id": item.id},
 			{$set: item},
 			{upsert: true}
 		);
+	},
+
+	/**
+	* Push to character state active.
+	*/
+	pushToState: function(character, eventId, event, eventStates, amount){
+
+		var totalDuration = event.duration;
+		if(amount != null){
+
+			//If totalDuration is null, this will make it 0
+			totalDuration = totalDuration * amount;
+		}
+		var id = character._id + eventId;
+		var newActive = {
+
+			_id: id,
+			character: character._id,
+			id: eventId,
+			battleStates: event.battleStates,
+			name: event.name,
+			duration: totalDuration
+		}
+
+		eventStates.forEach(function(eventState){
+
+			character[eventState].push(eventId);
+		});
+
+		module.exports.updateActive(newActive);
+	},
+
+	/**
+	* Splice from character state active.
+	*/
+	spliceFromState: function(character, eventId, event, eventStates, active){
+
+		eventStates.forEach(function(eventState){
+
+			var index = character[eventState].indexOf(eventId);
+			character[eventState].splice(index, 1);
+		});
+
+		module.exports.removeActive(active);
+	},
+
+	/**
+	* Reduce the duration of an active and its states.
+	*/
+	reduceDuration: function(character, characterStates, eventId, actives){
+
+		var active;
+		for(var i = 0; i < actives.length; i++){
+
+			if(actives[i].id == eventId){
+
+				active = actives[i];
+				break;
+			}
+		}
+		if(active.duration <= 1){
+
+			for(var i = 0; i < characterStates.length; i++){
+
+				var characterState = characterStates[i];
+				var index = characterState.indexOf(eventId);
+				characterState.splice(index, 1);
+				module.exports.removeActive(active);
+			}
+		}
+		else{
+
+			active.duration -= 1;
+			module.exports.updateActive(active);
+		}
 	}
 }
+
 
 /**
 * Migrates level to characters array for inserting into DB.
 */
 function migrateCharacters(levels, characters){
-	
+
 	for(var key in levels){
-		
+
 		var character = levels[key];
 		if(character._id == null){
-			
+
 			character._id = character.id;
 			delete character.id;
 		}
 		if(character.battleLock == null || character.battleLock == true){
-			
+
 			character.battleLock = false;
 		}
 		if(character.items == null){
-			
+
 			character.items = ['battle_ticket', 'challenge_ticket', 'battle_potion', 'battle_potion'];
 		}
 		if(character.active != null){
-			
+
 			delete character.active;
 		}
-		
+
 		characters.push(character);
 	}
 
@@ -200,31 +296,31 @@ function migrateCharacters(levels, characters){
 * Checks version of DB and updates game accordingly.
 */
 function checkVersion(callback){
-	
+
 	db.collection("version").findOne(function(error, version){
-		
+
 		if(version == null){
-			
+
 			db.collection("characters").findOne(function(error, character){
-				
+
 				if(character == null){
-					
+
 					//New game, set version to config.VERSION, run game as usual
 					var newVersion = {
-						
+
 						_id: 1,
 						version: config.VERSION
 					}
 					db.collection("version").insertOne(newVersion, function(error, result){
-						
+
 						callback();
 					});
 				}
 				else{
-					
+
 					//DB is at version 1, run recursive migration method with version 1
 					var newVersion = {
-						
+
 						_id: 1,
 						version: 1
 					}
@@ -233,7 +329,7 @@ function checkVersion(callback){
 			});
 		}
 		else{
-			
+
 			//Run every migration from current version to config.VERSION using recursive migration method
 			runMigrations(version, callback);
 		}
@@ -241,17 +337,17 @@ function checkVersion(callback){
 }
 
 /**
-* 
+*
 */
 function runMigrations(version, callback){
-	
-	//Migration 1 to 3
+
+	//Migration 1 to 3: Stats
 	if(version.version <= 3){
-		
+
 		db.collection("characters").find().toArray(function(error, characters){
-			
+
 			for(var i = 0; i < characters.length; i++){
-				
+
 				var character = characters[i];
 				character.hp = charfunc.calculateBaseHP(character);
 				character.pow = charfunc.calculateBasePOW(character);
@@ -273,40 +369,100 @@ function runMigrations(version, callback){
 				character.spdEq = 0;
 				character.lukEq = 0;
 				if(character.prebattle.includes('poison')){
-					
+
 					character.postresults.push('poison');
 				}
-				
+
 				if(i == characters.length - 1){
-					
+
 					//final character to update, finish this migration
 					db.collection("characters").updateOne(
 						{"_id": character._id},
 						{$set: character},
 						{upsert: true},
 						function(){
-							
+
 							version.version = 4;
 							runMigrations(version, callback);
 					});
 				}
 				else{
-					
+
 					module.exports.updateCharacter(character);
 				}
-			};	
+			};
 		});
 	}
-	//Add more migrations here
+
+	//Migration 4 to 6: Class fields and table, Equip fields
+	else if(version.version <= 5){
+
+		db.collection("characters").find().toArray(function(error, characters){
+
+			for(var i = 0; i < characters.length; i++){
+
+				var character = characters[i];
+				character.powEq += 1;
+				character.wisEq += -1;
+				character.defEq += -1;
+				character.resEq += 0;
+				character.spdEq += 0;
+				character.lukEq += 0;
+				character.head = "";
+				character.armor = "";
+				character.bottom = "";
+				character.weapon = "";
+				character.equips = [];
+				character.classId = "adventurer";
+				character.classLevel = 1;
+				character.classExp = 0,
+				character.classTime = 0;
+				character.skills = [];
+				character.hp = charfunc.calculateBaseHP(character);
+				charfunc.calculateStats(character);
+
+				var classRow = {
+					_id: character._id + "adventurer",
+					character: character._id,
+					classId: "adventurer",
+					classLevel: 1,
+					classExp: 0
+				}
+
+				if(i == characters.length - 1){
+
+					module.exports.updateClass(classRow);
+
+					//final character to update, finish this migration
+					db.collection("characters").updateOne(
+						{"_id": character._id},
+						{$set: character},
+						{upsert: true},
+						function(){
+
+							version.version = 6;
+							runMigrations(version, callback);
+					});
+				}
+				else{
+
+					module.exports.updateClass(classRow);
+					module.exports.updateCharacter(character);
+				}
+			};
+		});
+	}
+
+	//Add more migrations before this with else if
 	//If gets to else, DB is up to date
 	else{
-		
+
 		db.collection("version").updateOne(
 			{"_id": version._id},
 			{$set: version},
-			{upsert: true}, 
+			{upsert: true},
 			function(error, result){
-						
+
 			callback();
 		});
 	}

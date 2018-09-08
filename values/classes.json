@@ -1,0 +1,17 @@
+{
+	"adventurer": {
+		"gameId": 100,
+    "pow": "B",
+    "wis": "B",
+    "def": "B",
+    "res": "B",
+    "spd": "B",
+    "luk": "C",
+		"classId": "adventurer",
+		"className": "Adventurer",
+    "description": "Your typical Grumbo Adventurer. Specializes in nothing. However, you can gain a permanent +2 boost to POW/WIS/DEF and +1 to RES/SPD/LUK every other class level!",
+		"perks": [
+		    "The Adventurer gets no perks at class level 1."
+		]
+	}
+}

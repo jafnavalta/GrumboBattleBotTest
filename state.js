@@ -6,7 +6,6 @@ const fs = require("fs");
 let itemList = JSON.parse(fs.readFileSync("./values/items.json", "utf8"));
 let activesList = JSON.parse(fs.readFileSync("./values/actives.json", "utf8"));
 
-
 //CONSTANTS
 //Item types
 const IMMEDIATE = "immediate"; //Consume with no active state, no duration
@@ -35,6 +34,7 @@ let usefunc = require('./actives/active_use.js');
 
 //Character functions, not to be confused with the active character functions, characterfunc
 let charfunc = require('./character/character.js');
+let classfunc = require('./character/class.js');
 
 //EXPORTS
 exports.IMMEDIATE = IMMEDIATE;
@@ -57,13 +57,13 @@ exports.POSTRESULTS = POSTRESULTS;
 exports.immediate = function(message, character, eventId, event, amount){
 
 	var state = {
-		
+
 		result: message.member.displayName + " has used " + event.name + " x" + amount
 	}
 	usefunc.immediate[eventId](message, character, state, eventId, event, amount);
-	
+
 	message.channel.send(state.result);
-	
+
 	//Save character
 	dbfunc.updateCharacter(character);
 }
@@ -72,42 +72,42 @@ exports.immediate = function(message, character, eventId, event, amount){
 * Add consumed eventId to active list.
 */
 exports.consume = function(message, character, eventId, event, amount){
-	
+
 	var result = message.member.displayName + " has used " + event.name + " x" + amount;
-	
+
 	dbfunc.getDB().collection("actives").findOne({"_id": character._id + eventId, "character": character._id, "id": eventId}, function(err, active){
-		
+
 		var wasConsumed = true;
 		if(active == null){
-			
-			exports.pushToState(character, eventId, event, event.battleStates, amount);
+
+			dbfunc.pushToState(character, eventId, event, event.battleStates, amount);
 		}
 		else{
-			
+
 			//Extend duration of consumable
 			//If duration is 0, don't allow use of item. Duration will be 0 if null.
 			if(active.duration == 10 || active.duration + (event.duration * amount) > 10){
-				
+
 				result = "You can't have an active for longer than 10 battles";
 				wasConsumed = false;
 			}
 			else{
-				
+
 				active.duration += event.duration * amount;
 				dbfunc.updateActive(active);
 			}
 		}
 		if(wasConsumed){
-			
+
 			for(var i = 0; i < amount; i++){
-				
+
 				var index = character.items.indexOf(eventId);
 				character.items.splice(index, 1);
 			}
 		}
-		
+
 		message.channel.send(result);
-		
+
 		//Save character
 		dbfunc.updateCharacter(character);
 	});
@@ -130,17 +130,17 @@ exports.toggle = function(message, character, eventId, event, amount){
 
 		//Deactivate
 		if(active != null){
-			
-			exports.spliceFromState(character, eventId, event, event.battleStates, active);
+
+			dbfunc.spliceFromState(character, eventId, event, event.battleStates, active);
 			message.channel.send(message.member.displayName + " has deactivated " + event.name);
 		}
 		//Activate
 		else{
-			
-			exports.pushToState(character, eventId, event, event.battleStates, null);
+
+			dbfunc.pushToState(character, eventId, event, event.battleStates, null);
 			message.channel.send(message.member.displayName + " has activated " + event.name);
 		}
-		
+
 		//Save character
 		dbfunc.updateCharacter(character);
 	});
@@ -150,29 +150,29 @@ exports.toggle = function(message, character, eventId, event, amount){
 * Add indefinite eventId to active list.
 */
 exports.indefinite = function(message, character, eventId, event, amount){
-	
+
 	var result = message.member.displayName + " has used " + event.name;
-	
+
 	dbfunc.getDB().collection("actives").findOne({"_id": character._id + eventId, "character": character._id, "id": eventId}, function(err, active){
-		
+
 		var wasConsumed = true;
 		if(active == null){
-			
-			exports.pushToState(character, eventId, event, event.battleStates, amount);
+
+			dbfunc.pushToState(character, eventId, event, event.battleStates, amount);
 		}
 		else{
-			
+
 			result = message.member.displayName + " already has " + event.name + " active!";
 			wasConsumed = false;
 		}
 		if(wasConsumed){
-				
+
 			var index = character.items.indexOf(eventId);
 			character.items.splice(index, 1);
 		}
-		
+
 		message.channel.send(result);
-		
+
 		//Save character
 		dbfunc.updateCharacter(character);
 	});
@@ -182,9 +182,9 @@ exports.indefinite = function(message, character, eventId, event, amount){
 * Pre battle calculations.
 */
 exports.prebattle = function(message, args, character, battleState, actives, grumbo){
-	
+
 	battleState.levelDiffActual = character.level - args[3];
-	
+
 	//Prebattle base/modifiers
 	battleState.preMessages = [];
 	battleState.chanceMod = 0;
@@ -194,53 +194,53 @@ exports.prebattle = function(message, args, character, battleState, actives, gru
 	battleState.hpMod = 0;
 	battleState.powMod = 0;
 	battleState.wisMod = 0;
-	
+
 	battlefunc.calculateCharacterMods(message, args, character, battleState, actives, grumbo);
-	
+
 	//Prebattle Grumbo effects
 	for(var i = grumbo.prebattle.length - 1; i >= 0; i--){
-		
+
 		var eventId = grumbo.prebattle[i];
 		var eventActive = activesList[eventId];
 		if(grumbofunc.prebattle[eventId] != null){
-			
+
 			var random = Math.random() * 100;
 			if(random < character.res && eventActive.effect == exports.BAD){
-				
+
 				battleState.preMessages.push(charfunc.resistMessage(eventActive.name));
 			}
 			else{
-				
+
 				grumbofunc.prebattle[eventId](character, battleState, eventId, actives);
 			}
 		}
 	};
-	
+
 	//Prebattle character active functions
 	for(var i = character.prebattle.length - 1; i >= 0; i--){
-		
+
 		var eventId = character.prebattle[i];
 		if(characterfunc.prebattle[eventId] != null){
-			
+
 			characterfunc.prebattle[eventId](character, battleState, eventId, actives);
 		}
 	};
-	
+
 	//Calculate prebattle variables
 	battleState.levelDiff = character.level - args[3] + battleState.levelDiffMod;
 	battleState.chance = 50 + (battleState.levelDiff * 2) + Math.floor(Math.random() * 4) - 2 + battleState.chanceMod + battleState.powMod + battleState.wisMod + battleState.hpMod;
 	var max = 95 + battleState.maxMod;
 	var min = 5 + battleState.minMod;
 	if(battleState.levelDiff < -15){
-		
+
 		battleState.chance -= (Math.floor(Math.random() * 3) + 1);
 	}
 	if(battleState.chance > max){
-		
+
 		battleState.chance = max;
 	}
 	else if(battleState.chance < min){
-		
+
 		battleState.chance = min;
 	}
 }
@@ -249,45 +249,45 @@ exports.prebattle = function(message, args, character, battleState, actives, gru
 * Pre results calculations.
 */
 exports.preresults = function(message, character, battleState, actives, grumbo){
-		
+
 	//Preresults base/modifiers
 	battleState.preMessages = [];
 	//None right now
-	
+
 	//Preresults Grumbo effects
 	for(var i = grumbo.preresults.length - 1; i >= 0; i--){
-		
+
 		var eventId = grumbo.preresults[i];
 		var eventActive = activesList[eventId];
 		if(grumbofunc.preresults[eventId] != null){
-			
+
 			var random = Math.random() * 100;
 			if(random < character.res && eventActive.effect == exports.BAD){
-				
+
 				battleState.preResMessages.push(charfunc.resistMessage(eventActive.name));
 			}
 			else{
-				
+
 				grumbofunc.preresults[eventId](character, battleState, eventId, actives);
 			}
 		}
 	};
-	
+
 	//Preresults character active functions
 	for(var i = character.preresults.length - 1; i >= 0; i--){
-		
+
 		var eventId = character.preresults[i];
 		if(characterfunc.preresults[eventId] != null){
-			
+
 			characterfunc.preresults[eventId](character, battleState, eventId, actives);
 		}
 	};
-	
+
 	//Calculate preresults variables
 	if(battleState.win){
-		
+
 		battleState.exp = battlefunc.calculateBattleExp(character, battleState.levelDiff);
-		battleState.gold = battlefunc.calculateBattleGold(character, battleState.levelDiff) * (1 + (character.luk / 100));
+		battleState.gold = Math.ceil(battlefunc.calculateBattleGold(character, battleState.levelDiff) * (1 + (character.luk / 100)));
 	}
 }
 
@@ -295,49 +295,50 @@ exports.preresults = function(message, character, battleState, actives, grumbo){
 * Post results calculations.
 */
 exports.postresults = function(message, character, battleState, actives, grumbo){
-		
+
 	//Postresults base/modifiers
 	battleState.endMessages = [];
 	battleState.avoidPostResults = false;
 	battleState.hpLoss = 3;
+	battleState.classExp = 1;
 
 	battlefunc.calculateHPLoss(message, character, battleState, actives, grumbo);
-	
+
 	//Postresults character active functions
 	for(var i = character.postresults.length - 1; i >= 0; i--){
-		
+
 		var eventId = character.postresults[i];
 		if(characterfunc.postresults[eventId] != null){
-			
+
 			characterfunc.postresults[eventId](character, battleState, eventId, actives);
 		}
 	};
-	
+
 	//Postresults Grumbo effects
 	for(var i = grumbo.postresults.length - 1; i >= 0; i--){
-		
+
 		var eventId = grumbo.postresults[i];
 		var eventActive = activesList[eventId];
 		if(grumbofunc.postresults[eventId] != null && !battleState.avoidPostResults){
-			
+
 			var random = Math.random() * 100;
 			if(random < character.res && eventActive.effect == exports.BAD){
-				
+
 				battleState.endMessages.push(charfunc.resistMessage(eventActive.name));
 			}
 			else{
-				
+
 				grumbofunc.postresults[eventId](character, battleState, eventId, actives);
 			}
-		}	
+		}
 	};
-	
+
 	//Calculate postresults variables
 	if(battleState.win){
-		
+
 		var leftover = (battleState.exp + character.experience) % 100;
 		battleState.gains = Math.floor(((battleState.exp + character.experience)/100));
-		
+
 		//Win message and results
 		character.battlesLeft -= 1;
 		character.wins += 1;
@@ -347,87 +348,15 @@ exports.postresults = function(message, character, battleState, actives, grumbo)
 		character.winrate = Math.floor(((character.wins / (character.wins + character.losses)) * 100));
 	}
 	else{
-		
+
 		character.battlesLeft -= 1;
 		character.losses += 1;
 		character.winrate = Math.floor(((character.wins / (character.wins + character.losses)) * 100));
 	}
+
 	character.hp -= battleState.hpLoss;
 	if(character.hp < 0) character.hp = 0;
 	else if(character.hp > charfunc.MAX_HP) character.hp = charfunc.MAX_HP;
-}
-
-/**
-* Push to character state active.
-*/
-exports.pushToState = function(character, eventId, event, eventStates, amount){
-	
-	var totalDuration = event.duration;
-	if(amount != null){
-		
-		//If totalDuration is null, this will make it 0
-		totalDuration = totalDuration * amount;
-	}
-	var id = character._id + eventId;
-	var newActive = {
-		
-		_id: id,
-		character: character._id,
-		id: eventId,
-		battleStates: event.battleStates,
-		name: event.name,
-		duration: totalDuration
-	}
-	
-	eventStates.forEach(function(eventState){
-		
-		character[eventState].push(eventId);
-	});
-	
-	dbfunc.updateActive(newActive);
-}
-
-/**
-* Splice from character state active.
-*/
-exports.spliceFromState = function(character, eventId, event, eventStates, active){
-
-	eventStates.forEach(function(eventState){
-
-		var index = character[eventState].indexOf(eventId);
-		character[eventState].splice(index, 1);
-	});
-	
-	dbfunc.removeActive(active);
-}
-
-/**
-* Reduce the duration of an active and its states.
-*/
-exports.reduceDuration = function(character, characterStates, eventId, actives){
-	
-	var active;
-	for(var i = 0; i < actives.length; i++){
-		
-		if(actives[i].id == eventId){
-			
-			active = actives[i];
-			break;
-		}
-	}
-	if(active.duration <= 1){
-	
-		for(var i = 0; i < characterStates.length; i++){
-			
-			var characterState = characterStates[i];
-			var index = characterState.indexOf(eventId);
-			characterState.splice(index, 1);
-			dbfunc.removeActive(active);
-		}
-	}
-	else{
-		
-		active.duration -= 1;
-		dbfunc.updateActive(active);
-	}
+	character.classExp += battleState.classExp;
+	classfunc.levelUpClass(character, battleState);
 }

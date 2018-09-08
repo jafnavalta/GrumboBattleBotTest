@@ -19,7 +19,7 @@
 			"prebattle",
 			"postresults"
 		],
-		"description": "Decreases chance of victory by 5 for the next battle. Lose 5 extra HP per battle.",
+		"description": "Decreases chance of victory by 5% for the next battle. Lose 5 extra HP per battle.",
 		"duration": 3
 	},
 	"fools_gold": {
@@ -43,7 +43,7 @@
 			"postresults"
 		],
 		"description": "Lose between 50-100 gold when you lose a battle.",
-		"duration": 1
+		"duration": null
 	},
 	"gold_boost_1": {
 		"gameId": 70004,
@@ -53,8 +53,8 @@
 		"battleStates": [
 			"prebattle"
 		],
-		"description": "Gain between 20-50 gold when you win a battle.",
-		"duration": 1
+		"description": "Gain between 25-75 gold when you win a battle.",
+		"duration": null
 	},
 	"charm_of_wumbo": {
 		"gameId": 70005,
