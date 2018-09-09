@@ -121,7 +121,7 @@
 		"postresults": [
 			"permaboost"
 		],
-		"victory": "$name received his gift from Grandbo!",
+		"victory": "$name received their gift from Grandbo!",
 		"loss": "$name somehow lost to the Grandbo! No gift for you.",
 		"weight": 1
 	},
@@ -177,6 +177,22 @@
 		],
 		"victory": "$name smashed Grumbo Gazer to pieces!",
 		"loss": "$name gazed into the Grumbo Gazer's eyes!",
-		"weight": 9999
+		"weight": 8
+	},
+	"mighty_grumbo": {
+		"gameId": 1009,
+		"id": "mighty_grumbo",
+		"name": "Mighty Grumbo",
+		"powBase": 40,
+		"wisBase": 40,
+		"powX": 1.22,
+		"wisX": 1.22,
+		"description": "The Mighty Grumbo! The mightier the level, the mightier the stats!",
+		"prebattle": [],
+		"preresults": [],
+		"postresults": [],
+		"victory": "$name overcame the mightiest of foes!",
+		"loss": "$name was overwhelmed by their mighty opponent!",
+		"weight": 16
 	}
 }

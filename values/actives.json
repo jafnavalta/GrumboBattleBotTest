@@ -263,5 +263,16 @@
 		],
 		"description": "Throw a shield at an enemy in battle. Increases chance of victory by DEF/3.",
 		"duration": 1
+	},
+	"wumbo": {
+		"gameId": 70024,
+		"id": "wumbo",
+		"name": "Wumbo",
+		"effect": "bad",
+		"battleStates": [
+			"prebattle"
+		],
+		"description": "Caps maximum battle chance at 70%",
+		"duration": null
 	}
 }
