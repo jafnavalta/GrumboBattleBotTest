@@ -35,7 +35,7 @@ exports.classChange = function(message, args, character){
     var timeSinceLastChange = currentTime - character.classTime;
     if(timeSinceLastChange/CLASS_CHANGE_WAIT_TIME >= 1){
 
-      dbFunc.getDB().collection("classes").findOne({"_id": character._id + newClass}, function(err, classObj){
+      dbfunc.getDB().collection("classes").findOne({"_id": character._id + newClass}, function(err, classObj){
 
         var classFromDB = classObj;
         if(classFromDB == null){
@@ -62,8 +62,8 @@ exports.classChange = function(message, args, character){
     else{
 
       //Class changed too recently
-    	var hours = Math.floor(timeSinceLastChange/3600000);
-    	var minutes = Math.ceil((timeSinceLastChange % 3600000) / 60000);
+    	var hours = Math.floor((CLASS_CHANGE_WAIT_TIME - timeSinceLastChange)/3600000);
+    	var minutes = Math.ceil(((CLASS_CHANGE_WAIT_TIME - timeSinceLastChange) % 3600000) / 60000);
       message.channel.send("You've class changed too recently " + message.member.displayName + "!"
         + "\nYou can class change again in " + hours + " hours " + minutes + " minutes");
     }
@@ -163,7 +163,7 @@ function setClass(character, classFromDB, newClass){
 */
 function removeClass(character){
 
-  var classfunc = exports.classes[newClass];
+  var classfunc = classes[character.classId];
   character.powEq -= classfunc.BASE_POW_EQ;
   character.wisEq -= classfunc.BASE_WIS_EQ;
   character.defEq -= classfunc.BASE_DEF_EQ;

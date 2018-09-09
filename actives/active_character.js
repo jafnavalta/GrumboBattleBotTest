@@ -59,6 +59,16 @@ exports.prebattle.berserk_potion = function(character, battleState, eventId, act
 	dbfunc.reduceDuration(character, [character.prebattle], eventId, actives);
 }
 
+exports.prebattle.wild_swing = function(character, battleState, eventId, actives){
+
+	var random = Math.random() * 100;
+	if(random < character.pow/8){
+
+		battleState.chanceMod += 10;
+		battleState.preMessages.push("You swung a wild one!");
+	}
+}
+
 ////////////////////////////////////
 // CHARACTER PRERESULTS FUNCTIONS //
 ////////////////////////////////////

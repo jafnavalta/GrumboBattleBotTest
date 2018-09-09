@@ -1,5 +1,11 @@
+//Initialize DB functions
+let dbfunc = require('../data/db.js');
+
 //Initialize fs
 const fs = require("fs");
+
+//Class active helper
+let classactivefunc = require('./class_active.js');
 
 //List of actives
 let activesList = JSON.parse(fs.readFileSync("./values/actives.json", "utf8"));

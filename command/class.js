@@ -48,9 +48,9 @@ exports.commandClass = function(character, message, args){
         for(var i = 0; i < classes.length; i++){
 
           var classObj = classes[i];
-          if(classes[classObj.classId] != null){
+          if(classList[classObj.classId] != null){
 
-            classString += classes[classObj.classId].className + " Lv" + classObj.classLevel + "  EXP " + classObj.classExp + "  |  Command: " + classObj.classId + "\n";
+            classString += classList[classObj.classId].className + " Lv" + classObj.classLevel + "  EXP " + classObj.classExp + "  |  Command: " + classObj.classId + "\n";
           }
         }
         for(var key in classList){
@@ -66,7 +66,7 @@ exports.commandClass = function(character, message, args){
           });
           if(!hasClass){
 
-            classString += classListObj.className + " Lv 0  EXP 0  |  Command: " + classObj.classListObj.classId + "\n";
+            classString += classListObj.className + " Lv 0  EXP 0  |  Command: " + classListObj.classId + "\n";
           }
         };
 

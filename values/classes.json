@@ -13,5 +13,20 @@
 		"perks": [
 		    "The Adventurer gets no perks at class level 1."
 		]
+	},
+  "warrior": {
+		"gameId": 101,
+    "pow": "A+",
+    "wis": "D+",
+    "def": "C",
+    "res": "B",
+    "spd": "B",
+    "luk": "C",
+		"classId": "warrior",
+		"className": "Warrior",
+    "description": "Warrior packs a powerful punch but isn't the smartest about it. Gain a permanent +2 boost to POW every class level.",
+		"perks": [
+		    "A novice Warrior only knows the Wild Swing active."
+		]
 	}
 }

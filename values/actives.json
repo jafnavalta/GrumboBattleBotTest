@@ -120,5 +120,16 @@
 		],
 		"description": "Reduces battle stock and HP to 0.",
 		"duration": null
+	},
+	"wild_swing": {
+		"gameId": 70011,
+		"id": "wild_swing",
+		"name": "Wild Swing",
+		"effect": "good",
+		"battleStates": [
+			"prebattle"
+		],
+		"description": "Warrior only. POW/8 % chance of increasing chance of victory by 10%",
+		"duration": null
 	}
 }

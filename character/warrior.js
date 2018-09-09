@@ -1,5 +1,11 @@
+//Initialize DB functions
+let dbfunc = require('../data/db.js');
+
 //Initialize fs
 const fs = require("fs");
+
+//Class active helper
+let classactivefunc = require('./class_active.js');
 
 //List of actives
 let activesList = JSON.parse(fs.readFileSync("./values/actives.json", "utf8"));
@@ -22,7 +28,7 @@ exports.BASE_RES_EQ = BASE_RES_EQ;
 exports.BASE_SPD_EQ = BASE_SPD_EQ;
 exports.BASE_LUK_EQ = BASE_LUK_EQ;
 
-exports.powX = 1.25;
+exports.powX = 1.23;
 exports.wisX = 0.77;
 exports.defX = 0.89;
 exports.resX = 1;
@@ -101,7 +107,8 @@ exports.levelUp.warrior10 = function(character){
 /////////////////////////////// //TODO Set class level skills
 exports.setClassLevelFunc.warrior1 = function(character){
 
-
+  var active = classactivefunc.getActive(character, 'wild_swing');
+  dbfunc.pushToState(character, active.id, active, active.battleStates, 1);
 }
 
 exports.setClassLevelFunc.warrior2 = function(character){
@@ -145,7 +152,8 @@ exports.setClassLevelFunc.warrior10 = function(character){
 ////////////////////////////////// //TODO Remove class level skills
 exports.removeClassLevelFunc.warrior1 = function(character){
 
-  //Does nothing, this is the starting class and level
+  var active = classactivefunc.getActive(character, 'wild_swing');
+  dbfunc.spliceFromState(character, active.id, active, active.battleStates, active);
 }
 
 exports.removeClassLevelFunc.warrior2 = function(character){
