@@ -27,7 +27,8 @@
 		"className": "Warrior",
     "description": "Warrior packs a powerful punch but isn't the smartest about it. Gain a permanent +2 boost to POW every class level.",
 		"perks": [
-		    "A novice Warrior only knows the Wild Swing active."
+		    "A novice Warrior only knows the Wild Swing active.",
+				"POW +10 when classed as a Warrior."
 		]
 	},
   "magician": {
@@ -42,7 +43,8 @@
 		"className": "Magician",
     "description": "The Magician is pretty good at card tricks. Gain a permanent +2 boost to WIS every class level.",
 		"perks": [
-		    "The Magician can Outsmart his enemies."
+		    "The Magician can Outsmart his enemies.",
+				"WIS +15 when classed as a Magician."
 		]
 	},
   "rogue": {
@@ -57,7 +59,8 @@
 		"className": "Rogue",
     "description": "The quick and slippery rogue. Gain a permanent +1 boost to SPD every class level.",
 		"perks": [
-		    "The Rogue very rarely gets a second chance when losing."
+		    "The Rogue very rarely gets a second chance when losing.",
+				"SPD +2 / LUK +2 when classed as a Rogue."
 		]
 	}
 }

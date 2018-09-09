@@ -14,7 +14,7 @@ let activesList = JSON.parse(fs.readFileSync("./values/actives.json", "utf8"));
 //ALL classes should have these.
 exports.className = "Magician";
 
-exports.CLASS_LEVEL_MAX = 1;
+exports.CLASS_LEVEL_MAX = 2;
 
 //Actives
 const LEVEL_1_ACTIVE = 'outsmart';
@@ -118,6 +118,7 @@ exports.setClassLevelFunc.magician1 = function(character){
 
 exports.setClassLevelFunc.magician2 = function(character){
 
+  character.wisEq += 15;
 }
 
 exports.setClassLevelFunc.magician3 = function(character){
@@ -163,6 +164,7 @@ exports.removeClassLevelFunc.magician1 = function(character){
 
 exports.removeClassLevelFunc.magician2 = function(character){
 
+  character.wisEq -= 15;
 }
 
 exports.removeClassLevelFunc.magician3 = function(character){

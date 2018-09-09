@@ -14,7 +14,7 @@ let activesList = JSON.parse(fs.readFileSync("./values/actives.json", "utf8"));
 //ALL classes should have these.
 exports.className = "Warrior";
 
-exports.CLASS_LEVEL_MAX = 1;
+exports.CLASS_LEVEL_MAX = 2;
 
 //Actives
 const LEVEL_1_ACTIVE = 'wild_swing';
@@ -118,6 +118,7 @@ exports.setClassLevelFunc.warrior1 = function(character){
 
 exports.setClassLevelFunc.warrior2 = function(character){
 
+  character.powEq += 10;
 }
 
 exports.setClassLevelFunc.warrior3 = function(character){
@@ -163,6 +164,7 @@ exports.removeClassLevelFunc.warrior1 = function(character){
 
 exports.removeClassLevelFunc.warrior2 = function(character){
 
+  character.powEq -= 10;
 }
 
 exports.removeClassLevelFunc.warrior3 = function(character){
