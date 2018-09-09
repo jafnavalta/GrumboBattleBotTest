@@ -19,6 +19,12 @@ const GOOD = "good";
 const BAD = "bad";
 const NEUTRAL = "neutral";
 
+//Equip types
+const HEAD = "head";
+const ARMOR = "armor";
+const BOTTOM = "bottom";
+const WEAPON = "weapon";
+
 //Battle states
 const PREBATTLE = "prebattle"; //Before battle begins
 const PRERESULTS = "preresults"; //After battle ends but before results are calculated
@@ -51,6 +57,9 @@ exports.PREBATTLE = PREBATTLE;
 exports.PRERESULTS = PRERESULTS;
 exports.POSTRESULTS = POSTRESULTS;
 
+///////////
+// ITEMS //
+///////////
 /**
 * Do a particular function based on the eventId (item, equip, effect, skill, etc.) and consume eventId
 */
@@ -178,6 +187,66 @@ exports.indefinite = function(message, character, eventId, event, amount){
 	});
 }
 
+///////////
+// EQUIP //
+///////////
+/**
+* Equip. Set type to equipId. Recalculate stats.
+*/
+exports.equip = function(message, character, equip){
+
+	character.powEq += equip.pow;
+	character.wisEq += equip.wis;
+	character.defEq += equip.def;
+	character.resEq += equip.res;
+	character.spdEq += equip.spd;
+	character.lukEq += equip.luk;
+
+	if(equip.active != null){
+
+		var active = activesList[equip.active];
+		active._id = character._id + equip.active;
+	  active.character = character._id;
+		dbfunc.pushToState(character, active.id, active, active.battleStates, 1);
+	}
+
+	character[equip.type] = equip.id;
+
+	charfunc.calculateStats(character);
+
+	message.channel.send(message.member.displayName + " equipped " + equip.name + "!");
+}
+
+/**
+* Unequip. Set type to empty string. Recalculate stats.
+*/
+exports.unequip = function(message, character, equip){
+
+	character.powEq -= equip.pow;
+	character.wisEq -= equip.wis;
+	character.defEq -= equip.def;
+	character.resEq -= equip.res;
+	character.spdEq -= equip.spd;
+	character.lukEq -= equip.luk;
+
+	if(equip.active != null){
+
+		var active = activesList[equip.active];
+		active._id = character._id + equip.active;
+	  active.character = character._id;
+		dbfunc.spliceFromState(character, active.id, active, active.battleStates, active);
+	}
+
+	character[equip.type] = "";
+
+	charfunc.calculateStats(character);
+
+	message.channel.send(message.member.displayName + " unequipped " + equip.name + "!");
+}
+
+//////////////////
+// BATTLE STATE //
+//////////////////
 /**
 * Pre battle calculations.
 */

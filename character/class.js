@@ -1,15 +1,24 @@
 //Initialize DB functions
 let dbfunc = require('../data/db.js');
 
+//Initialize fs
+const fs = require("fs");
+
+//Initialize list of equips file
+let equipList = JSON.parse(fs.readFileSync("./values/equips.json", "utf8"));
+
 //Initialize class functions
 let classes = require('./classes.js').classes;
 
-//General character functions
+//Character/state functions
 let charfunc = require('./character.js');
+let state = require('../state.js');
 
 const CLASS_EXP_TO_LEVEL = 20;
 const CLASS_LEVEL_MAX = 10;
 const CLASS_CHANGE_WAIT_TIME = 43200000; //12 hours
+
+exports.CLASS_CHANGE_WAIT_TIME = CLASS_CHANGE_WAIT_TIME;
 
 /**
 * Change classes.
@@ -50,7 +59,7 @@ exports.classChange = function(message, args, character){
           }
         }
 
-        removeClass(character);
+        removeClass(message, character);
         setClass(character, classFromDB, newClass);
         charfunc.calculateStats(character);
         character.classTime = currentTime;
@@ -161,7 +170,7 @@ function setClass(character, classFromDB, newClass){
 * Set character.classId, character.classLevel, character.classExp.
 * Set class actives, mods, skills based using setClassLevelFunc.
 */
-function removeClass(character){
+function removeClass(message, character){
 
   var classfunc = classes[character.classId];
   character.powEq -= classfunc.BASE_POW_EQ;
@@ -170,7 +179,7 @@ function removeClass(character){
   character.resEq -= classfunc.BASE_RES_EQ;
   character.spdEq -= classfunc.BASE_SPD_EQ;
   character.lukEq -= classfunc.BASE_LUK_EQ;
-  removeClassEquips(character);
+  removeClassEquips(message, character);
 
   //Start at level 1
   for(var i = 1; i <= character.classLevel; i++){
@@ -186,7 +195,38 @@ function removeClass(character){
 /**
 * Remove class specific equips of current class.
 */
-function removeClassEquips(character){
+function removeClassEquips(message, character){
 
-  //TODO
+  var head = equipList[character.head];
+  var armor = equipList[character.armor];
+  var bottom = equipList[character.bottom];
+  var weapon = equipList[character.weapon];
+  if(head != null){
+
+    if(head.classId == character.classId){
+
+      state.unequip(message, character, head);
+    }
+  }
+  if(armor != null){
+
+    if(armor.classId == character.classId){
+
+      state.unequip(message, character, armor);
+    }
+  }
+  if(bottom != null){
+
+    if(bottom.classId == character.classId){
+
+      state.unequip(message, character, bottom);
+    }
+  }
+  if(weapon != null){
+
+    if(weapon.classId == character.classId){
+
+      state.unequip(message, character, weapon);
+    }
+  }
 }

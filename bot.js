@@ -3,6 +3,9 @@ var Discord = require('discord.js');
 var auth = require('./auth.json');
 const client = new Discord.Client();
 
+//THIS SHOULD BE THE SAME AS THE VALUE IN CLASS
+const CLASS_CHANGE_WAIT_TIME = 43200000; //12 hours
+
 //Config
 let config = require('./config.js');
 
@@ -17,7 +20,9 @@ let shopfunc = require('./command/shop.js');
 let activefunc = require('./command/actives.js');
 let enemyfunc = require('./command/enemy.js');
 let classfunc = require('./command/class.js');
+let equipfunc = require('./command/equip.js');
 let charfunc = require('./character/character.js');
+let classForTime = require('./character/class.js');
 
 //Text
 let fs = require('fs');
@@ -29,6 +34,7 @@ let guide3 = fs.readFileSync("./text/guide3.txt", "utf8");
 let guide4 = fs.readFileSync("./text/guide4.txt", "utf8");
 let patchnotes = fs.readFileSync("./text/patchnotes.txt", "utf8");
 let classList = JSON.parse(fs.readFileSync("./values/classes.json", "utf8"));
+let equipList = JSON.parse(fs.readFileSync("./values/equips.json", "utf8"));
 
 let requestTimes = {}; //Store character request times so they can't request more than once every 1 second
 
@@ -207,8 +213,16 @@ function parseCommand(message){
 		}
 
 		/////////////////
-		// !! ITEMS !! //
+		// !! EQUIP !! //
 		/////////////////
+		else if(args[1] == 'equip' || args[1] == 'unequip'){
+
+			equipfunc.commandEquip(message, args, character);
+		}
+
+		////////////////
+		// !! SHOP !! //
+		////////////////
 		else if(args[1] == 'shop'){
 
 			shopfunc.commandShop(message, args, character);
@@ -262,11 +276,27 @@ function displayStats(character, message, args){
 		challengefunc.restockChallenges(currentTime, character);
 
 		var username = message.member.displayName;
+		var head = equipList[character.head];
+		if(head != null) head = head.name;
+		else head = "-----";
+		var armor = equipList[character.armor];
+		if(armor != null) armor = armor.name;
+		else armor = "-----";
+		var bottom = equipList[character.bottom];
+		if(bottom != null) bottom = bottom.name;
+		else bottom = "-----";
+		var weapon = equipList[character.weapon];
+		if(weapon != null) weapon = weapon.name;
+		else weapon = "-----";
 		var statsString = username + " Lv" + character.level + " with " + character.experience + " EXP  |  " + character.gold + " Gold"
 						+ "\n" + classList[character.classId].className + " Lv" + character.classLevel + " with " + character.classExp + " EXP"
 						+ "\nHP " + character.hp + "/100"
 						+ "\nPOW " + character.pow + "  |  WIS " + character.wis + "  |  DEF " + character.def
 						+ "\nRES " + character.res + "  |  SPD " + character.spd + "  |  LUK " + character.luk
+						+ "\nHead: " + head
+						+ "\nArmor: " + armor
+						+ "\nBottom: " + bottom
+						+ "\nWeapon: " + weapon
 						+ "\nBattle         Wins " + character.wins + "  |  Losses " + character.losses + "  |  Win% " + character.winrate
 						+ "\nChallenge  Wins " + character.challengeWins + "  |  Losses " + character.challengeLosses + "  |  Win% " + character.challengeWinrate
 						+ "\nYou have " + character.battlesLeft + "/5 battles left"
@@ -280,6 +310,13 @@ function displayStats(character, message, args){
 
 			var timeUntilNextChallengeInMinutes = Math.ceil((character.challengetime + charfunc.calculateWaitTime(character) - currentTime)/60000);
 			statsString = statsString + "\nYou will gain another challenge in " + timeUntilNextChallengeInMinutes + " minutes";
+		}
+		var timeSinceLastChange = currentTime - character.classTime;
+    if(timeSinceLastChange/classForTime.CLASS_CHANGE_WAIT_TIME < 1){
+
+			var hours = Math.floor((classForTime.CLASS_CHANGE_WAIT_TIME - timeSinceLastChange)/3600000);
+    	var minutes = Math.ceil(((classForTime.CLASS_CHANGE_WAIT_TIME - timeSinceLastChange) % 3600000) / 60000);
+			statsString = statsString + "\nYou can class change again in " + hours + " hours " + minutes + " minutes";
 		}
 		sender.send(statsString);
 

@@ -223,9 +223,9 @@ exports.calculateBattleExp = function(character, levelDiff){
 		exp = calculateHighLevelExp(exp, levelDiff);
 	}
 	exp = exp + Math.floor(Math.random() * 10) - 5 - Math.ceil(character.level/1.5) + 1;
-	if(exp < 5){
+	if(exp < 3){
 
-		exp = 5;
+		exp = 3;
 	}
 	return exp;
 }

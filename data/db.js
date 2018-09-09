@@ -150,16 +150,19 @@ exports.removeActive = function(active){
 }
 
 //Update the rotation and special shops
-exports.updateRotationSpecial = function(rotation, special, callback){
+exports.updateRotationSpecialEquip = function(rotation, special, equip, callback){
 
 	db.collection("shop_rotation").insertMany(rotation, function (err, result){
 
 		db.collection("shop_special").insertMany(special, function (err, result){
 
-			callback();
+			db.collection("shop_equip").insertMany(equip, function (err, result){
+
+				callback();
+			});
 		});
 	});
-},
+}
 
 //Update a rotation item
 exports.updateRotationItem = function(item){
@@ -176,6 +179,16 @@ exports.updateSpecialItem = function(item){
 
 	db.collection("shop_special").updateOne(
 		{"shop": "special", "id": item.id},
+		{$set: item},
+		{upsert: true}
+	);
+}
+
+//Update an equip item
+exports.updateEquipItem = function(item){
+
+	db.collection("shop_equip").updateOne(
+		{"shop": "equip", "id": item.id},
 		{$set: item},
 		{upsert: true}
 	);
