@@ -15,7 +15,7 @@ let charfunc = require('./character.js');
 let state = require('../state.js');
 
 const CLASS_EXP_TO_LEVEL = 25;
-const CLASS_CHANGE_WAIT_TIME = 1; //12 hours
+const CLASS_CHANGE_WAIT_TIME = 43200000; //12 hours
 
 exports.CLASS_CHANGE_WAIT_TIME = CLASS_CHANGE_WAIT_TIME;
 

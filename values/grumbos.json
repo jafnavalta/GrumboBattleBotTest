@@ -13,7 +13,7 @@
 		"postresults": [],
 		"victory": "$name won!",
 		"loss": "$name lost! Maybe you should try harder my dude.",
-		"weight": 70
+		"weight": 69
 	},
 	"toxic_grumbo": {
 		"gameId": 1001,
@@ -106,5 +106,59 @@
 		"victory": "$name has squashed the SpiderGrumbo!",
 		"loss": "SpiderGrumbo had a good bite out of $name!",
 		"weight": 7
+	},
+	"grandbo": {
+		"gameId": 1006,
+		"id": "grandbo",
+		"name": "Grandbo",
+		"powBase": 40,
+		"wisBase": 40,
+		"powX": 0.9,
+		"wisX": 0.9,
+		"description": "The grandest of Grumbos. So grand, he gives you a grand gift upon beating him! Weaker than a regular Grumbo.",
+		"prebattle": [],
+		"preresults": [],
+		"postresults": [
+			"permaboost"
+		],
+		"victory": "$name received his gift from Grandbo!",
+		"loss": "$name somehow lost to the Grandbo! No gift for you.",
+		"weight": 1
+	},
+	"grumbro": {
+		"gameId": 1006,
+		"id": "grumbro",
+		"name": "Grumbro",
+		"powBase": 54,
+		"wisBase": 40,
+		"powX": 1.04,
+		"wisX": 0.7,
+		"description": "A Grumbo bro. Helps you out whether you win or lose.",
+		"prebattle": [],
+		"preresults": [],
+		"postresults": [
+			"brojob"
+		],
+		"victory": "$name had to take down Grumbro!",
+		"loss": "$name was beaten by Grumbro, but it wasn't so bad.",
+		"weight": 9
+	},
+	"grumbo_cat": {
+		"gameId": 1007,
+		"id": "grumbo_cat",
+		"name": "Grumbo Cat",
+		"powBase": 41,
+		"wisBase": 37,
+		"powX": 1.04,
+		"wisX": 1.04,
+		"description": "Grumbo Cat. Big Meaty Claws. Can make you bleed. Slightly lower stats on average.",
+		"prebattle": [],
+		"preresults": [],
+		"postresults": [
+			"bleed"
+		],
+		"victory": "$name sent Grumbo Cat to Grumbo Cat Heaven!",
+		"loss": "$name was scratched in the face by Grumbo Cat!",
+		"weight": 12
 	}
 }

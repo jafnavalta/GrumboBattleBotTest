@@ -170,7 +170,15 @@ function doBattle(message, args, character, currentTime, actives){
 
 					endMessageString += preResMessage + "\n";
 				});
-				endMessageString += "You gained " + battleState.exp + " experience and " + battleState.gold + " gold!\nYou took " + battleState.hpLoss + " chip damage.\n";
+				endMessageString += "You gained " + battleState.exp + " experience and " + battleState.gold + " gold!\n";
+				if(battleState.hpLoss >= 0){
+
+					endMessageString += "You took " + battleState.hpLoss + " chip damage.\n";
+				}
+				else{
+
+					endMessageString += "You recovered " + Math.abs(battleState.hpLoss) + " HP!\n";
+				}
 				battleState.endMessages.forEach(function(endMessage){
 
 					endMessageString += endMessage + "\n";
@@ -187,11 +195,18 @@ function doBattle(message, args, character, currentTime, actives){
 
 					endMessageString += preResMessage + "\n";
 				});
+				if(battleState.hpLoss >= 0){
+
+					endMessageString += "You took " + battleState.hpLoss + " damage!\n";
+				}
+				else{
+
+					endMessageString += "You recovered " + Math.abs(battleState.hpLoss) + " HP!\n";
+				}
 				battleState.endMessages.forEach(function(endMessage){
 
 					endMessageString += endMessage + "\n";
 				});
-				endMessageString += "You took " + battleState.hpLoss + " damage!\n";
 			}
 
 			endMessageString += "Here are your current stats:\n" + username + " Lv" + character.level + "  |  "

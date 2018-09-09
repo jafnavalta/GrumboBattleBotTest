@@ -441,7 +441,7 @@ function buyStandardItem(message, character, item, amount){
 			}
 
 			var spent = item.price * amount;
-			character.gold -= spent;
+			character.gold -= Math.ceil(spent);
 			character.items.sort();
 			dbfunc.updateCharacter(character);
 
@@ -486,7 +486,7 @@ function buyRotationItem(message, character, item, amount){
 			}
 
 			var spent = item.price * amount;
-			character.gold -= spent;
+			character.gold -= Math.ceil(spent);
 			character.items.sort();
 			dbfunc.updateCharacter(character);
 
@@ -557,7 +557,7 @@ function buySpecialItem(message, character, special, amount){
 				}
 
 				var spent = special.price * amount;
-				character.gold -= spent;
+				character.gold -= Math.ceil(spent);
 				character.items.sort();
 				dbfunc.updateCharacter(character);
 
@@ -602,7 +602,7 @@ function buyEquipItem(message, character, equip){
 
 				character.equips.push(equip.id);
 				var spent = equip.price * 1;
-				character.gold -= spent;
+				character.gold -= Math.ceil(spent);
 				character.equips.sort();
 				dbfunc.updateCharacter(character);
 

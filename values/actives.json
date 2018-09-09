@@ -197,5 +197,38 @@
 		],
 		"description": "20% chance to reduce damage to by you RES.",
 		"duration": null
+	},
+	"permaboost": {
+		"gameId": 70018,
+		"id": "permaboost",
+		"name": "Permaboost",
+		"effect": "good",
+		"battleStates": [
+			"postresults"
+		],
+		"description": "Randomly gain a permanent +1 boost to any character stat (POW, WIS, DEF, etc.)",
+		"duration": null
+	},
+	"brojob": {
+		"gameId": 70019,
+		"id": "brojob",
+		"name": "Brojob",
+		"effect": "good",
+		"battleStates": [
+			"postresults"
+		],
+		"description": "Heal for 20 HP and gain some pocket change of 20 gold.",
+		"duration": null
+	},
+	"bleed": {
+		"gameId": 70019,
+		"id": "bleed",
+		"name": "Bleed",
+		"effect": "good",
+		"battleStates": [
+			"postresults"
+		],
+		"description": "Bleed for extra damage based on duration. Also reduces your DEF and RES by 5 until it's gone.",
+		"duration": 5
 	}
 }

@@ -172,6 +172,32 @@ exports.immediate.gamblers_coin = function(message, character, state, eventId, e
 	}
 }
 
+exports.immediate.bandages = function(message, character, state, eventId, event, amount){
+
+	if(character.postresults.includes('bleed')){
+
+		var index = character.items.indexOf(eventId);
+		character.items.splice(index, 1);
+		index = character.postresults.indexOf('bleed');
+		character.postresults.splice(index, 1);
+		var _id = character._id + 'bleed';
+		var active = {
+			"_id": _id
+		}
+		dbfunc.removeActive(active);
+
+		character.resEq += 5;
+		character.defEq += 5;
+		charfunc.calculateStats(character);
+
+		state.result = message.member.displayName + " has used bandages.";
+	}
+	else{
+
+		state.result = "You are not bleeding at this moment.";
+	}
+}
+
 //////////////////////////
 // NONCONSUME FUNCTIONS //
 //////////////////////////

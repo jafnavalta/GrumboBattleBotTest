@@ -5,6 +5,9 @@ let dbfunc = require('../data/db.js');
 const fs = require("fs");
 let activesList = JSON.parse(fs.readFileSync("./values/actives.json", "utf8"));
 
+//Character functions
+let charfunc = require('../character/character.js');
+
 //Initialize states
 exports.prebattle = {};
 exports.preresults = {};
@@ -156,4 +159,23 @@ exports.postresults.vision = function(character, battleState, eventId, actives){
 		if(battleState.hpLoss < 0) battleState.hpLoss = 0;
 		battleState.endMessages.push("Your vision helped you dodge significant damage!");
 	}
+}
+
+exports.postresults.bleed = function(character, battleState, eventId, actives){
+
+	for(var i = 0; i < actives.length; i++){
+
+		if(actives[i].id == eventId){
+
+			battleState.hpLoss += actives[i].duration;
+			if(actives[i].duration <= 1){
+
+				character.resEq += 5;
+				character.defEq += 5;
+				charfunc.calculateStats(character);
+			}
+			break;
+		}
+	}
+	dbfunc.reduceDuration(character, [character.postresults], eventId, actives);
 }

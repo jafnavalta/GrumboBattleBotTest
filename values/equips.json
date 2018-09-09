@@ -110,7 +110,7 @@
 		"weight": 10
 	},
   "monocle": {
-		"gameId": 60004,
+		"gameId": 60005,
 		"id": "monocle",
 		"name": "Monocle",
 		"command": "!grumbo equip monocle",
@@ -132,7 +132,7 @@
 		"weight": 15
 	},
   "water_staff": {
-		"gameId": 60005,
+		"gameId": 60006,
 		"id": "water_staff",
 		"name": "Water Staff",
 		"command": "!grumbo equip water_staff",

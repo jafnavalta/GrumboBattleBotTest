@@ -218,5 +218,21 @@
 		"max": 20,
 		"stock": null,
 		"weight": null
+	},
+	"bandages": {
+		"gameId": 10013,
+		"id": "bandages",
+		"name": "Bandages",
+		"command": "!grumbo items use bandages",
+		"type": "immediate",
+		"battleStates": [],
+		"description": "Removes the 'Bleed' active. Consumed after use.",
+		"effect": "good",
+		"duration": null,
+		"price": 180,
+		"value": 10,
+		"max": 10,
+		"stock": 5,
+		"weight": 20
 	}
 }

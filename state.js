@@ -418,7 +418,7 @@ exports.postresults = function(message, character, battleState, actives, grumbo)
 		character.wins += 1;
 		charfunc.levelChange(character, battleState.gains);
 		character.experience = leftover;
-		character.gold += battleState.gold;
+		character.gold = Math.floor(character.gold + battleState.gold);
 		character.winrate = Math.floor(((character.wins / (character.wins + character.losses)) * 100));
 	}
 	else{
