@@ -69,6 +69,16 @@ exports.prebattle.wild_swing = function(character, battleState, eventId, actives
 	}
 }
 
+exports.prebattle.outsmart = function(character, battleState, eventId, actives){
+
+	var random = Math.random() * 100;
+	if(random < 35 && battleState.wisMod > 0){
+
+		battleState.wisMod = battleState.wisMod * 2;
+		battleState.preMessages.push("You outsmarted the enemy!");
+	}
+}
+
 ////////////////////////////////////
 // CHARACTER PRERESULTS FUNCTIONS //
 ////////////////////////////////////
@@ -81,6 +91,19 @@ exports.preresults.observation = function(character, battleState, eventId, activ
 
 			battleState.expMod += Math.ceil(character.level/1.5);
 			battleState.preResMessages.push("Your observations proved useful!");
+		}
+	}
+}
+
+exports.preresults.second_chance = function(character, battleState, eventId, actives){
+
+	if(!battleState.win){
+
+		var random = Math.random() * 100;
+		if(random < 3){
+
+			battleState.win = true;
+			battleState.preResMessages.push("The second chance succeeded!");
 		}
 	}
 }

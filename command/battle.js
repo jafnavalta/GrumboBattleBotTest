@@ -153,15 +153,14 @@ function doBattle(message, args, character, currentTime, actives){
 		setTimeout(function(){
 
 			//Determine battle results
-			var result = Math.floor(Math.random() * (101));
+			battleState.result = Math.floor(Math.random() * (101));
+
+			//Preresults determinations
+			state.preresults(message, character, battleState, actives, grumbo);
 
 			//If victory
 			var endMessageString = "";
-			if(result <= battleState.chance){
-
-				//Preresults determinations
-				battleState.win = true;
-				state.preresults(message, character, battleState, actives, grumbo);
+			if(battleState.win){
 
 				//Postresults determinations
 				state.postresults(message, character, battleState, actives, grumbo);
@@ -179,10 +178,6 @@ function doBattle(message, args, character, currentTime, actives){
 			}
 			//If loss
 			else{
-
-				//Preresults determinations
-				battleState.win = false;
-				state.preresults(message, character, battleState, actives, grumbo);
 
 				//Postresults determinations
 				state.postresults(message, character, battleState, actives, grumbo);
@@ -378,7 +373,7 @@ exports.calculatePOWMod = function(character, grumbo, battleState){
 */
 exports.calculateWISMod = function(character, grumbo, battleState){
 
-	battleState.powMod += Math.ceil((character.wis - grumbo.wis)/6);
+	battleState.wisMod += Math.ceil((character.wis - grumbo.wis)/6);
 	if(battleState.wisMod > 10) battleState.wisMod = 10;
 }
 

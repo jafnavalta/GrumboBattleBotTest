@@ -151,7 +151,29 @@
 		"battleStates": [
 			"postresults"
 		],
-		"description": "Warrior only. If HP < 50, cut damage taken in half.",
+		"description": "If HP < 50, cut damage taken in half.",
+		"duration": null
+	},
+	"outsmart": {
+		"gameId": 70014,
+		"id": "outsmart",
+		"name": "Outsmart",
+		"effect": "good",
+		"battleStates": [
+			"prebattle"
+		],
+		"description": "35% chance to double the WIS bonus chance in battle.",
+		"duration": null
+	},
+	"second_chance": {
+		"gameId": 70015,
+		"id": "second_chance",
+		"name": "Second Chance",
+		"effect": "good",
+		"battleStates": [
+			"preresults"
+		],
+		"description": "When you lose, 3% chance to win instead.",
 		"duration": null
 	}
 }

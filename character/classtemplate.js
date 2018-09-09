@@ -1,13 +1,30 @@
+//Initialize DB functions
+let dbfunc = require('../data/db.js');
+
+//Initialize fs
+const fs = require("fs");
+
+//Class active helper
+let classactivefunc = require('./class_active.js');
+
+//List of actives
+let activesList = JSON.parse(fs.readFileSync("./values/actives.json", "utf8"));
+
 //For class level functions.
 //ALL classes should have these.
 exports.className = "Adventurer";
 
-var BASE_POW_EQ = 1;
-var BASE_WIS_EQ = -1;
-var BASE_DEF_EQ = -1;
-var BASE_RES_EQ = 0;
-var BASE_SPD_EQ = 0;
-var BASE_LUK_EQ = 0;
+exports.CLASS_LEVEL_MAX = 1;
+
+//Actives
+const LEVEL_1_ACTIVE = 'TEST SOMETHING';
+
+const BASE_POW_EQ = 1;
+const BASE_WIS_EQ = -1;
+const BASE_DEF_EQ = -1;
+const BASE_RES_EQ = 0;
+const BASE_SPD_EQ = 0;
+const BASE_LUK_EQ = 0;
 
 exports.BASE_POW_EQ = BASE_POW_EQ;
 exports.BASE_WIS_EQ = BASE_WIS_EQ;
@@ -28,7 +45,7 @@ exports.setClassLevelFunc = {};
 exports.removeClassLevelFunc = {};
 
 //////////////////////////////
-// CLASS LEVEL UP FUNCTIONS // Typically, anything permanent followed by accompanying setClassLevelFunc.
+// CLASS LEVEL UP FUNCTIONS // //Typically, anything permanent followed by accompanying setClassLevelFunc.
 //////////////////////////////
 exports.levelUp.adventurer1 = function(character){
 
@@ -80,9 +97,9 @@ exports.levelUp.adventurer10 = function(character){
   exports.setClassLevelFunc.adventurer10(character);
 }
 
-/////////////////////////////// //Set class level mods
-// SET CLASS LEVEL FUNCTIONS // //Set class level actives
-/////////////////////////////// //Set class level skills
+/////////////////////////////// Set class level mods
+// SET CLASS LEVEL FUNCTIONS // Set class level actives
+/////////////////////////////// Set class level skills (NOT IMPLEMENTED YET)
 exports.setClassLevelFunc.adventurer1 = function(character){
 
 }
@@ -123,9 +140,9 @@ exports.setClassLevelFunc.adventurer10 = function(character){
 
 }
 
-////////////////////////////////// //Remove class level mods (equips are removed in class.js)
-// REMOVE CLASS LEVEL FUNCTIONS // //Remove class level actives
-////////////////////////////////// //Remove class level skills
+////////////////////////////////// Remove class level mods (equips are removed in class.js)
+// REMOVE CLASS LEVEL FUNCTIONS // Remove class level actives
+////////////////////////////////// Remove class level skills
 exports.removeClassLevelFunc.adventurer1 = function(character){
 
 }

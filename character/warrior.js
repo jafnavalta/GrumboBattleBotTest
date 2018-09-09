@@ -35,7 +35,7 @@ exports.BASE_LUK_EQ = BASE_LUK_EQ;
 
 exports.powX = 1.23;
 exports.wisX = 0.77;
-exports.defX = 0.89;
+exports.defX = 0.90;
 exports.resX = 1;
 exports.spdX = 1;
 exports.lukX = 1;
@@ -152,9 +152,9 @@ exports.setClassLevelFunc.warrior10 = function(character){
 
 }
 
-////////////////////////////////// //TODO Remove class level mods (equips are removed in class.js)
-// REMOVE CLASS LEVEL FUNCTIONS // //TODO Remove class level actives
-////////////////////////////////// //TODO Remove class level skills
+////////////////////////////////// Remove class level mods (equips are removed in class.js)
+// REMOVE CLASS LEVEL FUNCTIONS // Remove class level actives
+////////////////////////////////// Remove class level skills
 exports.removeClassLevelFunc.warrior1 = function(character){
 
   var active = classactivefunc.getActive(character, LEVEL_1_ACTIVE);

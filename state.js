@@ -322,6 +322,11 @@ exports.preresults = function(message, character, battleState, actives, grumbo){
 	//Preresults base/modifiers
 	battleState.preResMessages = [];
 	battleState.expMod = 0;
+	battleState.win = false;
+	if(battleState.result < battleState.chance){
+
+		battleState.win = true;
+	}
 
 	//Preresults Grumbo effects
 	for(var i = grumbo.preresults.length - 1; i >= 0; i--){
