@@ -136,3 +136,24 @@ exports.postresults.safety_hat = function(character, battleState, eventId, activ
 		battleState.endMessages.push("Your safety hat cut your damage in half!");
 	}
 }
+
+exports.postresults.dodge = function(character, battleState, eventId, actives){
+
+	var random = Math.random() * 100;
+	if(random < 8){
+
+		battleState.hpLoss = 0;
+		battleState.endMessages.push("You dodged all attacks!");
+	}
+}
+
+exports.postresults.vision = function(character, battleState, eventId, actives){
+
+	var random = Math.random() * 100;
+	if(random < 20){
+
+		battleState.hpLoss -= character.res;
+		if(battleState.hpLoss < 0) battleState.hpLoss = 0;
+		battleState.endMessages.push("Your vision helped you dodge significant damage!");
+	}
+}

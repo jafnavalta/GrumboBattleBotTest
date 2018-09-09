@@ -20,8 +20,8 @@ let weighedSpecial = [];
 let weighedEquip = [];
 
 const INTERVAL = 10800000 //3 hours in millis
-const ROTATION_LIMIT = 2;
-const SPECIAL_LIMIT = 2;
+const ROTATION_LIMIT = 3;
+const SPECIAL_LIMIT = 3;
 const EQUIP_LIMIT = 3;
 
 //Init shop

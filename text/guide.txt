@@ -1,7 +1,7 @@
 GRUMBO BATTLE BOT GUIDE
 |
 CHARACTER
-Your Grumbo character. These are the stats and what they affect: 
+Your Grumbo character. These are the stats and what they affect:
 HP: Max HP of 100. +5% battle chance boost at 100 HP. Chance decreases when below 45 HP, going down to -50% when at 0 HP.
 POW: Power. Affects battle chance. Chance is proportionate to enemy POW difference.
 WIS: Wisdom. Affects battle chance, but slightly less than POW. Chance is proportionate to enemy WIS difference.
@@ -9,5 +9,9 @@ DEF: Defense. Lowers damage taken after a battle. Damage taken is proportionate 
 RES: Resistance. % chance of avoiding negative enemy active effects.
 SPD: Speed. Each speed point above or below 10 increases or decreases the battle/challenge wait time by 1 minute.
 LUK: Luck. % extra gold gained in battle.
-Your character can also be affected by active effects through items, battle, etc. which affect the outcomes of battles. 
-|			
+Your character can also be affected by active effects through items, battle, etc. which affect the outcomes of battles, some being based on the stats above.
+|
+CLASS
+Class change to your preferred class. The starting class is a level 1 adventurer. Each class has different stat scaling, unique actives and boost your character in different ways. Classes level up independently of your character up to that class' max class level. Each class level can give new stats or active effects, some permanent and some unique to the class. 1 class experience is gained per battle, win or lose, and classes level up at 25 class experience.
+You can only class change once every 12 hours.
+|

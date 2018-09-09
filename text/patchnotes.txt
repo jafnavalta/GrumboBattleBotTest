@@ -1,8 +1,13 @@
 GRUMBO PATCH NOTES
-Most recent from the top	
+Most recent from the top
 
-- Sep X: Added RPG stats and 1 item. Changed Poison and Assassinate.
-- Sep X: Increased max battle stock to 5.
+- Sep 9: Increased Rotation/Special rotation to 3 items.
+- Sep 9: Added Equip section to Shop. Has 3 equips on rotation.
+- Sep 9: Added classes and class command. Currently barebones. Only 4 classes, each class only has 1 level, with the Adventurer having 2 levels.
+- Sep 9: Added equips and equip command.
+- Sep 9: Added RPG stats. Changed Poison and Assassinate.
+- Sep 9: Increased max battle stock to 5.
+
 - Sep 7: Added command to check enemy grumbo info.
 - Sep 7: Added command to check active details.
 - Sep 7: Added 1 Grumbo, 1 active, 1 item.
