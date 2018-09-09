@@ -14,6 +14,11 @@ let activesList = JSON.parse(fs.readFileSync("./values/actives.json", "utf8"));
 //ALL classes should have these.
 exports.className = "Adventurer";
 
+exports.CLASS_LEVEL_MAX = 2;
+
+//Actives
+const LEVEL_2_ACTIVE = 'observation';
+
 const BASE_POW_EQ = 1;
 const BASE_WIS_EQ = -1;
 const BASE_DEF_EQ = -1;
@@ -40,7 +45,7 @@ exports.setClassLevelFunc = {};
 exports.removeClassLevelFunc = {};
 
 //////////////////////////////
-// CLASS LEVEL UP FUNCTIONS // //TODO Typically, anything permanent followed by accompanying setClassLevelFunc.
+// CLASS LEVEL UP FUNCTIONS // //Typically, anything permanent followed by accompanying setClassLevelFunc.
 //////////////////////////////
 exports.levelUp.adventurer1 = function(character){
 
@@ -123,9 +128,9 @@ exports.levelUp.adventurer10 = function(character){
   character.lukMod += 1;
 }
 
-/////////////////////////////// //TODO Set class level mods
-// SET CLASS LEVEL FUNCTIONS // //TODO Set class level actives
-/////////////////////////////// //TODO Set class level skills
+/////////////////////////////// Set class level mods
+// SET CLASS LEVEL FUNCTIONS // Set class level actives
+/////////////////////////////// Set class level skills (NOT IMPLEMENTED YET)
 exports.setClassLevelFunc.adventurer1 = function(character){
 
   //Does nothing, this is the starting class and level
@@ -133,6 +138,8 @@ exports.setClassLevelFunc.adventurer1 = function(character){
 
 exports.setClassLevelFunc.adventurer2 = function(character){
 
+  var active = classactivefunc.getActive(character, LEVEL_2_ACTIVE);
+  dbfunc.pushToState(character, active.id, active, active.battleStates, 1);
 }
 
 exports.setClassLevelFunc.adventurer3 = function(character){
@@ -177,6 +184,8 @@ exports.removeClassLevelFunc.adventurer1 = function(character){
 
 exports.removeClassLevelFunc.adventurer2 = function(character){
 
+  var active = classactivefunc.getActive(character, LEVEL_2_ACTIVE);
+  dbfunc.spliceFromState(character, active.id, active, active.battleStates, active);
 }
 
 exports.removeClassLevelFunc.adventurer3 = function(character){

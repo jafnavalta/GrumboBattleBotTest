@@ -167,6 +167,10 @@ function doBattle(message, args, character, currentTime, actives){
 				state.postresults(message, character, battleState, actives, grumbo);
 
 				endMessageString += grumbo.victory.replace('$name', username) + "\n";
+				battleState.preResMessages.forEach(function(preResMessage){
+
+					endMessageString += preResMessage + "\n";
+				});
 				endMessageString += "You gained " + battleState.exp + " experience and " + battleState.gold + " gold!\nYou took " + battleState.hpLoss + " chip damage.\n";
 				battleState.endMessages.forEach(function(endMessage){
 
@@ -184,6 +188,10 @@ function doBattle(message, args, character, currentTime, actives){
 				state.postresults(message, character, battleState, actives, grumbo);
 
 				endMessageString += grumbo.loss.replace('$name', username) + "\n";
+				battleState.preResMessages.forEach(function(preResMessage){
+
+					endMessageString += preResMessage + "\n";
+				});
 				battleState.endMessages.forEach(function(endMessage){
 
 					endMessageString += endMessage + "\n";
@@ -209,7 +217,7 @@ function doBattle(message, args, character, currentTime, actives){
 /**
 * Calculate battle experience gained.
 */
-exports.calculateBattleExp = function(character, levelDiff){
+exports.calculateBattleExp = function(character, levelDiff, battleState){
 
 	var exp = 100;
 	//Low level Grumbo
@@ -222,7 +230,7 @@ exports.calculateBattleExp = function(character, levelDiff){
 
 		exp = calculateHighLevelExp(exp, levelDiff);
 	}
-	exp = exp + Math.floor(Math.random() * 10) - 5 - Math.ceil(character.level/1.5) + 1;
+	exp = exp + Math.floor(Math.random() * 10) - 5 - Math.ceil(character.level/1.5) + 1 + battleState.expMod;
 	if(exp < 3){
 
 		exp = 3;

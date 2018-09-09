@@ -101,11 +101,11 @@ exports.commandClass = function(character, message, args){
         + "DEF    " + details.def + "  |  RES  " + details.res + "\n"
         + "SPD    " + details.spd + "  |  LUK  " + details.luk + "\n\n";
 
+				detailsString += "Max Lv:  " + classesjs[classId].CLASS_LEVEL_MAX + "\n";
       for(var i = 0; i < details.perks.length; i++){
 
         var level = i + 1;
-        detailsString += "Lv " + level + "\n";
-        detailsString += details.perks[i] + "\n\n";
+        detailsString += "Lv " + level + ":  " + details.perks[i] + "\n";
       }
 
 			sender.send(detailsString);

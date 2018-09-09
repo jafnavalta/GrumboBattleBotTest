@@ -320,8 +320,8 @@ exports.prebattle = function(message, args, character, battleState, actives, gru
 exports.preresults = function(message, character, battleState, actives, grumbo){
 
 	//Preresults base/modifiers
-	battleState.preMessages = [];
-	//None right now
+	battleState.preResMessages = [];
+	battleState.expMod = 0;
 
 	//Preresults Grumbo effects
 	for(var i = grumbo.preresults.length - 1; i >= 0; i--){
@@ -355,7 +355,7 @@ exports.preresults = function(message, character, battleState, actives, grumbo){
 	//Calculate preresults variables
 	if(battleState.win){
 
-		battleState.exp = battlefunc.calculateBattleExp(character, battleState.levelDiff);
+		battleState.exp = battlefunc.calculateBattleExp(character, battleState.levelDiff, battleState);
 		battleState.gold = Math.ceil(battlefunc.calculateBattleGold(character, battleState.levelDiff) * (1 + (character.luk / 100)));
 	}
 }

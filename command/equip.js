@@ -64,7 +64,7 @@ exports.commandEquip = function(message, args, character){
 
           equipClassName = classes[equipObj.classId].className;
         }
-        equipsString += equipObj.name + "  |  Type: " + equipObj.type.charAt(0).toUpperCase() + equipObj.type.substr(1) + "  |  Class: " + equipClassName + "  |  Command: " + equipObj.id + "\n";
+        equipsString += equipObj.name + "  |  Lv Req:  " + equipObj.level + "  |  Type: " + equipObj.type.charAt(0).toUpperCase() + equipObj.type.substr(1) + "  |  Class: " + equipClassName + "  |  Command: " + equipObj.id + "\n";
       });
 
 			sender.send(equipsString);
@@ -86,7 +86,7 @@ exports.commandEquip = function(message, args, character){
 		var details = equipList[equip];
 		if(details != null){
 
-      var detailsString = details.name + "  |  Command: " + details.id + "\n"
+      var detailsString = details.name + "  |  Lv Req:  " + details.level + "  |  Command: " + details.id + "\n"
         + details.description + "\n";
       detailsString += "Sell: " + details.value + " gold";
 			sender.send(detailsString);
@@ -108,23 +108,30 @@ exports.commandEquip = function(message, args, character){
 
       if(character[details.type] != equip){
 
-        if(details.classId == null || details.classId == character.classId){
+				if(details.level <= character.level){
 
-          if(character[details.type].length != 0){
+	        if(details.classId == null || details.classId == character.classId){
 
-            //Unequip current equip
-            var equipped = equipList[character[details.type]];
-            state.unequip(message, character, equipped);
-          }
+	          if(character[details.type].length != 0){
 
-          //Equip and save characters
-          state.equip(message, character, details);
-          dbfunc.updateCharacter(character);
-        }
-        else{
+	            //Unequip current equip
+	            var equipped = equipList[character[details.type]];
+	            state.unequip(message, character, equipped);
+	          }
 
-          message.channel.send(message.member.displayName + ", you are not the correct class to equip " + details.name);
-        }
+	          //Equip and save characters
+	          state.equip(message, character, details);
+	          dbfunc.updateCharacter(character);
+	        }
+	        else{
+
+	          message.channel.send(message.member.displayName + ", you are not the correct class to equip " + details.name);
+	        }
+				}
+				else{
+
+					message.channel.send(message.member.displayName + ", you are not a high enough level to equip " + details.name);
+				}
       }
       else{
 

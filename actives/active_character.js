@@ -72,11 +72,23 @@ exports.prebattle.wild_swing = function(character, battleState, eventId, actives
 ////////////////////////////////////
 // CHARACTER PRERESULTS FUNCTIONS //
 ////////////////////////////////////
+exports.preresults.observation = function(character, battleState, eventId, actives){
+
+	if(battleState.win){
+
+		var random = Math.random() * 100;
+		if(random < 10){
+
+			battleState.expMod += Math.ceil(character.level/1.5);
+			battleState.preResMessages.push("Your observations proved useful!");
+		}
+	}
+}
 
 /////////////////////////////////////
 // CHARACTER POSTRESULTS FUNCTIONS //
 /////////////////////////////////////
-exports.prebattle.poison = function(character, battleState, eventId, actives){
+exports.postresults.poison = function(character, battleState, eventId, actives){
 
 	battleState.hpLoss += 5;
 	dbfunc.reduceDuration(character, [character.prebattle, character.postresults], eventId, actives);
@@ -91,4 +103,13 @@ exports.postresults.flimsy_rope = function(character, battleState, eventId, acti
 		battleState.endMessages.push("Flimsy rope activated and let you avoid post battle effects!");
 	}
 	dbfunc.reduceDuration(character, [character.postresults], eventId, actives);
+}
+
+exports.postresults.safety_hat = function(character, battleState, eventId, actives){
+
+	if(character.hp < 50){
+
+		battleState.hpLoss = Math.ceil(battleState.hpLoss/2);
+		battleState.endMessages.push("Your safety hat cut your damage in half!");
+	}
 }

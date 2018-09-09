@@ -131,5 +131,27 @@
 		],
 		"description": "Warrior only. POW/8 % chance of increasing chance of victory by 10%",
 		"duration": null
+	},
+	"observation": {
+		"gameId": 70012,
+		"id": "observation",
+		"name": "Observation",
+		"effect": "good",
+		"battleStates": [
+			"preresults"
+		],
+		"description": "Adventurer only. 10% chance to erase the level experience penalty.",
+		"duration": null
+	},
+	"safety_hat": {
+		"gameId": 70013,
+		"id": "safety_hat",
+		"name": "Safety Hat",
+		"effect": "good",
+		"battleStates": [
+			"postresults"
+		],
+		"description": "Warrior only. If HP < 50, cut damage taken in half.",
+		"duration": null
 	}
 }

@@ -14,6 +14,11 @@ let activesList = JSON.parse(fs.readFileSync("./values/actives.json", "utf8"));
 //ALL classes should have these.
 exports.className = "Warrior";
 
+exports.CLASS_LEVEL_MAX = 1;
+
+//Actives
+const LEVEL_1_ACTIVE = 'wild_swing';
+
 const BASE_POW_EQ = 5;
 const BASE_WIS_EQ = -3;
 const BASE_DEF_EQ = -2;
@@ -107,7 +112,7 @@ exports.levelUp.warrior10 = function(character){
 /////////////////////////////// //TODO Set class level skills
 exports.setClassLevelFunc.warrior1 = function(character){
 
-  var active = classactivefunc.getActive(character, 'wild_swing');
+  var active = classactivefunc.getActive(character, LEVEL_1_ACTIVE);
   dbfunc.pushToState(character, active.id, active, active.battleStates, 1);
 }
 
@@ -152,7 +157,7 @@ exports.setClassLevelFunc.warrior10 = function(character){
 ////////////////////////////////// //TODO Remove class level skills
 exports.removeClassLevelFunc.warrior1 = function(character){
 
-  var active = classactivefunc.getActive(character, 'wild_swing');
+  var active = classactivefunc.getActive(character, LEVEL_1_ACTIVE);
   dbfunc.spliceFromState(character, active.id, active, active.battleStates, active);
 }
 

@@ -252,20 +252,36 @@ exports.reduceDuration = function(character, characterStates, eventId, actives){
 			break;
 		}
 	}
-	if(active.duration <= 1){
+	if(active != null){
 
-		for(var i = 0; i < characterStates.length; i++){
+		if(active.duration <= 1){
 
-			var characterState = characterStates[i];
-			var index = characterState.indexOf(eventId);
-			characterState.splice(index, 1);
-			module.exports.removeActive(active);
+			for(var i = 0; i < characterStates.length; i++){
+
+				var characterState = characterStates[i];
+				var index = characterState.indexOf(eventId);
+				characterState.splice(index, 1);
+				module.exports.removeActive(active);
+			}
+		}
+		else{
+
+			active.duration -= 1;
+			module.exports.updateActive(active);
 		}
 	}
 	else{
 
-		active.duration -= 1;
-		module.exports.updateActive(active);
+		//Case where an active didn't get removed from a state somehow
+		for(var i = 0; i < characterStates.length; i++){
+
+			var characterState = characterStates[i];
+			var index = characterState.indexOf(eventId);
+			if(index >= 0){
+
+				characterState.splice(index, 1);
+			}
+		}
 	}
 }
 

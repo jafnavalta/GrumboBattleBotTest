@@ -22,7 +22,7 @@ let weighedEquip = [];
 const INTERVAL = 10800000 //3 hours in millis
 const ROTATION_LIMIT = 2;
 const SPECIAL_LIMIT = 2;
-const EQUIP_LIMIT = 1;
+const EQUIP_LIMIT = 3;
 
 //Init shop
 let standardShop = JSON.parse(fs.readFileSync("./values/shop_standard.json", "utf8"));
@@ -339,7 +339,7 @@ function displayShop(message, args, character){
 
 		shopString4 += "\n|\n" + equipItem.name + "  |  Buy:  " + equipItem.id + "\n"
 			+ equipItem.description + "\n";
-		shopString4 += "Price: " + equipItem.price + " gold\n";
+		shopString4 += "Price: " + equipItem.price + " gold";
 	});
 
 	sender.send(shopString4);

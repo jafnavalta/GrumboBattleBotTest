@@ -15,7 +15,6 @@ let charfunc = require('./character.js');
 let state = require('../state.js');
 
 const CLASS_EXP_TO_LEVEL = 20;
-const CLASS_LEVEL_MAX = 10;
 const CLASS_CHANGE_WAIT_TIME = 43200000; //12 hours
 
 exports.CLASS_CHANGE_WAIT_TIME = CLASS_CHANGE_WAIT_TIME;
@@ -89,7 +88,12 @@ exports.classChange = function(message, args, character){
 */
 exports.levelUpClass = function(character, state){
 
-  if(character.classExp >= CLASS_EXP_TO_LEVEL && character.classLevel < CLASS_LEVEL_MAX){
+  if(character.classLevel >= classes[character.classId].CLASS_LEVEL_MAX && character.classExp >= CLASS_EXP_TO_LEVEL){
+
+    character.classLevel = classes[character.classId].CLASS_LEVEL_MAX;
+    character.classExp = CLASS_EXP_TO_LEVEL;
+  }
+  else if(character.classExp >= CLASS_EXP_TO_LEVEL && character.classLevel < classes[character.classId].CLASS_LEVEL_MAX){
 
     character.classLevel += 1;
     character.classExp = 0;
