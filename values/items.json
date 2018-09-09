@@ -234,5 +234,21 @@
 		"max": 10,
 		"stock": 5,
 		"weight": 20
+	},
+	"master_grumbos_blessing": {
+		"gameId": 10014,
+		"id": "master_grumbos_blessing",
+		"name": "Master Grumbo's Blessing",
+		"command": "!grumbo items use master_grumbos_blessing",
+		"type": "immediate",
+		"battleStates": [],
+		"description": "Use it to receive Master Grumbo's Blessing. It's random. But it's good.",
+		"effect": "good",
+		"duration": null,
+		"price": 1994,
+		"value": 500,
+		"max": 1,
+		"stock": 1,
+		"weight": 1
 	}
 }

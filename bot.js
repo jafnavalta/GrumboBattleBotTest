@@ -114,9 +114,9 @@ function parseCommand(message){
 	dbfunc.getDB().collection("characters").findOne({"_id": message.author.id}, function(err, character){
 
 		var args = message.content.split(' ');
-		console.log(character.prebattle);
-		console.log(character.preresults);
-		console.log(character.postresults);
+		//console.log(character.prebattle);
+		//console.log(character.preresults);
+		//console.log(character.postresults);
 
 		/////////////////////
 		// !! HELP MENU !! //

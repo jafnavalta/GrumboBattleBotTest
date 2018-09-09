@@ -198,6 +198,19 @@ exports.immediate.bandages = function(message, character, state, eventId, event,
 	}
 }
 
+exports.immediate.master_grumbos_blessing = function(message, character, state, eventId, event, amount){
+
+	var index = character.items.indexOf(eventId);
+	character.items.splice(index, 1);
+	var randomArray = ['pow', 'wis', 'def', 'res', 'spd', 'luk', 'pow'];
+	var random = Math.floor(Math.random() * (randomArray.length - 1));
+	var stat = randomArray[random];
+	var statMod = stat + "Mod";
+	character[statMod] += 1;
+	charfunc.calculateStats(character);
+	state.result = "Master Grumbo's Blessing gave you a permanent +1 boost to " + stat.toUpperCase() + "!";
+}
+
 //////////////////////////
 // NONCONSUME FUNCTIONS //
 //////////////////////////

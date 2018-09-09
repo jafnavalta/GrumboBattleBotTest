@@ -68,5 +68,15 @@
 		"price": 299,
 		"stock": 2,
 		"weight": 12
+	},
+	"special_8": {
+		"gameId": 30007,
+		"id": "special_8",
+		"name": "Master Grumbo's Blessing",
+		"items": ["master_grumbos_blessing"],
+		"description": "For those that want to receive Master Grumbo's Blessing. Well here it is.",
+		"price": 1994,
+		"stock": 1,
+		"weight": 1
 	}
 }
