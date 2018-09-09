@@ -213,7 +213,7 @@
 		"description": "Heals 40 HP. Max HP is 100.",
 		"effect": "good",
 		"duration": null,
-		"price": 60,
+		"price": 70,
 		"value": 12,
 		"max": 20,
 		"stock": null,
@@ -250,5 +250,57 @@
 		"max": 1,
 		"stock": 1,
 		"weight": 1
+	},
+	"feather_stone": {
+		"gameId": 10014,
+		"id": "feather_stone",
+		"name": "Feather Stone",
+		"command": "!grumbo items use feather_stone",
+		"type": "immediate",
+		"battleStates": [],
+		"description": "Removes the 'Petrify' active. Consumed after use.",
+		"effect": "good",
+		"duration": null,
+		"price": 175,
+		"value": 35,
+		"max": 10,
+		"stock": 5,
+		"weight": 20
+	},
+	"grumbot_miner": {
+		"gameId": 10015,
+		"id": "grumbot_miner",
+		"name": "Grumbot Miner",
+		"command": "!grumbo items use grumbot_miner",
+		"type": "consume",
+		"battleStates": [
+			"postresults"
+		],
+		"description": "Grumbot mines for 10 battles, retrieving 90-150 gold after each battle.",
+		"effect": "good",
+		"duration": 10,
+		"price": 1000,
+		"value": 100,
+		"max": 1,
+		"stock": 1,
+		"weight": 6
+	},
+	"throwing_shield": {
+		"gameId": 10016,
+		"id": "throwing_shield",
+		"name": "Throwing Shield",
+		"command": "!grumbo items use throwing_shield",
+		"type": "consume",
+		"battleStates": [
+			"prebattle"
+		],
+		"description": "Throw a shield at an enemy in battle. Increases chance of victory by DEF/3.",
+		"effect": "good",
+		"duration": 1,
+		"price": 820,
+		"value": 180,
+		"max": 1,
+		"stock": 1,
+		"weight": 4
 	}
 }

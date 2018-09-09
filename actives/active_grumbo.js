@@ -174,3 +174,34 @@ exports.postresults.bleed = function(character, battleState, eventId, actives){
 		battleState.endMessages.push("You've started bleeding!");
 	}
 }
+
+exports.postresults.petrify = function(character, battleState, eventId, actives){
+
+	if(!battleState.win){
+
+		var active;
+		if(character.postresults.includes(eventId)){
+
+			for(var i = 0; i < actives.length; i++){
+
+				if(actives[i].id == eventId){
+
+					active = actives[i];
+					active.duration += activesList[eventId].duration;
+					if(active.duration > 10) active.duration = 10;
+					dbfunc.updateActive(active);
+					break;
+				}
+			}
+		}
+		else{
+
+			character.defEq += 50;
+			character.powEq -= 100;
+			active = activesList[eventId];
+			dbfunc.pushToState(character, eventId, active, active.battleStates, 1);
+		}
+		charfunc.calculateStats(character);
+		battleState.endMessages.push("You've been petrified!");
+	}
+}

@@ -221,14 +221,47 @@
 		"duration": null
 	},
 	"bleed": {
-		"gameId": 70019,
+		"gameId": 70020,
 		"id": "bleed",
 		"name": "Bleed",
-		"effect": "good",
+		"effect": "bad",
 		"battleStates": [
 			"postresults"
 		],
 		"description": "Bleed for extra damage based on duration. Also reduces your DEF and RES by 5 until it's gone.",
 		"duration": 5
+	},
+	"petrify": {
+		"gameId": 70021,
+		"id": "petrify",
+		"name": "Petrify",
+		"effect": "bad",
+		"battleStates": [
+			"postresults"
+		],
+		"description": "Gives DEF +50 but POW -100",
+		"duration": 2
+	},
+	"grumbot_miner": {
+		"gameId": 70022,
+		"id": "grumbot_miner",
+		"name": "Grumbot Miner",
+		"effect": "good",
+		"battleStates": [
+			"postresults"
+		],
+		"description": "Grumbot mines for 10 battles, retrieving 90-150 gold after each battle.",
+		"duration": 10
+	},
+	"throwing_shield": {
+		"gameId": 70023,
+		"id": "throwing_shield",
+		"name": "Throwing Shield",
+		"effect": "good",
+		"battleStates": [
+			"prebattle"
+		],
+		"description": "Throw a shield at an enemy in battle. Increases chance of victory by DEF/3.",
+		"duration": 1
 	}
 }

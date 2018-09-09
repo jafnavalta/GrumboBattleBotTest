@@ -211,6 +211,32 @@ exports.immediate.master_grumbos_blessing = function(message, character, state, 
 	state.result = "Master Grumbo's Blessing gave you a permanent +1 boost to " + stat.toUpperCase() + "!";
 }
 
+exports.immediate.feather_stone = function(message, character, state, eventId, event, amount){
+
+	if(character.postresults.includes('petrify')){
+
+		var index = character.items.indexOf(eventId);
+		character.items.splice(index, 1);
+		index = character.postresults.indexOf('petrify');
+		character.postresults.splice(index, 1);
+		var _id = character._id + 'petrify';
+		var active = {
+			"_id": _id
+		}
+		dbfunc.removeActive(active);
+
+		character.defEq -= 50;
+		character.powEq += 100;
+		charfunc.calculateStats(character);
+
+		state.result = message.member.displayName + " has used a feather stone.";
+	}
+	else{
+
+		state.result = "You are not petrified at this moment.";
+	}
+}
+
 //////////////////////////
 // NONCONSUME FUNCTIONS //
 //////////////////////////

@@ -82,6 +82,13 @@ exports.prebattle.outsmart = function(character, battleState, eventId, actives){
 	}
 }
 
+exports.prebattle.throwing_shield = function(character, battleState, eventId, actives){
+
+	battleState.chanceMod += Math.floor(character.def/3);
+	battleState.preMessages.push("You outsmarted the enemy!");
+	dbfunc.reduceDuration(character, [character.prebattle], eventId, actives);
+}
+
 ////////////////////////////////////
 // CHARACTER PRERESULTS FUNCTIONS //
 ////////////////////////////////////
@@ -177,5 +184,31 @@ exports.postresults.bleed = function(character, battleState, eventId, actives){
 			break;
 		}
 	}
+	dbfunc.reduceDuration(character, [character.postresults], eventId, actives);
+}
+
+exports.postresults.petrify = function(character, battleState, eventId, actives){
+
+	for(var i = 0; i < actives.length; i++){
+
+		if(actives[i].id == eventId){
+
+			if(actives[i].duration <= 1){
+
+				character.defEq -= 50;
+				character.powEq += 100;
+				charfunc.calculateStats(character);
+			}
+			break;
+		}
+	}
+	dbfunc.reduceDuration(character, [character.postresults], eventId, actives);
+}
+
+exports.postresults.grumbot_miner = function(character, battleState, eventId, actives){
+
+	var gainGold = Math.floor(Math.random() * 60) + 90;
+	character.gold += gainGold;
+	battleState.endMessages.push("Grumbot mined " + gainGold + " gold!");
 	dbfunc.reduceDuration(character, [character.postresults], eventId, actives);
 }

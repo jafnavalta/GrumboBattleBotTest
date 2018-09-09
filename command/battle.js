@@ -307,7 +307,7 @@ function calculateHighLevelExp(exp, levelDiff){
 */
 exports.calculateBattleGold = function(character, levelDiff){
 
-	var gold = 150 + Math.floor(Math.random() * 60) + levelDiff;
+	var gold = 135 + Math.floor(Math.random() * 50) + levelDiff;
 	if(levelDiff > 20){
 
 		//Only get 10 gold if you fight a Grumbo who is less than 20 levels under you

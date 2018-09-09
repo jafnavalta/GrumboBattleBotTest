@@ -68,7 +68,7 @@
 		],
 		"victory": "$name says not today Grumbassassin!",
 		"loss": "$name has been assassinated by the Grumbassassin!",
-		"weight": 8
+		"weight": 5
 	},
 	"wumbo": {
 		"gameId": 1004,
@@ -86,7 +86,7 @@
 		"postresults": [],
 		"victory": "$name has toppled the mighty Wumbo!",
 		"loss": "Wumbo taught $name some wumbo Wumbology!",
-		"weight": 14
+		"weight": 13
 	},
 	"spidergrumbo": {
 		"gameId": 1005,
@@ -160,5 +160,23 @@
 		"victory": "$name sent Grumbo Cat to Grumbo Cat Heaven!",
 		"loss": "$name was scratched in the face by Grumbo Cat!",
 		"weight": 12
+	},
+	"grumbo_gazer": {
+		"gameId": 1008,
+		"id": "grumbo_gazer",
+		"name": "Grumbo Gazer",
+		"powBase": 55,
+		"wisBase": 55,
+		"powX": 0.90,
+		"wisX": 1.02,
+		"description": "Medusa's brother, Grumbo Gazer. Don't gaze into his Grumbeyes or you'll be petrified! Average stats.",
+		"prebattle": [],
+		"preresults": [],
+		"postresults": [
+			"petrify"
+		],
+		"victory": "$name smashed Grumbo Gazer to pieces!",
+		"loss": "$name gazed into the Grumbo Gazer's eyes!",
+		"weight": 9999
 	}
 }

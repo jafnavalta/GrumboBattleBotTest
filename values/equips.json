@@ -152,5 +152,27 @@
 		"value": 90,
 		"stock": null,
 		"weight": 15
+	},
+  "baseball_bat": {
+		"gameId": 60007,
+		"id": "baseball_bat",
+		"name": "Baseball Bat",
+		"command": "!grumbo equip baseball_bat",
+		"type": "weapon",
+    "classId": null,
+    "level": 30,
+    "pow": 24,
+    "wis": -12,
+    "def": 0,
+    "res": 0,
+    "spd": 0,
+    "luk": 0,
+    "active": null,
+		"description": "Better duck bud. POW +24 / WIS -12",
+    "effect": "good",
+		"price": 808,
+		"value": 88,
+		"stock": 2,
+		"weight": 7
 	}
 }
