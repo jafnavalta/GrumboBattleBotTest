@@ -177,11 +177,6 @@ function doBattle(message, args, character, currentTime, actives){
 				character.experience = leftover;
 				character.gold = Math.floor(character.gold + battleState.gold);
 				character.winrate = Math.floor(((character.wins / (character.wins + character.losses)) * 100));
-				character.hp -= battleState.hpLoss;
-				if(character.hp < 0) character.hp = 0;
-				else if(character.hp > charfunc.MAX_HP) character.hp = charfunc.MAX_HP;
-				character.classExp += battleState.classExp;
-				classfunc.levelUpClass(character, battleState);
 
 				endMessageString += grumbo.victory.replace('$name', username) + "\n";
 				battleState.preResMessages.forEach(function(preResMessage){
@@ -212,11 +207,6 @@ function doBattle(message, args, character, currentTime, actives){
 				character.battlesLeft -= 1;
 				character.losses += 1;
 				character.winrate = Math.floor(((character.wins / (character.wins + character.losses)) * 100));
-				character.hp -= battleState.hpLoss;
-				if(character.hp < 0) character.hp = 0;
-				else if(character.hp > charfunc.MAX_HP) character.hp = charfunc.MAX_HP;
-				character.classExp += battleState.classExp;
-				classfunc.levelUpClass(character, battleState);
 
 				endMessageString += grumbo.loss.replace('$name', username) + "\n";
 				battleState.preResMessages.forEach(function(preResMessage){
@@ -237,6 +227,12 @@ function doBattle(message, args, character, currentTime, actives){
 				});
 			}
 
+			character.hp -= battleState.hpLoss;
+			if(character.hp < 0) character.hp = 0;
+			else if(character.hp > charfunc.MAX_HP) character.hp = charfunc.MAX_HP;
+			character.classExp += battleState.classExp;
+			classfunc.levelUpClass(character, battleState);
+			
 			endMessageString += "Here are your current stats:\n" + username + " Lv" + character.level + "  |  "
 					+ character.experience + " EXP  |  " + character.hp + " HP  |  " + character.gold + " Gold  |  Wins " + character.wins
 					+ "  |  Losses " + character.losses + "   |   Win% " + character.winrate + "\n"
