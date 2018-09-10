@@ -130,6 +130,7 @@ function doBattle(message, args, character, currentTime, actives){
 		//Prebattle determinations
 		var grumbo = getRandomGrumbo(args[3]);
 		var battleState = {};
+		battleState.isBoss = false;
 		state.prebattle(message, args, character, battleState, actives, grumbo);
 
 		if(character.battlesLeft == 5){
@@ -164,6 +165,23 @@ function doBattle(message, args, character, currentTime, actives){
 
 				//Postresults determinations
 				state.postresults(message, character, battleState, actives, grumbo);
+				
+				//Calculate postresults variables
+				var leftover = (battleState.exp + character.experience) % 100;
+				battleState.gains = Math.floor(((battleState.exp + character.experience)/100));
+
+				//Win message and results
+				character.battlesLeft -= 1;
+				character.wins += 1;
+				charfunc.levelChange(character, battleState.gains);
+				character.experience = leftover;
+				character.gold = Math.floor(character.gold + battleState.gold);
+				character.winrate = Math.floor(((character.wins / (character.wins + character.losses)) * 100));
+				character.hp -= battleState.hpLoss;
+				if(character.hp < 0) character.hp = 0;
+				else if(character.hp > charfunc.MAX_HP) character.hp = charfunc.MAX_HP;
+				character.classExp += battleState.classExp;
+				classfunc.levelUpClass(character, battleState);
 
 				endMessageString += grumbo.victory.replace('$name', username) + "\n";
 				battleState.preResMessages.forEach(function(preResMessage){
@@ -189,6 +207,16 @@ function doBattle(message, args, character, currentTime, actives){
 
 				//Postresults determinations
 				state.postresults(message, character, battleState, actives, grumbo);
+				
+				//Calculate postresults variables
+				character.battlesLeft -= 1;
+				character.losses += 1;
+				character.winrate = Math.floor(((character.wins / (character.wins + character.losses)) * 100));
+				character.hp -= battleState.hpLoss;
+				if(character.hp < 0) character.hp = 0;
+				else if(character.hp > charfunc.MAX_HP) character.hp = charfunc.MAX_HP;
+				character.classExp += battleState.classExp;
+				classfunc.levelUpClass(character, battleState);
 
 				endMessageString += grumbo.loss.replace('$name', username) + "\n";
 				battleState.preResMessages.forEach(function(preResMessage){

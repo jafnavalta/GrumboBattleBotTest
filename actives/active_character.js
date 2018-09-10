@@ -39,13 +39,17 @@ exports.prebattle.battle_potion = function(character, battleState, eventId, acti
 	else if(battleState.levelDiffActual >= -10) battleState.chanceMod += 3;
 	else if(battleState.levelDiffActual >= -15) battleState.chanceMod += 2;
 	else battleState.chanceMod += 1;
+	battleState.dmgMod += 3;
 	dbfunc.reduceDuration(character, [character.prebattle], eventId, actives);
 }
 
 exports.prebattle.charm_of_wumbo = function(character, battleState, eventId, actives){
 
-	battleState.minMod += 15;
-	dbfunc.reduceDuration(character, [character.prebattle], eventId, actives);
+	if(!battleState.isBoss){
+		
+		battleState.minMod += 15;
+		dbfunc.reduceDuration(character, [character.prebattle], eventId, actives);
+	}
 }
 
 exports.prebattle.berserk_potion = function(character, battleState, eventId, actives){
@@ -56,6 +60,8 @@ exports.prebattle.berserk_potion = function(character, battleState, eventId, act
 
 			battleState.chanceMod += actives[i].duration;
 			battleState.chanceMod -= 5;
+			battleState.dmgMod += actives[i].duration;
+			battleState.dmgMod -= 5;
 			break;
 		}
 	}
@@ -68,6 +74,7 @@ exports.prebattle.wild_swing = function(character, battleState, eventId, actives
 	if(random < character.pow/8){
 
 		battleState.chanceMod += 10;
+		battleState.dmgMod += 10;
 		battleState.preMessages.push("You swung a wild one!");
 	}
 }
@@ -77,6 +84,7 @@ exports.prebattle.outsmart = function(character, battleState, eventId, actives){
 	var random = Math.random() * 100;
 	if(random < 35 && battleState.wisMod > 0){
 
+		battleState.dmgMod += battleState.wisMod;
 		battleState.wisMod = battleState.wisMod * 2;
 		battleState.preMessages.push("You outsmarted the enemy!");
 	}
@@ -85,6 +93,7 @@ exports.prebattle.outsmart = function(character, battleState, eventId, actives){
 exports.prebattle.throwing_shield = function(character, battleState, eventId, actives){
 
 	battleState.chanceMod += Math.floor(character.def/3);
+	battleState.dmgMod += 6;
 	battleState.preMessages.push("You outsmarted the enemy!");
 	dbfunc.reduceDuration(character, [character.prebattle], eventId, actives);
 }
@@ -94,7 +103,7 @@ exports.prebattle.throwing_shield = function(character, battleState, eventId, ac
 ////////////////////////////////////
 exports.preresults.observation = function(character, battleState, eventId, actives){
 
-	if(battleState.win){
+	if(battleState.win && !battleState.isBoss){
 
 		var random = Math.random() * 100;
 		if(random < 10){

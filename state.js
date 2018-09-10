@@ -248,7 +248,7 @@ exports.unequip = function(message, character, equip){
 // BATTLE STATE //
 //////////////////
 /**
-* Pre battle calculations.
+* Pre battle calculations. dmgMod is used for Bosses.
 */
 exports.prebattle = function(message, args, character, battleState, actives, grumbo){
 
@@ -263,8 +263,19 @@ exports.prebattle = function(message, args, character, battleState, actives, gru
 	battleState.hpMod = 0;
 	battleState.powMod = 0;
 	battleState.wisMod = 0;
+	battleState.dmgMod = 0;
 
 	battlefunc.calculateCharacterMods(message, args, character, battleState, actives, grumbo);
+	
+	//Prebattle character active functions
+	for(var i = character.prebattle.length - 1; i >= 0; i--){
+
+		var eventId = character.prebattle[i];
+		if(characterfunc.prebattle[eventId] != null){
+
+			characterfunc.prebattle[eventId](character, battleState, eventId, actives);
+		}
+	};
 
 	//Prebattle Grumbo effects
 	for(var i = grumbo.prebattle.length - 1; i >= 0; i--){
@@ -282,16 +293,6 @@ exports.prebattle = function(message, args, character, battleState, actives, gru
 
 				grumbofunc.prebattle[eventId](character, battleState, eventId, actives);
 			}
-		}
-	};
-
-	//Prebattle character active functions
-	for(var i = character.prebattle.length - 1; i >= 0; i--){
-
-		var eventId = character.prebattle[i];
-		if(characterfunc.prebattle[eventId] != null){
-
-			characterfunc.prebattle[eventId](character, battleState, eventId, actives);
 		}
 	};
 
@@ -315,7 +316,7 @@ exports.prebattle = function(message, args, character, battleState, actives, gru
 }
 
 /**
-* Pre results calculations.
+* Pre results calculations. Bosses use battleState.win for phase calculations.
 */
 exports.preresults = function(message, character, battleState, actives, grumbo){
 
@@ -327,6 +328,17 @@ exports.preresults = function(message, character, battleState, actives, grumbo){
 
 		battleState.win = true;
 	}
+	
+	//Preresults character active functions
+	for(var i = character.preresults.length - 1; i >= 0; i--){
+
+		var eventId = character.preresults[i];
+		if(characterfunc.preresults[eventId] != null){
+
+			characterfunc.preresults[eventId](character, battleState, eventId, actives);
+		}
+	};
+
 
 	//Preresults Grumbo effects
 	for(var i = grumbo.preresults.length - 1; i >= 0; i--){
@@ -347,16 +359,6 @@ exports.preresults = function(message, character, battleState, actives, grumbo){
 		}
 	};
 
-	//Preresults character active functions
-	for(var i = character.preresults.length - 1; i >= 0; i--){
-
-		var eventId = character.preresults[i];
-		if(characterfunc.preresults[eventId] != null){
-
-			characterfunc.preresults[eventId](character, battleState, eventId, actives);
-		}
-	};
-
 	//Calculate preresults variables
 	if(battleState.win){
 
@@ -366,7 +368,7 @@ exports.preresults = function(message, character, battleState, actives, grumbo){
 }
 
 /**
-* Post results calculations.
+* Post results calculations. Bosses do not use classExp.
 */
 exports.postresults = function(message, character, battleState, actives, grumbo){
 
@@ -406,31 +408,4 @@ exports.postresults = function(message, character, battleState, actives, grumbo)
 			}
 		}
 	};
-
-	//Calculate postresults variables
-	if(battleState.win){
-
-		var leftover = (battleState.exp + character.experience) % 100;
-		battleState.gains = Math.floor(((battleState.exp + character.experience)/100));
-
-		//Win message and results
-		character.battlesLeft -= 1;
-		character.wins += 1;
-		charfunc.levelChange(character, battleState.gains);
-		character.experience = leftover;
-		character.gold = Math.floor(character.gold + battleState.gold);
-		character.winrate = Math.floor(((character.wins / (character.wins + character.losses)) * 100));
-	}
-	else{
-
-		character.battlesLeft -= 1;
-		character.losses += 1;
-		character.winrate = Math.floor(((character.wins / (character.wins + character.losses)) * 100));
-	}
-
-	character.hp -= battleState.hpLoss;
-	if(character.hp < 0) character.hp = 0;
-	else if(character.hp > charfunc.MAX_HP) character.hp = charfunc.MAX_HP;
-	character.classExp += battleState.classExp;
-	classfunc.levelUpClass(character, battleState);
 }
