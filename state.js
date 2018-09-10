@@ -375,6 +375,7 @@ exports.postresults = function(message, character, battleState, actives, grumbo)
 	//Postresults base/modifiers
 	battleState.endMessages = [];
 	battleState.avoidPostResults = false;
+	battleState.noDmgTaken = false;
 	battleState.hpLoss = 3;
 	battleState.classExp = 1;
 

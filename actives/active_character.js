@@ -162,6 +162,7 @@ exports.postresults.dodge = function(character, battleState, eventId, actives){
 	if(random < 8){
 
 		battleState.hpLoss = 0;
+		battleState.noDmgTaken = true;
 		battleState.endMessages.push("You dodged all attacks!");
 	}
 }
