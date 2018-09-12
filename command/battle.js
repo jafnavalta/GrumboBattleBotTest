@@ -131,6 +131,7 @@ function doBattle(message, args, character, currentTime, actives){
 		var grumbo = getRandomGrumbo(args[3]);
 		var battleState = {};
 		battleState.isBoss = false;
+		battleState.enemyLevel = args[3];
 		state.prebattle(message, args, character, battleState, actives, grumbo);
 
 		if(character.battlesLeft == 5){
@@ -165,7 +166,7 @@ function doBattle(message, args, character, currentTime, actives){
 
 				//Postresults determinations
 				state.postresults(message, character, battleState, actives, grumbo);
-				
+
 				//Calculate postresults variables
 				var leftover = (battleState.exp + character.experience) % 100;
 				battleState.gains = Math.floor(((battleState.exp + character.experience)/100));
@@ -202,7 +203,7 @@ function doBattle(message, args, character, currentTime, actives){
 
 				//Postresults determinations
 				state.postresults(message, character, battleState, actives, grumbo);
-				
+
 				//Calculate postresults variables
 				character.battlesLeft -= 1;
 				character.losses += 1;
@@ -232,7 +233,7 @@ function doBattle(message, args, character, currentTime, actives){
 			else if(character.hp > charfunc.MAX_HP) character.hp = charfunc.MAX_HP;
 			character.classExp += battleState.classExp;
 			classfunc.levelUpClass(character, battleState);
-			
+
 			endMessageString += "Here are your current stats:\n" + username + " Lv" + character.level + "  |  "
 					+ character.experience + " EXP  |  " + character.hp + " HP  |  " + character.gold + " Gold  |  Wins " + character.wins
 					+ "  |  Losses " + character.losses + "   |   Win% " + character.winrate + "\n"

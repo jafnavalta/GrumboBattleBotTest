@@ -14,6 +14,7 @@ let dbfunc = require('./data/db.js');
 
 //Initialize game functions
 let battlefunc = require('./command/battle.js');
+let bossfunc = require('./command/boss.js');
 let challengefunc = require('./command/challenge.js');
 let itemsfunc = require('./command/items.js');
 let shopfunc = require('./command/shop.js');
@@ -237,6 +238,14 @@ function parseCommand(message){
 		else if(args[1] == 'battle'){
 
 			battlefunc.commandBattle(message, args, character);
+		}
+
+		//////////////////
+		// !! BATTLE !! //
+		//////////////////
+		else if(args[1] == 'boss'){
+
+			bossfunc.commandBattle(message, args, character);
 		}
 
 		/////////////////////

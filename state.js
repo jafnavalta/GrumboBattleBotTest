@@ -252,7 +252,7 @@ exports.unequip = function(message, character, equip){
 */
 exports.prebattle = function(message, args, character, battleState, actives, grumbo){
 
-	battleState.levelDiffActual = character.level - args[3];
+	battleState.levelDiffActual = character.level - battleState.enemyLevel;
 
 	//Prebattle base/modifiers
 	battleState.preMessages = [];
@@ -266,7 +266,7 @@ exports.prebattle = function(message, args, character, battleState, actives, gru
 	battleState.dmgMod = 0;
 
 	battlefunc.calculateCharacterMods(message, args, character, battleState, actives, grumbo);
-	
+
 	//Prebattle character active functions
 	for(var i = character.prebattle.length - 1; i >= 0; i--){
 
@@ -297,8 +297,16 @@ exports.prebattle = function(message, args, character, battleState, actives, gru
 	};
 
 	//Calculate prebattle variables
-	battleState.levelDiff = character.level - args[3] + battleState.levelDiffMod;
-	battleState.chance = 50 + (battleState.levelDiff * 2) + Math.floor(Math.random() * 4) - 2 + battleState.chanceMod + battleState.powMod + battleState.wisMod + battleState.hpMod;
+	battleState.levelDiff = character.level - battleState.enemyLevel + battleState.levelDiffMod;
+	battleState.chance = Math.floor(Math.random() * 4) - 2 + battleState.chanceMod + battleState.powMod + battleState.wisMod + battleState.hpMod;
+	if(!battleState.isBoss){
+
+		battleState.chance += 50 + (battleState.levelDiff * 2);
+	}
+	else{
+
+		battleState.chance += grumbo.base_chance;
+	}
 	var max = 95 + battleState.maxMod;
 	var min = 5 + battleState.minMod;
 	if(battleState.levelDiff < -15){
@@ -328,7 +336,7 @@ exports.preresults = function(message, character, battleState, actives, grumbo){
 
 		battleState.win = true;
 	}
-	
+
 	//Preresults character active functions
 	for(var i = character.preresults.length - 1; i >= 0; i--){
 
@@ -359,8 +367,17 @@ exports.preresults = function(message, character, battleState, actives, grumbo){
 		}
 	};
 
-	//Calculate preresults variables
 	if(battleState.win){
+
+		battleState.dmgMod += 30;
+	}
+	else{
+
+		battleState.dmgMod += 10;
+	}
+
+	//Calculate preresults variables
+	if(battleState.win && !battleState.isBoss){
 
 		battleState.exp = battlefunc.calculateBattleExp(character, battleState.levelDiff, battleState);
 		battleState.gold = Math.ceil(battlefunc.calculateBattleGold(character, battleState.levelDiff) * (1 + (character.luk / 100)));
