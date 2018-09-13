@@ -1,8 +1,8 @@
 {
-  "bob": {
+  "venom_grumbo": {
     "gameId": 900,
-    "id": "bob",
-    "name": "Bob",
+    "id": "venom_grumbo",
+    "name": "Venom Grumbo",
     "level": 30,
     "hp": 200,
     "max_hp": 200,
@@ -11,11 +11,15 @@
     "wisBase": 75,
     "powX": 1.00,
 		"wisX": 1.00,
-    "description": "bob",
+    "description": "Poisonous. Toxic. But most importantly, Venomous. Venom Grumbo administers poison to its victims and deals extra damage to them as well!",
     "prebattle": [],
 		"preresults": [],
 		"postresults": [],
-    "victory": "bob",
-		"loss": "bob"
+    "victory": "$name has claimed victory over Eddi-- Venom Grumbo!",
+		"loss": "$name lay defeated in a pool of Venom Grumbo's toxic wasteland!",
+    "firstTime": "battle_potion",
+    "lootchance": [100, 60, 20],
+    "loot": ["", "battle_potion", "baseball_bat"],
+    "weights": [40, 20, 10]
   }
 }

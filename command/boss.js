@@ -12,6 +12,8 @@ let classfunc = require('../character/class.js');
 //Initialize list files
 let bossList = JSON.parse(fs.readFileSync("./values/bosses.json", "utf8"));
 let classList = JSON.parse(fs.readFileSync("./values/classes.json", "utf8"));
+let itemList = JSON.parse(fs.readFileSync("./values/items.json", "utf8"));
+let equipList = JSON.parse(fs.readFileSync("./values/equips.json", "utf8"));
 
 
 /**
@@ -21,11 +23,46 @@ exports.commandBattle = function(message, args, character){
 
   if(args[2] == 'info' && (args.length == 4 || (args.length == 5 && args[4] == '-d'))){
 
-    //TODO boss info
+    //DM user
+		var sender = message.author;
+		if(args.length == 5){
+
+			//Message channel
+			sender = message.channel;
+		}
+
+    var boss = bossList[args[3]];
+    if(boss != null){
+
+      var firstTime = itemList[boss.firstTime];
+      if(firstTime == null) firstTime = equipList[boss.firstTime];
+      var bossString = boss.name + "  |  Lv Req: " + boss.level + "  |  Command: " + boss.id + "\n"
+        + boss.description + "\n"
+        + "First time drop: " + firstTime.name;
+      sender.send(bossString);
+    }
+    else{
+
+      sender.send(args[3] + " is not a valid boss command.");
+    }
   }
   else if(args.length == 2 || (args.length == 3 && args[2] == '-d')){
 
-    //TODO display all bosses
+    //DM user
+		var sender = message.author;
+		if(args.length == 3){
+
+			//Message channel
+			sender = message.channel;
+		}
+
+    var bossesString = "Boss List\n\n";
+    for(var key in bossList){
+
+      var boss = bossList[key];
+      bossesString += boss.name + "  |  Lv Req: " + boss.level + "  |  Command: " + boss.id + "\n";
+    };
+    sender.send(bossesString);
   }
 	else if(args.length == 3){
 
@@ -119,6 +156,11 @@ function doBoss(message, args, character, currentTime, actives, boss){
 			{"_id": character._id},
 			{$set: {"battleLock": character.battleLock}},
 		function(error, result){
+
+    if(character.battlesLeft == 5){
+
+  		character.battletime = currentTime;
+  	}
 
     //Initialize boss stats
     boss.pow = boss.powBase;
@@ -272,7 +314,120 @@ function recursiveBossPhase2(battleState, message, args, character, currentTime,
 function finishBoss(battleState, message, args, character, currentTime, actives, boss){
 
   //TODO determine boss end results/do loot
-  message.channel.send("Its over");
+  //WIN
+  var username = message.member.displayName;
+  if(character.hp > 0){
+
+    var winString = boss.victory.replace('$name', username) + "\n";
+
+    //Create weighed array of loot
+    var weighedLoot = [];
+    for(var i = 0; i < boss.loot.length; i++){
+
+      var id = boss.loot[i];
+      var weight = boss.weights[i];
+      for(var j = 0; j < weight; j++){
+
+        weighedLoot.push(id);
+      }
+    }
+
+    for(var l = 0; l < boss.lootchance.length; l++){
+
+      var lootchance = boss.lootchance[l];
+      var random = Math.random() * 100;
+      //Gives firstTime item if they don't have it
+      if(l == 0 && !character.items.includes(boss.firstTime) && !character.equips.includes(boss.firstTime)){
+
+        var lootedItem = itemList[boss.firstTime];
+        if(lootedItem == null){
+
+          lootedItem = equipList[boss.firstTime];
+          character.equips.push(lootedItem.id);
+        }
+        else{
+
+          character.items.push(lootedItem.id);
+        }
+
+        winString += "You looted " + lootedItem.name + "!\n";
+      }
+      //Loot as normal
+      else{
+
+        if(random < lootchance + character.luk){
+
+          var lootrandom = Math.floor(Math.random() * (weighedLoot.length - 1));
+          var lootedId = weighedLoot[lootrandom];
+          //Receive loot
+          if(lootedId != ""){
+
+            var lootedItem = itemList[lootedId];
+            if(lootedItem == null){
+
+              //Equip
+              lootedItem = equipList[lootedId];
+              if(character.equips.includes(lootedItem.id)){
+
+                winString += "You tried to loot " + lootedItem.name + " but you already own it!";
+              }
+              else{
+
+                character.equips.push(lootedItem.id);
+                winString += "You looted " + lootedItem.name + "!\n";
+              }
+            }
+            else{
+
+              //Item
+              if(character.items.includes(lootedItem.id)){
+
+                var hasCount = 0;
+                for(var n = 0; n < character.items.length; n++){
+
+                  var itemId = character.items[n];
+                  if(itemId == lootedId) hasCount++;
+                }
+                if(hasCount >= lootedItem.max){
+
+                  winString += "You tried to loot " + lootedItem.name + " but you have too many in your items!";
+                }
+                else{
+
+                  character.items.push(lootedItem.id);
+                  winString += "You looted " + lootedItem.name + "!\n";
+                }
+              }
+              else{
+
+                character.items.push(lootedItem.id);
+                winString += "You looted " + lootedItem.name + "!\n";
+              }
+            }
+          }
+          //No loot
+          else{
+
+            winString += "A loot attempt came up empty handed!\n";
+          }
+        }
+      }
+    }
+    message.channel.send(winString);
+  }
+  //LOSE
+  else{
+
+    var loseString = boss.loss.replace('$name', username);
+    message.channel.send(loseString);
+  }
+
+  character.items.sort();
+  character.equips.sort();
+  character.battlesLeft -= 3;
+
+  //Save battle results
+  dbfunc.updateCharacter(character);
 }
 
 /**
