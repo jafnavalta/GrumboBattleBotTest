@@ -33,6 +33,7 @@ let guide = fs.readFileSync("./text/guide.txt", "utf8");
 let guide2 = fs.readFileSync("./text/guide2.txt", "utf8");
 let guide3 = fs.readFileSync("./text/guide3.txt", "utf8");
 let guide4 = fs.readFileSync("./text/guide4.txt", "utf8");
+let guide5 = fs.readFileSync("./text/guide5.txt", "utf8");
 let patchnotes = fs.readFileSync("./text/patchnotes.txt", "utf8");
 let classList = JSON.parse(fs.readFileSync("./values/classes.json", "utf8"));
 let equipList = JSON.parse(fs.readFileSync("./values/equips.json", "utf8"));
@@ -163,6 +164,7 @@ function parseCommand(message){
 			sender.send(guide2);
 			sender.send(guide3);
 			sender.send(guide4);
+			sender.send(guide5);
 		}
 
 		/////////////////
