@@ -306,6 +306,7 @@ exports.prebattle = function(message, args, character, battleState, actives, gru
 	else{
 
 		battleState.chance += grumbo.base_chance;
+		battleState.dmgMod += battleState.chance;
 	}
 	var max = 95 + battleState.maxMod;
 	var min = 5 + battleState.minMod;
@@ -331,10 +332,11 @@ exports.preresults = function(message, character, battleState, actives, grumbo){
 	//Preresults base/modifiers
 	battleState.preResMessages = [];
 	battleState.expMod = 0;
-	battleState.win = false;
-	if(battleState.result < battleState.chance){
+	battleState.win = true;
+	if(battleState.result >= battleState.chance){
 
-		battleState.win = true;
+		battleState.win = false;
+		battleState.dmgMod = Math.ceil(battleState.dmgMod/2);
 	}
 
 	//Preresults character active functions
@@ -366,15 +368,6 @@ exports.preresults = function(message, character, battleState, actives, grumbo){
 			}
 		}
 	};
-
-	if(battleState.win){
-
-		battleState.dmgMod += 30;
-	}
-	else{
-
-		battleState.dmgMod += 10;
-	}
 
 	//Calculate preresults variables
 	if(battleState.win && !battleState.isBoss){

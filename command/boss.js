@@ -35,6 +35,10 @@ exports.commandBattle = function(message, args, character){
     if(bossList[bossId] != null){
 
       var boss = bossList[bossId];
+
+      //Reset bosses
+      bossList = JSON.parse(fs.readFileSync("./values/bosses.json", "utf8"));
+
       //Determine how many battles they should have left
   		var date = new Date();
   		var currentTime = date.getTime();
@@ -131,7 +135,8 @@ function doBoss(message, args, character, currentTime, actives, boss){
 			character.battletime = currentTime;
 		}
 
-    //TODO preboss fight message!
+    var username = message.member.displayName;
+    message.channel.send(username + " has begun a boss battle against " + boss.name + "!");
 
     recursiveBossPhase(battleState, message, args, character, currentTime, actives, boss);
 	});
@@ -142,22 +147,36 @@ function doBoss(message, args, character, currentTime, actives, boss){
 */
 function recursiveBossPhase(battleState, message, args, character, currentTime, actives, boss){
 
-  battleState.phase += 1;
-  state.prebattle(message, args, character, battleState, actives, boss);
+  setTimeout(function(){
 
-  var username = message.member.displayName;
-  var preMessageString = battleState.phase; //TODO premessage string
-  battleState.preMessages.forEach(function(preMessage){
+    //TODO DO NORMAL CALCULATIONS, THEN BOSS CONFIGURATION
 
-    preMessageString += preMessage + "\n";
-  });
-  preMessageString += ""; //TODO %chance of victory for phase
-  message.channel.send(preMessageString);
+    battleState.phase += 1;
+    state.prebattle(message, args, character, battleState, actives, boss);
 
-  console.log(battleState.chance);
+    var username = message.member.displayName;
+    var preMessageString = "########## PHASE " + battleState.phase + " ##########\n#\n" +
+      "# " + username + "  HP  " + character.hp + "  |  " + boss.name + "  HP  " + boss.hp + "\n";
+    battleState.preMessages.forEach(function(preMessage){
+
+      preMessageString += "# " + preMessage + "\n";
+    });
+    preMessageString += "# Phase victory chance: " + battleState.chance + "%\n# ...";
+    message.channel.send(preMessageString);
+
+    recursiveBossPhase2(battleState, message, args, character, currentTime, actives, boss)
+  }, 1500);
+}
+
+/**
+* Second part of recursive function.
+*/
+function recursiveBossPhase2(battleState, message, args, character, currentTime, actives, boss){
 
   //Wait 4 seconds before determining/displaying phase results
   setTimeout(function(){
+
+    var username = message.member.displayName;
 
     //Determine phase results
     battleState.result = Math.floor(Math.random() * (101));
@@ -166,28 +185,29 @@ function recursiveBossPhase(battleState, message, args, character, currentTime, 
     state.preresults(message, character, battleState, actives, boss);
 
     //If victory
-    var endMessageString = battleState.phase + " "; //TODO is empty to start
+    var endMessageString = "";
     if(battleState.win){
 
       //Postresults determinations
       state.postresults(message, character, battleState, actives, boss);
 
-      endMessageString += ""; //TODO preresmessages phase win
+      endMessageString += "# " + username + "'s attack was successful this phase!\n";
       battleState.preResMessages.forEach(function(preResMessage){
 
-        endMessageString += preResMessage + "\n";
+        endMessageString += "# " + preResMessage + "\n";
       });
       if(battleState.hpLoss >= 0){
 
-        endMessageString += ""; //TODO damage taken in phase win
+        endMessageString += "# " + username + " took " + battleState.hpLoss + " damage!\n";
       }
       else{
 
-        endMessageString += ""; //TODO damage recovered in phase win
+        endMessageString += "# " + username + " recovered " + battleState.hpLoss + " HP!\n";
       }
+      endMessageString += "# " + username + " dealt " + battleState.dmgMod + " damage to " + boss.name + "!\n";
       battleState.endMessages.forEach(function(endMessage){
 
-        endMessageString += endMessage + "\n";
+        endMessageString += "# " + endMessage + "\n";
       });
     }
     //If loss
@@ -196,24 +216,26 @@ function recursiveBossPhase(battleState, message, args, character, currentTime, 
       //Postresults determinations
       state.postresults(message, character, battleState, actives, boss);
 
-      endMessageString += ""; //TODO preresmessages phase loss
+      endMessageString += "# " + username + " was overwhelmed this phase! Your damage was significantly reduced!\n";
       battleState.preResMessages.forEach(function(preResMessage){
 
-        endMessageString += preResMessage + "\n";
+        endMessageString += "# " + preResMessage + "\n";
       });
       if(battleState.hpLoss >= 0){
 
-        endMessageString += ""; //TODO damage taken in phase loss
+        endMessageString += "# " + username + " took " + battleState.hpLoss + " damage!\n";
       }
       else{
 
-        endMessageString += ""; //TODO damage recovered in phass loss
+        endMessageString += "# " + username + " recovered " + battleState.hpLoss + " HP!\n";
       }
+      endMessageString += "# " + username + " dealt " + battleState.dmgMod + " damage to " + boss.name + "!\n";
       battleState.endMessages.forEach(function(endMessage){
 
-        endMessageString += endMessage + "\n";
+        endMessageString += "# " + endMessage + "\n";
       });
     }
+    endMessageString += "#\n";
 
     character.hp -= battleState.hpLoss;
     if(character.hp < 0) character.hp = 0;
@@ -222,20 +244,23 @@ function recursiveBossPhase(battleState, message, args, character, currentTime, 
     if(boss.hp < 0) boss.hp = 0;
     else if(boss.hp > boss.max_hp) boss.hp = boss.max_hp;
 
-    endMessageString += character.hp + " " + boss.hp; //TODO end phase message
-    message.channel.send(endMessageString);
+    endMessageString += "# " + username + "  HP  " + character.hp + "  |  " + boss.name + "  HP  " + boss.hp + "\n#\n"
+      + "######### END PHASE " + battleState.phase + " ########";
 
     character.battleLock = false;
 
     //Save battle results
     dbfunc.updateCharacter(character);
 
+    //Wait a bit before next phase
     if(character.hp > 0 && boss.hp > 0){
 
+      message.channel.send(endMessageString);
       recursiveBossPhase(battleState, message, args, character, currentTime, actives, boss);
     }
     else{
 
+      message.channel.send(endMessageString);
       finishBoss(battleState, message, args, character, currentTime, actives, boss);
     }
   }, 5000);
@@ -246,7 +271,7 @@ function recursiveBossPhase(battleState, message, args, character, currentTime, 
 */
 function finishBoss(battleState, message, args, character, currentTime, actives, boss){
 
-  //TODO determine boss end results
+  //TODO determine boss end results/do loot
   message.channel.send("Its over");
 }
 
