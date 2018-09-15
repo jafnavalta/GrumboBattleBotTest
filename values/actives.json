@@ -418,5 +418,38 @@
 		],
 		"description": "DEF/8 % chance to outright win against Grumbos who are lower level than you. Against bosses, DEF/8 % chance to reduce damage received by 7.",
 		"duration": null
+	},
+	"grab_bag": {
+		"gameId": 70022,
+		"id": "grab_bag",
+		"name": "Grab Bag",
+		"effect": "good",
+		"battleStates": [
+			"postresults"
+		],
+		"description": "66% chance to increase experience gained by 10 or gold gained by 25.",
+		"duration": null
+	},
+	"lifesteal": {
+		"gameId": 70023,
+		"id": "lifesteal",
+		"name": "Lifesteal",
+		"effect": "good",
+		"battleStates": [
+			"postresults"
+		],
+		"description": "75% chance to reduce damage received by 2% of POW.",
+		"duration": null
+	},
+	"revenge": {
+		"gameId": 70024,
+		"id": "revenge",
+		"name": "Revenge",
+		"effect": "good",
+		"battleStates": [
+			"prebattle"
+		],
+		"description": "Higher chance of activation the lower the HP you are. Increases chance of victory by POW/12. Against bosses, deal extra damage equal to POW/5.",
+		"duration": null
 	}
 }

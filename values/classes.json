@@ -12,7 +12,10 @@
     "description": "Your typical Grumbo Adventurer. Specializes in nothing. However, you can gain a permanent +2 boost to POW/WIS/DEF and +1 to RES/SPD/LUK every other class level!",
 		"perks": [
 		    "The Adventurer gets no perks at class level 1.",
-				"Become more observant. Learn the Observation active."
+				"Become more observant. Learn the Observation active.",
+				"POW/WIS/DEF +2 and RES/SPD/LUK +1 when classed as an Adventurer.",
+				"RES +4 / LUK +5 when classed as an Adventurer.",
+				"Try your chances for a small reward with the Adventurer's Grab Bag."
 		]
 	},
   "warrior": {
@@ -95,7 +98,10 @@
     "description": "The Knight is a sturdy fellow. Gain a permanent +2 boost to DEF every class level.",
 		"perks": [
 		    "The Knight can make full use of their Armory.",
-				"DEF +4 when classed as a Knight."
+				"DEF +4 when classed as a Knight.",
+				"Recoil can activate against enemies.",
+				"SPD +5 / RES +4 / POW +4 when classed as a Knight.",
+				"Stand Your Ground against weaker enemies."
 		]
 	}
 }

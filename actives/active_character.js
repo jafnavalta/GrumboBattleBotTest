@@ -152,6 +152,17 @@ exports.prebattle.recoil = function(character, battleState, eventId, actives){
 	}
 }
 
+exports.prebattle.revenge = function(character, battleState, eventId, actives){
+
+	var random = Math.random() * 100;
+	if(random < (100 - character.hp)/2){
+
+		battleState.chanceMod += Math.floor(character.pow/12);
+		battleState.dmgMod += Math.floor(character.pow/5);
+		battleState.preMessages.push("You attack back in Revenge!");
+	}
+}
+
 ////////////////////////////////////
 // CHARACTER PRERESULTS FUNCTIONS //
 ////////////////////////////////////
@@ -333,7 +344,7 @@ exports.postresults.crimson_blood = function(character, battleState, eventId, ac
 
 exports.postresults.regen = function(character, battleState, eventId, actives){
 
-	battleState.hpLoss -= 3
+	battleState.hpLoss -= 3;
 }
 
 exports.postresults.miracle = function(character, battleState, eventId, actives){
@@ -362,5 +373,34 @@ exports.postresults.stand_your_ground = function(character, battleState, eventId
 
 		battleState.hpLoss -= 7;
 		battleState.endMessages.push("You stood your ground!");
+	}
+}
+
+exports.postresults.grab_bag = function(character, battleState, eventId, actives){
+
+	var random = Math.random() * 100;
+	if(random < 66){
+
+		if(random < 33){
+
+			battleState.exp += 10;
+			battleState.endMessages.push("You pulled 10 experience out of the Grab Bag!");
+		}
+		else{
+
+			battleState.gold += 25;
+			battleState.endMessages.push("You pulled 25 gold out of the Grab Bag!");
+		}
+	}
+}
+
+exports.postresults.lifesteal = function(character, battleState, eventId, actives){
+
+	var random = Math.random() * 100;
+	if(random < 75){
+
+		var stole = Math.ceil(character.pow * 0.02);
+		battleState.hpLoss -= stole;
+		battleState.endMessages.push("You lifestole for " + stole + " damage.");
 	}
 }
