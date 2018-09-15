@@ -78,8 +78,24 @@
 		    "The Cleric reduces damage received per battle with the Regen active.",
 				"RES +3 when classed as a Cleric.",
 				"The Cleric can further reduce damage received with the Miracle active.",
-				"Increase your battle strength with the Holy.",
+				"Increase your battle strength with Holy.",
 				"RES +1 / WIS +8 when classed as a Cleric."
+		]
+	},
+  "knight": {
+		"gameId": 105,
+    "pow": "C+",
+    "wis": "D",
+    "def": "A+",
+    "res": "D-",
+    "spd": "F",
+    "luk": "C",
+		"classId": "knight",
+		"className": "Knight",
+    "description": "The Knight is a sturdy fellow. Gain a permanent +2 boost to DEF every class level.",
+		"perks": [
+		    "The Knight can make full use of their Armory.",
+				"DEF +4 when classed as a Knight."
 		]
 	}
 }

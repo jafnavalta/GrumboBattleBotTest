@@ -305,7 +305,7 @@
 		"battleStates": [
 			"postresults"
 		],
-		"description": "Activates when below 120 HP. If you have less than POW 81 or WIS 81 or RES 6, receive damage equal to the difference between your POW and WIS. Only activates once.",
+		"description": "Activates when below 120 HP. If you have less than POW 85 or WIS 85 or RES 8, receive damage equal to the difference between your POW and WIS. Only activates once.",
 		"duration": null
 	},
 	"red_eye": {
@@ -338,7 +338,7 @@
 		"battleStates": [
 			"postresults"
 		],
-		"description": "Activates in Phase 2 against Crimson Grumbo. Puts the Crimson Blood active on your character. (DEF * 0.8)% chance of removing the active every battle/phase. Lasts 2 turns. On the second turn, if it's still active, receive an additional 100 damage.",
+		"description": "Activates in Phase 2 against Crimson Grumbo. Puts the Crimson Blood active on your character. 0.7*(DEF+RES)% chance of removing the active every battle/phase. Lasts 2 turns. On the second turn, if it's still active, receive an additional 100 damage.",
 		"duration": 2
 	},
 	"crimson": {
@@ -349,7 +349,7 @@
 		"battleStates": [
 			"prebattle"
 		],
-		"description": "Increases max chance of victory  by 5%. (DEF * 0.8)% chance of increasing chance of victory by 5.",
+		"description": "Increases max chance of victory  by 5%. 0.7*(DEF+RES)% chance of increasing chance of victory by 5.",
 		"duration": null
 	},
 	"regen": {
@@ -382,7 +382,41 @@
 		"battleStates": [
 			"prebattle"
 		],
-		"description": "RES% chance to increase chance of victory by WIS/12 and damage by WIS/8.",
+		"description": "RES % chance to increase chance of victory by WIS/12 and damage by WIS/8.",
+		"duration": null
+	},
+	"armory": {
+		"gameId": 70019,
+		"id": "armory",
+		"name": "Armory",
+		"effect": "good",
+		"battleStates": [
+			"prebattle"
+		],
+		"description": "DEF/7 % chance to increase chance of victory and damage by the amount of equips in your inventory up to a maximum of 12.",
+		"duration": null
+	},
+	"recoil": {
+		"gameId": 70020,
+		"id": "recoil",
+		"name": "Recoil",
+		"effect": "good",
+		"battleStates": [
+			"prebattle"
+		],
+		"description": "POW/10 % chance to increase chance of victory by the difference between your POW and DEF divided by 5 and increases damage dealt against bosses by that same difference divided by 2.",
+		"duration": null
+	},
+	"stand_your_ground": {
+		"gameId": 70021,
+		"id": "stand_your_ground",
+		"name": "Stand Your Ground",
+		"effect": "good",
+		"battleStates": [
+			"preresults",
+			"postresults"
+		],
+		"description": "DEF/8 % chance to outright win against Grumbos who are lower level than you. Against bosses, DEF/8 % chance to reduce damage received by 7.",
 		"duration": null
 	}
 }

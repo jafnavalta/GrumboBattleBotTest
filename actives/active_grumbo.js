@@ -305,7 +305,7 @@ exports.postresults.equalizer = function(character, battleState, eventId, active
 	if(battleState.bossHp < 120 && battleState.equalized == null){
 
 		battleState.equalized = true;
-		if(character.res < 6 || character.pow < 81 || character.wis < 81){
+		if(character.res < 8 || character.pow < 85 || character.wis < 85){
 
 			battleState.hpLoss += Math.abs(character.pow - character.wis);
 			battleState.endMessages.push("Venom Grumbo has panicked and used the Equalizer active!");

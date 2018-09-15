@@ -6,9 +6,9 @@
     "level": 30,
     "hp": 400,
     "max_hp": 400,
-    "base_chance": 50,
-    "powBase": 80,
-    "wisBase": 90,
+    "base_chance": 48,
+    "powBase": 90,
+    "wisBase": 94,
     "powX": 1.00,
 		"wisX": 1.00,
     "description": "Poisonous. Toxic. But most importantly, Venomous. Venom Grumbo administers poison to its victims and deals extra damage to them as well!",
@@ -25,19 +25,19 @@
 		"loss": "$name lay defeated in a pool of Venom Grumbo's toxic wasteland!",
     "firstTime": "venom_mask",
     "lootchance": [100, 60, 20],
-    "loot": ["", "antidote", "medicine", "mini_magnet", "venom_mask_ex"],
-    "weights": [40, 35, 15, 5, 5]
+    "loot": ["", "antidote", "medicine", "mini_magnet", "venom_plate", "venom_mask_ex"],
+    "weights": [40, 36, 16, 5, 4, 4]
   },
   "crimson_grumbo": {
     "gameId": 901,
     "id": "crimson_grumbo",
     "name": "Crimson Grumbo",
     "level": 60,
-    "hp": 600,
-    "max_hp": 600,
-    "base_chance": 40,
-    "powBase": 101,
-    "wisBase": 122,
+    "hp": 620,
+    "max_hp": 620,
+    "base_chance": 38,
+    "powBase": 116,
+    "wisBase": 130,
     "powX": 1.00,
 		"wisX": 1.00,
     "description": "The red-eyed Crimson Grumbo. His crimson eyes make for some scary effects!",
@@ -54,7 +54,7 @@
 		"loss": "$name was smashed to bits by the Crimson Grumbo!",
     "firstTime": "crimson_dagger",
     "lootchance": [95, 50, 10],
-    "loot": ["", "battle_potion", "feather_stone", "blood_potion", "crimson_scepter"],
-    "weights": [35, 45, 15, 8, 5]
+    "loot": ["", "battle_potion", "feather_stone", "blood_potion", "crimson_staff", "crimson_scepter"],
+    "weights": [35, 45, 15, 8, 4, 4]
   }
 }

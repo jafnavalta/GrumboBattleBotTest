@@ -102,8 +102,8 @@ exports.prebattle.crimson = function(character, battleState, eventId, actives){
 
 	battleState.maxMod += 5;
 	var random = Math.random() * 100;
-	var def80 = character.def * 0.8;
-	if(random < def80){
+	var increase = (character.def + character.res) * 0.7;
+	if(random < increase){
 
 		battleState.chanceMod += 5;
 		battleState.preMessages.push("Crimson increased chance of victory by 5%!");
@@ -124,6 +124,31 @@ exports.prebattle.holy = function(character, battleState, eventId, actives){
 		battleState.chanceMod += Math.floor(character.wis/12);
 		battleState.dmgMod += Math.ceil(character.wis/8);
 		battleState.preMessages.push("Holy activated!");
+	}
+}
+
+exports.prebattle.armory = function(character, battleState, eventId, actives){
+
+	var random = Math.random() * 100;
+	if(random < character.def/7){
+
+		var mod = character.equips.length;
+		if(mod > 12) mod = 12;
+		battleState.chanceMod += mod;
+		battleState.dmgMod += mod;
+		battleState.preMessages.push("You produced your Armory!");
+	}
+}
+
+exports.prebattle.recoil = function(character, battleState, eventId, actives){
+
+	var random = Math.random() * 100;
+	if(random < character.pow/10){
+
+		var mod = Math.abs(character.pow - character.def);
+		battleState.chanceMod += Math.floor(mod/5);
+		battleState.dmgMod += Math.floor(mod/2);
+		battleState.preMessages.push("Recoil affected the enemy!");
 	}
 }
 
@@ -152,6 +177,19 @@ exports.preresults.second_chance = function(character, battleState, eventId, act
 
 			battleState.win = true;
 			battleState.preResMessages.push("The second chance succeeded!");
+		}
+	}
+}
+
+exports.preresults.stand_your_ground = function(character, battleState, eventId, actives){
+
+	if(!battleState.win && !battleState.isBoss && battleState.levelDiffActual > 0){
+
+		var random = Math.random() * 100;
+		if(random < character.def/8){
+
+			battleState.win = true;
+			battleState.preResMessages.push("You stood your ground!");
 		}
 	}
 }
@@ -272,8 +310,8 @@ exports.postresults.crimson_blood = function(character, battleState, eventId, ac
 	}
 
 	var random = Math.random() * 100;
-	var def80 = character.def * 0.8;
-	if(random < def80){
+	var remove = (character.def + character.res) * 0.7;
+	if(random < remove){
 
 		//Remove completely
 		var index = character.postresults.indexOf(eventId);
@@ -314,5 +352,15 @@ exports.postresults.miracle = function(character, battleState, eventId, actives)
 
 			battleState.miracle = true;
 		}
+	}
+}
+
+exports.postresults.stand_your_ground = function(character, battleState, eventId, actives){
+
+	var random = Math.random() * 100;
+	if(random < character.def/8){
+
+		battleState.hpLoss -= 7;
+		battleState.endMessages.push("You stood your ground!");
 	}
 }
