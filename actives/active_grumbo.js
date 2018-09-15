@@ -21,6 +21,48 @@ exports.prebattle.wumbo = function(character, battleState, eventId, actives){
 	battleState.maxMod -= 25;
 }
 
+//BOSS Venom Grumbo
+exports.prebattle.venom = function(character, battleState, eventId, actives){
+
+	if(!character.postresults.includes('poison_charm')){
+
+		if(!character.items.includes('antidote')){
+
+			var active;
+			if(character.prebattle.includes('poison')){
+
+				for(var i = 0; i < actives.length; i++){
+
+					if(actives[i].id == 'poison'){
+
+						active = actives[i];
+						active.duration += activesList['poison'].duration;
+						if(active.duration > 10) active.duration = 10;
+						dbfunc.updateActive(active);
+						break;
+					}
+				}
+			}
+			else{
+
+				active = activesList['poison'];
+				dbfunc.pushToState(character, 'poison', active, active.battleStates, 1);
+			}
+			battleState.preMessages.push("Venom Grumbo has inflicted Poison on you!");
+		}
+		else{
+
+			var index = character.items.indexOf('antidote');
+			character.items.splice(index, 1);
+			battleState.preMessages.push("You avoided Venom Grumbo's Poison but it destroyed one of your antidotes!");
+		}
+	}
+	else{
+
+		battleState.preMessages.push("Poison Charm protects you from Venom Grumbo's Poison.");
+	}
+}
+
 /////////////////////////////////
 // GRUMBO PRERESULTS FUNCTIONS //
 /////////////////////////////////
@@ -203,5 +245,35 @@ exports.postresults.petrify = function(character, battleState, eventId, actives)
 		}
 		charfunc.calculateStats(character);
 		battleState.endMessages.push("You've been petrified!");
+	}
+}
+
+//BOSS Venom Grumbo
+exports.postresults.venom_bite = function(character, battleState, eventId, actives){
+
+	battleState.hpLoss += 3 + Math.floor((Math.random() * 4) - 2);
+	if(character.prebattle.includes('poison')){
+
+		var active;
+		battleState.hpLoss = battleState.hpLoss * 5;
+		battleState.endMessages.push("Venom Bite deals significantly more damage to Poison victims!");
+	}
+}
+
+//BOSS Venom Grumbo
+exports.postresults.equalizer = function(character, battleState, eventId, actives){
+
+	if(battleState.bossHp < 120 && battleState.equalized == null){
+
+		battleState.equalized = true;
+		if(character.res < 6 || character.pow < 81 || character.wis < 81){
+
+			battleState.hpLoss += Math.abs(character.pow - character.wis);
+			battleState.endMessages.push("Venom Grumbo has panicked and used the Equalizer active!");
+		}
+		else{
+
+			battleState.endMessages.push("Venom Grumbo's Equalizer was ineffective!");
+		}
 	}
 }

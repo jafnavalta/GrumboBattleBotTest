@@ -12,6 +12,7 @@ let classfunc = require('../character/class.js');
 //Initialize list files
 let bossList = JSON.parse(fs.readFileSync("./values/bosses.json", "utf8"));
 let classList = JSON.parse(fs.readFileSync("./values/classes.json", "utf8"));
+let activeList = JSON.parse(fs.readFileSync("./values/actives.json", "utf8"));
 let itemList = JSON.parse(fs.readFileSync("./values/items.json", "utf8"));
 let equipList = JSON.parse(fs.readFileSync("./values/equips.json", "utf8"));
 
@@ -37,8 +38,41 @@ exports.commandBattle = function(message, args, character){
       var firstTime = itemList[boss.firstTime];
       if(firstTime == null) firstTime = equipList[boss.firstTime];
       var bossString = boss.name + "  |  Lv Req: " + boss.level + "  |  Command: " + boss.id + "\n"
+        + "POW " + boss.powBase + "  |  WIS " + boss.wisBase + "\n"
         + boss.description + "\n"
-        + "First time drop: " + firstTime.name;
+        + "Actives: ";
+      for(var i = 0; i < boss.actives.length; i++){
+
+        var activeName = activeList[boss.actives[i]].name;
+        bossString += activeName;
+        if(i == boss.actives.length - 1){
+
+          bossString += "\n";
+        }
+        else{
+
+          bossString += ", ";
+        }
+      }
+      bossString += "Loot: ";
+      for(var j = 0; j < boss.loot.length; j++){
+
+        if(boss.loot[j] != ""){
+
+          var lootedItem = itemList[boss.loot[j]];
+          if(lootedItem == null) lootedItem = equipList[boss.loot[j]];
+          bossString += lootedItem.name;
+          if(j == boss.loot.length - 1){
+
+            bossString += "\n";
+          }
+          else{
+
+            bossString += ", ";
+          }
+        }
+      }
+      bossString += "First time drop: " + firstTime.name;
       sender.send(bossString);
     }
     else{
@@ -191,22 +225,23 @@ function recursiveBossPhase(battleState, message, args, character, currentTime, 
 
   setTimeout(function(){
 
-    //TODO DO NORMAL CALCULATIONS, THEN BOSS CONFIGURATION
+    dbfunc.getDB().collection("actives").find({"character": character._id}).toArray(function(err, actives2){
 
-    battleState.phase += 1;
-    state.prebattle(message, args, character, battleState, actives, boss);
+      battleState.phase += 1;
+      state.prebattle(message, args, character, battleState, actives2, boss);
 
-    var username = message.member.displayName;
-    var preMessageString = "########## PHASE " + battleState.phase + " ##########\n#\n" +
-      "# " + username + "  HP  " + character.hp + "  |  " + boss.name + "  HP  " + boss.hp + "\n";
-    battleState.preMessages.forEach(function(preMessage){
+      var username = message.member.displayName;
+      var preMessageString = "########## PHASE " + battleState.phase + " ##########\n#\n" +
+        "# " + username + "  HP  " + character.hp + "  |  " + boss.name + "  HP  " + boss.hp + "\n";
+      battleState.preMessages.forEach(function(preMessage){
 
-      preMessageString += "# " + preMessage + "\n";
+        preMessageString += "# " + preMessage + "\n";
+      });
+      preMessageString += "# Phase victory chance: " + battleState.chance + "%\n# ...";
+      message.channel.send(preMessageString);
+
+      recursiveBossPhase2(battleState, message, args, character, currentTime, actives2, boss);
     });
-    preMessageString += "# Phase victory chance: " + battleState.chance + "%\n# ...";
-    message.channel.send(preMessageString);
-
-    recursiveBossPhase2(battleState, message, args, character, currentTime, actives, boss)
   }, 1500);
 }
 
@@ -218,93 +253,95 @@ function recursiveBossPhase2(battleState, message, args, character, currentTime,
   //Wait 4 seconds before determining/displaying phase results
   setTimeout(function(){
 
-    var username = message.member.displayName;
+    dbfunc.getDB().collection("actives").find({"character": character._id}).toArray(function(err, actives2){
+      var username = message.member.displayName;
 
-    //Determine phase results
-    battleState.result = Math.floor(Math.random() * (101));
+      //Determine phase results
+      battleState.result = Math.floor(Math.random() * (101));
 
-    //Preresults determinations
-    state.preresults(message, character, battleState, actives, boss);
+      //Preresults determinations
+      state.preresults(message, character, battleState, actives2, boss);
 
-    //If victory
-    var endMessageString = "";
-    if(battleState.win){
+      //If victory
+      var endMessageString = "";
+      if(battleState.win){
 
-      //Postresults determinations
-      state.postresults(message, character, battleState, actives, boss);
+        //Postresults determinations
+        state.postresults(message, character, battleState, actives2, boss);
 
-      endMessageString += "# " + username + "'s attack was successful this phase!\n";
-      battleState.preResMessages.forEach(function(preResMessage){
+        endMessageString += "# " + username + "'s attack was successful this phase!\n";
+        battleState.preResMessages.forEach(function(preResMessage){
 
-        endMessageString += "# " + preResMessage + "\n";
-      });
-      if(battleState.hpLoss >= 0){
+          endMessageString += "# " + preResMessage + "\n";
+        });
+        battleState.endMessages.forEach(function(endMessage){
 
-        endMessageString += "# " + username + " took " + battleState.hpLoss + " damage!\n";
+          endMessageString += "# " + endMessage + "\n";
+        });
+        if(battleState.hpLoss >= 0){
+
+          endMessageString += "# " + username + " took " + battleState.hpLoss + " damage!\n";
+        }
+        else{
+
+          endMessageString += "# " + username + " recovered " + battleState.hpLoss + " HP!\n";
+        }
+        endMessageString += "# " + username + " dealt " + battleState.dmgMod + " damage to " + boss.name + "!\n";
+      }
+      //If loss
+      else{
+
+        //Postresults determinations
+        state.postresults(message, character, battleState, actives2, boss);
+
+        endMessageString += "# " + username + " was overwhelmed this phase! Your damage was significantly reduced!\n";
+        battleState.preResMessages.forEach(function(preResMessage){
+
+          endMessageString += "# " + preResMessage + "\n";
+        });
+        battleState.endMessages.forEach(function(endMessage){
+
+          endMessageString += "# " + endMessage + "\n";
+        });
+        if(battleState.hpLoss >= 0){
+
+          endMessageString += "# " + username + " took " + battleState.hpLoss + " damage!\n";
+        }
+        else{
+
+          endMessageString += "# " + username + " recovered " + battleState.hpLoss + " HP!\n";
+        }
+        endMessageString += "# " + username + " dealt " + battleState.dmgMod + " damage to " + boss.name + "!\n";
+      }
+      endMessageString += "#\n";
+
+      character.hp -= battleState.hpLoss;
+      if(character.hp < 0) character.hp = 0;
+      else if(character.hp > charfunc.MAX_HP) character.hp = charfunc.MAX_HP;
+      boss.hp -= battleState.dmgMod;
+      if(boss.hp < 0) boss.hp = 0;
+      else if(boss.hp > boss.max_hp) boss.hp = boss.max_hp;
+
+      endMessageString += "# " + username + "  HP  " + character.hp + "  |  " + boss.name + "  HP  " + boss.hp + "\n#\n"
+        + "######### END PHASE " + battleState.phase + " ########";
+
+      character.battleLock = false;
+
+      //Save battle results
+      dbfunc.updateCharacter(character);
+
+      //Wait a bit before next phase
+      if(character.hp > 0 && boss.hp > 0){
+
+        message.channel.send(endMessageString);
+        recursiveBossPhase(battleState, message, args, character, currentTime, actives2, boss);
       }
       else{
 
-        endMessageString += "# " + username + " recovered " + battleState.hpLoss + " HP!\n";
+        message.channel.send(endMessageString);
+        finishBoss(battleState, message, args, character, currentTime, actives2, boss);
       }
-      endMessageString += "# " + username + " dealt " + battleState.dmgMod + " damage to " + boss.name + "!\n";
-      battleState.endMessages.forEach(function(endMessage){
-
-        endMessageString += "# " + endMessage + "\n";
-      });
-    }
-    //If loss
-    else{
-
-      //Postresults determinations
-      state.postresults(message, character, battleState, actives, boss);
-
-      endMessageString += "# " + username + " was overwhelmed this phase! Your damage was significantly reduced!\n";
-      battleState.preResMessages.forEach(function(preResMessage){
-
-        endMessageString += "# " + preResMessage + "\n";
-      });
-      if(battleState.hpLoss >= 0){
-
-        endMessageString += "# " + username + " took " + battleState.hpLoss + " damage!\n";
-      }
-      else{
-
-        endMessageString += "# " + username + " recovered " + battleState.hpLoss + " HP!\n";
-      }
-      endMessageString += "# " + username + " dealt " + battleState.dmgMod + " damage to " + boss.name + "!\n";
-      battleState.endMessages.forEach(function(endMessage){
-
-        endMessageString += "# " + endMessage + "\n";
-      });
-    }
-    endMessageString += "#\n";
-
-    character.hp -= battleState.hpLoss;
-    if(character.hp < 0) character.hp = 0;
-    else if(character.hp > charfunc.MAX_HP) character.hp = charfunc.MAX_HP;
-    boss.hp -= battleState.dmgMod;
-    if(boss.hp < 0) boss.hp = 0;
-    else if(boss.hp > boss.max_hp) boss.hp = boss.max_hp;
-
-    endMessageString += "# " + username + "  HP  " + character.hp + "  |  " + boss.name + "  HP  " + boss.hp + "\n#\n"
-      + "######### END PHASE " + battleState.phase + " ########";
-
-    character.battleLock = false;
-
-    //Save battle results
-    dbfunc.updateCharacter(character);
-
-    //Wait a bit before next phase
-    if(character.hp > 0 && boss.hp > 0){
-
-      message.channel.send(endMessageString);
-      recursiveBossPhase(battleState, message, args, character, currentTime, actives, boss);
-    }
-    else{
-
-      message.channel.send(endMessageString);
-      finishBoss(battleState, message, args, character, currentTime, actives, boss);
-    }
+    });
   }, 5000);
 }
 
@@ -313,7 +350,6 @@ function recursiveBossPhase2(battleState, message, args, character, currentTime,
 */
 function finishBoss(battleState, message, args, character, currentTime, actives, boss){
 
-  //TODO determine boss end results/do loot
   //WIN
   var username = message.member.displayName;
   if(character.hp > 0){
@@ -369,7 +405,7 @@ function finishBoss(battleState, message, args, character, currentTime, actives,
               lootedItem = equipList[lootedId];
               if(character.equips.includes(lootedItem.id)){
 
-                winString += "You tried to loot " + lootedItem.name + " but you already own it!";
+                winString += "You tried to loot " + lootedItem.name + " but you already own it!\n";
               }
               else{
 
@@ -390,7 +426,7 @@ function finishBoss(battleState, message, args, character, currentTime, actives,
                 }
                 if(hasCount >= lootedItem.max){
 
-                  winString += "You tried to loot " + lootedItem.name + " but you have too many in your items!";
+                  winString += "You tried to loot " + lootedItem.name + " but you have too many in your items!\n";
                 }
                 else{
 

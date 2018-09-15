@@ -23,6 +23,8 @@ exports.immediate.medicine = function(message, character, state, eventId, event,
 		var used = 0;
 		for(var i = 0; i < amount; i++){
 
+			var index = character.items.indexOf(eventId);
+			character.items.splice(index, 1);
 			character.hp += 40;
 			used++;
 			if(character.hp >= 100){
@@ -81,6 +83,8 @@ exports.immediate.antidote = function(message, character, state, eventId, event,
 		character.items.splice(index, 1);
 		index = character.prebattle.indexOf('poison');
 		character.prebattle.splice(index, 1);
+		index = character.postresults.indexOf('poison');
+		character.postresults.splice(index, 1);
 		var _id = character._id + 'poison';
 		var active = {
 			"_id": _id

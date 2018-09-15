@@ -46,7 +46,7 @@ exports.prebattle.battle_potion = function(character, battleState, eventId, acti
 exports.prebattle.charm_of_wumbo = function(character, battleState, eventId, actives){
 
 	if(!battleState.isBoss){
-		
+
 		battleState.minMod += 15;
 		dbfunc.reduceDuration(character, [character.prebattle], eventId, actives);
 	}
@@ -151,7 +151,7 @@ exports.postresults.safety_hat = function(character, battleState, eventId, activ
 
 	if(character.hp < 50){
 
-		battleState.hpLoss = Math.ceil(battleState.hpLoss/2);
+		battleState.hpLoss = Math.ceil(battleState.hpLoss*0.75);
 		battleState.endMessages.push("Your safety hat cut your damage in half!");
 	}
 }
@@ -221,4 +221,10 @@ exports.postresults.grumbot_miner = function(character, battleState, eventId, ac
 	character.gold += gainGold;
 	battleState.endMessages.push("Grumbot mined " + gainGold + " gold!");
 	dbfunc.reduceDuration(character, [character.postresults], eventId, actives);
+}
+
+exports.postresults.mini_magnet = function(character, battleState, eventId, actives){
+
+	character.gold += 15;
+	battleState.endMessages.push("Mini Magnet collected 15 gold!");
 }

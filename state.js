@@ -306,7 +306,9 @@ exports.prebattle = function(message, args, character, battleState, actives, gru
 	else{
 
 		battleState.chance += grumbo.base_chance;
-		battleState.dmgMod += battleState.chance;
+		var charDmg = character.pow;
+		if(charDmg < character.wis) charDmg = Math.ceil(character.wis * (0.95));
+		battleState.dmgMod += Math.ceil(charDmg * 0.9) + Math.floor((Math.random()*5) - 3);
 	}
 	var max = 95 + battleState.maxMod;
 	var min = 5 + battleState.minMod;
@@ -390,6 +392,11 @@ exports.postresults = function(message, character, battleState, actives, grumbo)
 	battleState.classExp = 1;
 
 	battlefunc.calculateHPLoss(message, character, battleState, actives, grumbo);
+
+	if(battleState.isBoss){
+
+		battleState.bossHp = grumbo.hp;
+	}
 
 	//Postresults character active functions
 	for(var i = character.postresults.length - 1; i >= 0; i--){
