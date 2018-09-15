@@ -53,7 +53,7 @@
     "victory": "Crimson Grumbo was vanquished by $name!",
 		"loss": "$name was smashed to bits by the Crimson Grumbo!",
     "firstTime": "crimson_dagger",
-    "lootchance": [95, 50, 10],
+    "lootchance": [90, 50, 10],
     "loot": ["", "battle_potion", "feather_stone", "blood_potion", "crimson_staff", "crimson_scepter"],
     "weights": [35, 45, 15, 8, 4, 4]
   }

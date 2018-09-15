@@ -24,7 +24,7 @@ const LEVEL_5_ACTIVE = 'stand_your_ground';
 const BASE_POW_EQ = 0;
 const BASE_WIS_EQ = -5;
 const BASE_DEF_EQ = 6;
-const BASE_RES_EQ = -10;
+const BASE_RES_EQ = -12;
 const BASE_SPD_EQ = -15;
 const BASE_LUK_EQ = 0;
 

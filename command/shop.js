@@ -613,7 +613,7 @@ function buyEquipItem(message, character, equip){
 
 				if(equip.stock != null){
 
-					equip.stock -= amount;
+					equip.stock -= 1;
 					dbfunc.updateEquipItem(equip);
 				}
 

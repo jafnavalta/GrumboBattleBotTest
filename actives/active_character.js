@@ -102,7 +102,7 @@ exports.prebattle.crimson = function(character, battleState, eventId, actives){
 
 	battleState.maxMod += 5;
 	var random = Math.random() * 100;
-	var increase = (character.def + character.res) * 0.7;
+	var increase = (character.def/10) + (character.res*2);
 	if(random < increase){
 
 		battleState.chanceMod += 5;
@@ -160,6 +160,50 @@ exports.prebattle.revenge = function(character, battleState, eventId, actives){
 		battleState.chanceMod += Math.floor(character.pow/12);
 		battleState.dmgMod += Math.floor(character.pow/5);
 		battleState.preMessages.push("You attack back in Revenge!");
+	}
+}
+
+exports.prebattle.explosion = function(character, battleState, eventId, actives){
+
+	if(battleState.isBoss){
+
+		var random = Math.random() * 100;
+		if(random < 15){
+
+			battleState.dmgMod += Math.floor(character.wis/2);
+			battleState.preMessages.push("Explosion significantly increased your damage!");
+		}
+	}
+}
+
+exports.prebattle.power_of_wealth = function(character, battleState, eventId, actives){
+
+	var random = Math.random() * 100;
+	if(random < character.luk*0.8){
+
+		battleState.chanceMod += Math.floor(character.gold/1500);
+		battleState.dmgMod += Math.floor(character.gold/150);
+		battleState.preMessages.push("The enemy was shown the Power of Wealth!");
+	}
+}
+
+exports.prebattle.quick_step = function(character, battleState, eventId, actives){
+
+	var random = Math.random() * 100;
+	if(random < character.spd){
+
+		battleState.chanceMod += 4;
+		battleState.preMessages.push("You quick stepped!");
+	}
+}
+
+exports.prebattle.shield_bash = function(character, battleState, eventId, actives){
+
+	var random = Math.random() * 100;
+	if(random < 5){
+
+		battleState.dmgMod += Math.floor(character.def/3);
+		battleState.preMessages.push("You used Shield Bash!");
 	}
 }
 
@@ -321,7 +365,7 @@ exports.postresults.crimson_blood = function(character, battleState, eventId, ac
 	}
 
 	var random = Math.random() * 100;
-	var remove = (character.def + character.res) * 0.7;
+	var remove = (character.def/10) + (character.res*2);
 	if(random < remove){
 
 		//Remove completely
@@ -402,5 +446,15 @@ exports.postresults.lifesteal = function(character, battleState, eventId, active
 		var stole = Math.ceil(character.pow * 0.02);
 		battleState.hpLoss -= stole;
 		battleState.endMessages.push("You lifestole for " + stole + " damage.");
+	}
+}
+
+exports.postresults.barrier = function(character, battleState, eventId, actives){
+
+	var random = Math.random() * 100;
+	if(random < character.res){
+
+		battleState.hpLoss -= Math.floor(character.wis/12);
+		battleState.endMessages.push("Barrier reduced damage received!");
 	}
 }

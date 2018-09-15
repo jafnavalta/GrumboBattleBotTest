@@ -215,6 +215,7 @@ function doBoss(message, args, character, currentTime, actives, boss){
 
 			character.battletime = currentTime;
 		}
+    character.battlesLeft -= 3;
 
     var username = message.member.displayName;
     message.channel.send(username + " has begun a boss battle against " + boss.name + "!");
@@ -289,7 +290,7 @@ function recursiveBossPhase2(battleState, message, args, character, currentTime,
         }
         else{
 
-          endMessageString += "# " + username + " recovered " + battleState.hpLoss + " HP!\n";
+          endMessageString += "# " + username + " recovered " + Math.abs(battleState.hpLoss) + " HP!\n";
         }
         endMessageString += "# " + username + " dealt " + battleState.dmgMod + " damage to " + boss.name + "!\n";
       }
@@ -314,7 +315,7 @@ function recursiveBossPhase2(battleState, message, args, character, currentTime,
         }
         else{
 
-          endMessageString += "# " + username + " recovered " + battleState.hpLoss + " HP!\n";
+          endMessageString += "# " + username + " recovered " + Math.abs(battleState.hpLoss) + " HP!\n";
         }
         endMessageString += "# " + username + " dealt " + battleState.dmgMod + " damage to " + boss.name + "!\n";
       }
@@ -465,7 +466,6 @@ function finishBoss(battleState, message, args, character, currentTime, actives,
 
   character.items.sort();
   character.equips.sort();
-  character.battlesLeft -= 3;
 
   //Save battle results
   dbfunc.updateCharacter(character);
