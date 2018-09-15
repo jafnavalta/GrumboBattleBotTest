@@ -244,7 +244,7 @@ function parseCommand(message){
 		//////////////////
 		else if(args[1] == 'boss'){
 
-			bossfunc.commandBattle(message, args, character);
+			bossfunc.commandBoss(message, args, character);
 		}
 
 		/////////////////////

@@ -20,7 +20,7 @@ let equipList = JSON.parse(fs.readFileSync("./values/equips.json", "utf8"));
 /**
 * Battle command
 */
-exports.commandBattle = function(message, args, character){
+exports.commandBoss = function(message, args, character){
 
   if(args[2] == 'info' && (args.length == 4 || (args.length == 5 && args[4] == '-d'))){
 
@@ -38,7 +38,8 @@ exports.commandBattle = function(message, args, character){
       var firstTime = itemList[boss.firstTime];
       if(firstTime == null) firstTime = equipList[boss.firstTime];
       var bossString = boss.name + "  |  Lv Req: " + boss.level + "  |  Command: " + boss.id + "\n"
-        + "POW " + boss.powBase + "  |  WIS " + boss.wisBase + "\n"
+        + "HP " + boss.hp + "  |  POW " + boss.powBase + "  |  WIS " + boss.wisBase + "\n"
+        + "Base Phase Victory Chance: " + boss.base_chance + "%\n"
         + boss.description + "\n"
         + "Actives: ";
       for(var i = 0; i < boss.actives.length; i++){

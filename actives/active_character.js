@@ -228,3 +228,38 @@ exports.postresults.mini_magnet = function(character, battleState, eventId, acti
 	character.gold += 15;
 	battleState.endMessages.push("Mini Magnet collected 15 gold!");
 }
+
+//BOSS Crimson Grumbo
+exports.postresults.crimson_blood = function(character, battleState, eventId, actives){
+
+	var active;
+	for(var i = 0; i < actives.length; i++){
+
+		if(actives[i].id == eventId){
+
+			active = actives[i];
+			break;
+		}
+	}
+
+	var random = Math.random() * 100;
+	var def80 = character.def * 0.8;
+	if(random < def80){
+
+		//Remove completely
+		var index = character.postresults.indexOf(eventId);
+		character.postresults.splice(index, 1);
+		dbfunc.removeActive(active);
+		battleState.endMessages.push("Crimson Blood was removed!");
+	}
+	else{
+
+		//Check duration left
+		if(active.duration <= 1){
+
+			battleState.hpLoss += 100;
+			battleState.endMessages.push("Crimson Blood completely consumed you!");
+		}
+		dbfunc.reduceDuration(character, [character.postresults], eventId, actives);
+	}
+}

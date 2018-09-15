@@ -307,5 +307,38 @@
 		],
 		"description": "Activates when below 120 HP. If you have less than POW 81 or WIS 81 or RES 6, receive damage equal to the difference between your POW and WIS. Only activates once.",
 		"duration": null
+	},
+	"red_eye": {
+		"gameId": 70028,
+		"id": "red_eye",
+		"name": "Red Eye",
+		"effect": "bad",
+		"battleStates": [
+			"prebattle"
+		],
+		"description": "Activates in Phase 1 against Crimson Grumbo. Petrifies if you don't have a Feather Stone or a Battle Potion in your items. Does not consume the Feather Stone or Battle Potion.",
+		"duration": null
+	},
+	"rock_smash": {
+		"gameId": 70029,
+		"id": "rock_smash",
+		"name": "Rock Smash",
+		"effect": "neutral",
+		"battleStates": [
+			"postresults"
+		],
+		"description": "Activates in Phase 1 against Crimson Grumbo. If DEF > 150, receive an additional 100 damage. Otherwise, receive additional damage equal to DEF/10.",
+		"duration": null
+	},
+	"crimson_blood": {
+		"gameId": 70030,
+		"id": "crimson_blood",
+		"name": "Crimson Blood",
+		"effect": "neutral",
+		"battleStates": [
+			"postresults"
+		],
+		"description": "Activates in Phase 2 against Crimson Grumbo. Puts the Crimson Blood active on your character. (DEF * 0.8)% chance of removing the active every battle/phase. Lasts 2 turns. On the second turn, if it's still active, receive an additional 100 damage.",
+		"duration": 2
 	}
 }

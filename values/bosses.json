@@ -27,5 +27,34 @@
     "lootchance": [100, 60, 20],
     "loot": ["", "antidote", "medicine", "mini_magnet", "venom_mask_ex"],
     "weights": [40, 35, 15, 5, 5]
+  },
+  "crimson_grumbo": {
+    "gameId": 901,
+    "id": "crimson_grumbo",
+    "name": "Crimson Grumbo",
+    "level": 60,
+    "hp": 600,
+    "max_hp": 600,
+    "base_chance": 40,
+    "powBase": 90,
+    "wisBase": 112,
+    "powX": 1.00,
+		"wisX": 1.00,
+    "description": "The red-eyed Crimson Grumbo. His crimson eyes make for some scary effects!",
+    "actives": ["red_eye", "rock_smash", "crimson_blood"],
+    "prebattle": [
+      "red_eye"
+    ],
+		"preresults": [],
+		"postresults": [
+      "rock_smash",
+      "crimson_blood"
+    ],
+    "victory": "Crimson Grumbo was vanquished by $name!",
+		"loss": "$name was erased off the face of planet by Crimson Grumbo!",
+    "firstTime": "spiky_boots",
+    "lootchance": [100, 50, 10],
+    "loot": ["", "antidote", "medicine"],
+    "weights": [40, 35, 15]
   }
 }

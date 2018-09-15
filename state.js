@@ -308,7 +308,7 @@ exports.prebattle = function(message, args, character, battleState, actives, gru
 		battleState.chance += grumbo.base_chance;
 		var charDmg = character.pow;
 		if(charDmg < character.wis) charDmg = Math.ceil(character.wis * (0.95));
-		battleState.dmgMod += Math.ceil(charDmg * 0.9) + Math.floor((Math.random()*5) - 3);
+		battleState.dmgMod += Math.ceil(charDmg * 0.9) + Math.floor((Math.random()*15) - 7);
 	}
 	var max = 95 + battleState.maxMod;
 	var min = 5 + battleState.minMod;

@@ -63,6 +63,45 @@ exports.prebattle.venom = function(character, battleState, eventId, actives){
 	}
 }
 
+//BOSS Crimson Grumbo
+exports.prebattle.red_eye = function(character, battleState, eventId, actives){
+
+	if(battleState.phase == 1){
+
+		if(!character.items.includes('feather_stone') || !character.items.includes('battle_potion')){
+
+			var active;
+			if(character.postresults.includes('petrify')){
+
+				for(var i = 0; i < actives.length; i++){
+
+					if(actives[i].id == 'petrify'){
+
+						active = actives[i];
+						active.duration += activesList['petrify'].duration;
+						if(active.duration > 10) active.duration = 10;
+						dbfunc.updateActive(active);
+						break;
+					}
+				}
+			}
+			else{
+
+				character.defEq += 50;
+				character.powEq -= 100;
+				active = activesList['petrify'];
+				dbfunc.pushToState(character, 'petrify', active, active.battleStates, 1);
+			}
+			charfunc.calculateStats(character);
+			battleState.preMessages.push("You were petrified by Crimson Grumbo's Red Eye!");
+		}
+		else{
+
+			battleState.preMessages.push("Your Feather Stone and Battle Potion protected you from Crimson Grumbo's Red Eye!");
+		}
+	}
+}
+
 /////////////////////////////////
 // GRUMBO PRERESULTS FUNCTIONS //
 /////////////////////////////////
@@ -275,5 +314,51 @@ exports.postresults.equalizer = function(character, battleState, eventId, active
 
 			battleState.endMessages.push("Venom Grumbo's Equalizer was ineffective!");
 		}
+	}
+}
+
+//BOSS Crimson Grumbo
+exports.postresults.rock_smash = function(character, battleState, eventId, actives){
+
+	var damage = 5 + Math.floor((Math.random() * 6) - 3);
+	if(battleState.phase == 1){
+
+		damage = Math.ceil(character.def/10);
+		if(character.postresults.includes('petrify')){
+
+			var active;
+			damage = 100;
+			battleState.endMessages.push("Crimson Grumbo smashed you to pieces!");
+		}
+	}
+	battleState.hpLoss += damage;
+}
+
+//BOSS Crimson Grumbo
+exports.postresults.crimson_blood = function(character, battleState, eventId, actives){
+
+	if((battleState.phase - 2) % 4 == 0){
+
+		var active;
+		if(character.postresults.includes(eventId)){
+
+			for(var i = 0; i < actives.length; i++){
+
+				if(actives[i].id == eventId){
+
+					active = actives[i];
+					active.duration += activesList[eventId].duration;
+					if(active.duration > 10) active.duration = 10;
+					dbfunc.updateActive(active);
+					break;
+				}
+			}
+		}
+		else{
+
+			active = activesList[eventId];
+			dbfunc.pushToState(character, eventId, active, active.battleStates, 1);
+		}
+		battleState.endMessages.push("You've been injected with Crimson Blood!");
 	}
 }
