@@ -340,5 +340,16 @@
 		],
 		"description": "Activates in Phase 2 against Crimson Grumbo. Puts the Crimson Blood active on your character. (DEF * 0.8)% chance of removing the active every battle/phase. Lasts 2 turns. On the second turn, if it's still active, receive an additional 100 damage.",
 		"duration": 2
+	},
+	"crimson": {
+		"gameId": 70031,
+		"id": "crimson",
+		"name": "Crimson",
+		"effect": "good",
+		"battleStates": [
+			"prebattle"
+		],
+		"description": "Increases max chance of victory  by 5%. (DEF * 0.8)% chance of increasing chance of victory by 5.",
+		"duration": null
 	}
 }

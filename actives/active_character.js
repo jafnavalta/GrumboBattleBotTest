@@ -98,6 +98,25 @@ exports.prebattle.throwing_shield = function(character, battleState, eventId, ac
 	dbfunc.reduceDuration(character, [character.prebattle], eventId, actives);
 }
 
+exports.prebattle.crimson = function(character, battleState, eventId, actives){
+
+
+	battleState.maxMod += 5;
+	var random = Math.random() * 100;
+	var def80 = character.def * 0.8;
+	if(random < def80){
+
+		battleState.chanceMod += 5;
+		battleState.preMessages.push("Crimson increased chance of victory by 5%!");
+	}
+}
+
+exports.prebattle.blood_potion = function(character, battleState, eventId, actives){
+
+	battleState.chanceMod += Math.floor((Math.random() * 5) + 5);
+	dbfunc.reduceDuration(character, [character.prebattle], eventId, actives);
+}
+
 ////////////////////////////////////
 // CHARACTER PRERESULTS FUNCTIONS //
 ////////////////////////////////////

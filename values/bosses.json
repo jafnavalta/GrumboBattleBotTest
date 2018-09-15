@@ -36,8 +36,8 @@
     "hp": 600,
     "max_hp": 600,
     "base_chance": 40,
-    "powBase": 90,
-    "wisBase": 112,
+    "powBase": 101,
+    "wisBase": 122,
     "powX": 1.00,
 		"wisX": 1.00,
     "description": "The red-eyed Crimson Grumbo. His crimson eyes make for some scary effects!",
@@ -51,10 +51,10 @@
       "crimson_blood"
     ],
     "victory": "Crimson Grumbo was vanquished by $name!",
-		"loss": "$name was erased off the face of planet by Crimson Grumbo!",
-    "firstTime": "spiky_boots",
-    "lootchance": [100, 50, 10],
-    "loot": ["", "antidote", "medicine"],
-    "weights": [40, 35, 15]
+		"loss": "$name was smashed to bits by the Crimson Grumbo!",
+    "firstTime": "crimson_dagger",
+    "lootchance": [95, 50, 10],
+    "loot": ["", "battle_potion", "feather_stone", "blood_potion", "crimson_scepter"],
+    "weights": [35, 45, 15, 8, 5]
   }
 }
