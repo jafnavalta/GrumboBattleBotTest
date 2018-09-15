@@ -1,7 +1,8 @@
 GRUMBO PATCH NOTES
 Most recent from the top
 
-- Sep X: Added boss command and boss loot.
+- Sep X: Added Cleric and Knight classes. All classes now go to class level 5.
+- Sep X: Added boss command and boss loot. 2 Bosses added to start.
 
 - Sep 9: Added new Grumbos, Items, Actives.
 - Sep 9: Increased Rotation/Special rotation to 3 items.
