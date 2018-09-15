@@ -406,7 +406,7 @@ exports.postresults = function(message, character, battleState, actives, grumbo)
 
 			characterfunc.postresults[eventId](character, battleState, eventId, actives);
 		}
-	};
+	}
 
 	//Postresults Grumbo effects
 	for(var i = grumbo.postresults.length - 1; i >= 0; i--){
@@ -425,5 +425,16 @@ exports.postresults = function(message, character, battleState, actives, grumbo)
 				grumbofunc.postresults[eventId](character, battleState, eventId, actives);
 			}
 		}
-	};
+	}
+
+	//Cleric miracle active
+	if(battleState.hpLoss >= character.hp){
+
+		if(battleState.miracle == true){
+
+			battleState.miracleUsed = true;
+			battleState.hpLoss = character.hp - 1;
+			battleState.endMessages.push("Miracle saved your life!");
+		}
+	}
 }

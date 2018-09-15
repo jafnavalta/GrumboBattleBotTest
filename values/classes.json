@@ -20,7 +20,7 @@
     "pow": "A+",
     "wis": "D+",
     "def": "C+",
-    "res": "B",
+    "res": "C+",
     "spd": "B",
     "luk": "C",
 		"classId": "warrior",
@@ -61,6 +61,25 @@
 		"perks": [
 		    "The Rogue very rarely gets a second chance when losing.",
 				"SPD +2 / LUK +2 when classed as a Rogue."
+		]
+	},
+  "cleric": {
+		"gameId": 104,
+    "pow": "D+",
+    "wis": "A",
+    "def": "D+",
+    "res": "S++",
+    "spd": "B+",
+    "luk": "C",
+		"classId": "cleric",
+		"className": "Cleric",
+    "description": "The highly resistant Cleric. Gain a permanent +1 boost to RES every class level.",
+		"perks": [
+		    "The Cleric reduces damage received per battle with the Regen active.",
+				"RES +3 when classed as a Cleric.",
+				"The Cleric can further reduce damage received with the Miracle active.",
+				"Increase your battle strength with the Holy.",
+				"RES +1 / WIS +8 when classed as a Cleric."
 		]
 	}
 }

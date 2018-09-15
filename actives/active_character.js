@@ -100,7 +100,6 @@ exports.prebattle.throwing_shield = function(character, battleState, eventId, ac
 
 exports.prebattle.crimson = function(character, battleState, eventId, actives){
 
-
 	battleState.maxMod += 5;
 	var random = Math.random() * 100;
 	var def80 = character.def * 0.8;
@@ -115,6 +114,17 @@ exports.prebattle.blood_potion = function(character, battleState, eventId, activ
 
 	battleState.chanceMod += Math.floor((Math.random() * 5) + 5);
 	dbfunc.reduceDuration(character, [character.prebattle], eventId, actives);
+}
+
+exports.prebattle.holy = function(character, battleState, eventId, actives){
+
+	var random = Math.random() * 100;
+	if(random < character.res){
+
+		battleState.chanceMod += Math.floor(character.wis/12);
+		battleState.dmgMod += Math.ceil(character.wis/8);
+		battleState.preMessages.push("Holy activated!");
+	}
 }
 
 ////////////////////////////////////
@@ -138,7 +148,7 @@ exports.preresults.second_chance = function(character, battleState, eventId, act
 	if(!battleState.win){
 
 		var random = Math.random() * 100;
-		if(random < 3){
+		if(random < 4){
 
 			battleState.win = true;
 			battleState.preResMessages.push("The second chance succeeded!");
@@ -244,8 +254,8 @@ exports.postresults.grumbot_miner = function(character, battleState, eventId, ac
 
 exports.postresults.mini_magnet = function(character, battleState, eventId, actives){
 
-	character.gold += 15;
-	battleState.endMessages.push("Mini Magnet collected 15 gold!");
+	character.gold += 20;
+	battleState.endMessages.push("Mini Magnet collected 20 gold!");
 }
 
 //BOSS Crimson Grumbo
@@ -280,5 +290,29 @@ exports.postresults.crimson_blood = function(character, battleState, eventId, ac
 			battleState.endMessages.push("Crimson Blood completely consumed you!");
 		}
 		dbfunc.reduceDuration(character, [character.postresults], eventId, actives);
+	}
+}
+
+exports.postresults.regen = function(character, battleState, eventId, actives){
+
+	battleState.hpLoss -= 3
+}
+
+exports.postresults.miracle = function(character, battleState, eventId, actives){
+
+	battleState.miracle = false;
+	var random = Math.random() * 100;
+	if(random < character.res * 2){
+
+		battleState.hpLoss -= 12;
+		battleState.endMessages.push("Miracle reduced damage received!");
+	}
+	if(battleState.miracleUsed == null || battleState.miracleUsed == false){
+
+		var random2 = Math.random() * 100;
+		if(random2 < character.res * 2){
+
+			battleState.miracle = true;
+		}
 	}
 }

@@ -22,7 +22,7 @@ const LEVEL_1_ACTIVE = 'wild_swing';
 const BASE_POW_EQ = 5;
 const BASE_WIS_EQ = -3;
 const BASE_DEF_EQ = -2;
-const BASE_RES_EQ = -1;
+const BASE_RES_EQ = -3;
 const BASE_SPD_EQ = 0;
 const BASE_LUK_EQ = 0;
 

@@ -173,7 +173,7 @@
 		"battleStates": [
 			"preresults"
 		],
-		"description": "When you lose, 3% chance to win instead.",
+		"description": "When you lose, 4% chance to win instead.",
 		"duration": null
 	},
 	"dodge": {
@@ -350,6 +350,39 @@
 			"prebattle"
 		],
 		"description": "Increases max chance of victory  by 5%. (DEF * 0.8)% chance of increasing chance of victory by 5.",
+		"duration": null
+	},
+	"regen": {
+		"gameId": 70016,
+		"id": "regen",
+		"name": "Regen",
+		"effect": "good",
+		"battleStates": [
+			"postresults"
+		],
+		"description": "Reduce HP loss by 3 HP every battle.",
+		"duration": null
+	},
+	"miracle": {
+		"gameId": 70017,
+		"id": "miracle",
+		"name": "Miracle",
+		"effect": "good",
+		"battleStates": [
+			"postresults"
+		],
+		"description": "(RES * 2)% chance to reduce damage received by 12. If you were to take damage that would reduce your HP to 0, (RES * 2)% chance to reduce your HP to 1 instead. The revive effect will not activate multiple times in a boss battle.",
+		"duration": null
+	},
+	"holy": {
+		"gameId": 70018,
+		"id": "holy",
+		"name": "Holy",
+		"effect": "good",
+		"battleStates": [
+			"prebattle"
+		],
+		"description": "RES% chance to increase chance of victory by WIS/12 and damage by WIS/8.",
 		"duration": null
 	}
 }

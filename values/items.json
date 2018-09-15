@@ -312,7 +312,7 @@
 		"battleStates": [
 			"postresults"
 		],
-		"description": "Gain 15 gold after every battle/phase regardless of outcome. Use to activate indefinitely. Use again to deactivate.",
+		"description": "Gain 20 gold after every battle/phase regardless of outcome. Use to activate indefinitely. Use again to deactivate.",
 		"effect": "good",
 		"duration": null,
 		"price": 1,
