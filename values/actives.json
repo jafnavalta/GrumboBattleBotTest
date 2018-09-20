@@ -149,9 +149,9 @@
 		"name": "Safety Hat",
 		"effect": "good",
 		"battleStates": [
-			"postresults"
+			"final"
 		],
-		"description": "If HP < 50, reduce damage by 25%.",
+		"description": "If HP < 50, reduce damage by 30%.",
 		"duration": null
 	},
 	"outsmart": {
@@ -182,7 +182,7 @@
 		"name": "Dodge",
 		"effect": "good",
 		"battleStates": [
-			"postresults"
+			"final"
 		],
 		"description": "8% chance to reduce damage to 0.",
 		"duration": null
@@ -193,7 +193,7 @@
 		"name": "Vision",
 		"effect": "good",
 		"battleStates": [
-			"postresults"
+			"final"
 		],
 		"description": "20% chance to reduce damage to by you RES.",
 		"duration": null
@@ -316,7 +316,7 @@
 		"battleStates": [
 			"prebattle"
 		],
-		"description": "Activates in Phase 1 against Crimson Grumbo. Petrifies if you don't have a Feather Stone or a Battle Potion in your items. Does not consume the Feather Stone or Battle Potion.",
+		"description": "Activates in Phase 1 against Crimson Grumbo. Petrifies if you don't have a Feather Stone and a Battle Potion in your items. Does not consume the Feather Stone or Battle Potion.",
 		"duration": null
 	},
 	"rock_smash": {
@@ -369,7 +369,8 @@
 		"name": "Miracle",
 		"effect": "good",
 		"battleStates": [
-			"postresults"
+			"postresults",
+			"final"
 		],
 		"description": "(RES * 2)% chance to reduce damage received by 12. If you were to take damage that would reduce your HP to 0, (RES * 2)% chance to reduce your HP to 1 instead. The revive effect will not activate multiple times in a boss battle.",
 		"duration": null
@@ -414,7 +415,7 @@
 		"effect": "good",
 		"battleStates": [
 			"preresults",
-			"postresults"
+			"final"
 		],
 		"description": "DEF/8 % chance to outright win against Grumbos who are lower level than you. Against bosses, DEF/8 % chance to reduce damage received by 7.",
 		"duration": null
@@ -471,7 +472,7 @@
 		"battleStates": [
 			"postresults"
 		],
-		"description": "RES% chance to reduce damage received by WIS/12.",
+		"description": "RES% chance to reduce damage received by WIS/12. Can heal if damage reduced is more than damage received.",
 		"duration": null
 	},
 	"power_of_wealth": {

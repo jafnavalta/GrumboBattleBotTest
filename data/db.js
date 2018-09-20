@@ -481,6 +481,62 @@ function runMigrations(version, callback){
 		});
 	}
 
+	//Migration 6 to 7: Final state, moving some actives to final
+	else if(version.version <= 6){
+
+		db.collection("characters").find().toArray(function(error, characters){
+
+			for(var i = 0; i < characters.length; i++){
+
+				var character = characters[i];
+				character.final = [];
+
+				if(character.postresults.includes('dodge')){
+
+					character.postresults.splice(character.postresults.indexOf('dodge'), 1);
+					character.final.push('dodge');
+				}
+				if(character.postresults.includes('vision')){
+
+					character.postresults.splice(character.postresults.indexOf('vision'), 1);
+					character.final.push('vision');
+				}
+				if(character.postresults.includes('safety_hat')){
+
+					character.postresults.splice(character.postresults.indexOf('safety_hat'), 1);
+					character.final.push('safety_hat');
+				}
+				if(character.postresults.includes('stand_your_ground')){
+
+					character.postresults.splice(character.postresults.indexOf('stand_your_ground'), 1);
+					character.final.push('stand_your_ground');
+				}
+				if(character.postresults.includes('miracle')){
+
+					character.final.push('miracle');
+				}
+
+				if(i == characters.length - 1){
+
+					//final character to update, finish this migration
+					db.collection("characters").updateOne(
+						{"_id": character._id},
+						{$set: character},
+						{upsert: true},
+						function(){
+
+							version.version = 7;
+							runMigrations(version, callback);
+					});
+				}
+				else{
+
+					module.exports.updateCharacter(character);
+				}
+			};
+		});
+	}
+
 	//Add more migrations before this with else if
 	//If gets to else, DB is up to date
 	else{

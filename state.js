@@ -29,6 +29,7 @@ const WEAPON = "weapon";
 const PREBATTLE = "prebattle"; //Before battle begins
 const PRERESULTS = "preresults"; //After battle ends but before results are calculated
 const POSTRESULTS = "postresults"; //After results are calculated
+const FINAL = "final"; //Final character state after everything else
 
 //Battle functions
 let battlefunc = require('./command/battle.js');
@@ -427,14 +428,13 @@ exports.postresults = function(message, character, battleState, actives, grumbo)
 		}
 	}
 
-	//Cleric miracle active
-	if(battleState.hpLoss >= character.hp){
+	//FINAL character active functions after all other actives
+	for(var i = character.final.length - 1; i >= 0; i--){
 
-		if(battleState.miracle == true){
+		var eventId = character.final[i];
+		if(characterfunc.final[eventId] != null){
 
-			battleState.miracleUsed = true;
-			battleState.hpLoss = character.hp - 1;
-			battleState.endMessages.push("Miracle saved your life!");
+			characterfunc.final[eventId](character, battleState, eventId, actives);
 		}
 	}
 }

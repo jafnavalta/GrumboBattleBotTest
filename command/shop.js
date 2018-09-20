@@ -164,16 +164,20 @@ function updateRotationSpecialEquip(shopFunction){
 	var currentTime = date.getTime();
 	var currentRotation = Math.floor(currentTime/INTERVAL);
 	if(currentRotation > LR.lastRotation || shop.equip.length <= 0){ //Equip shop check for DB version 6+ when equips were added
-
+	
+		itemList = JSON.parse(fs.readFileSync("./values/items.json", "utf8"));
+		rotationList = JSON.parse(fs.readFileSync("./values/rotation_items_list.json", "utf8"));
+		specialList = JSON.parse(fs.readFileSync("./values/special_items_list.json", "utf8"));
+		equipList = JSON.parse(fs.readFileSync("./values/equips.json", "utf8"));
 		LR.lastRotation = currentRotation;
 		fs.writeFileSync("./values/shop_lastrotation.json", JSON.stringify(LR, null, 4));
 
 		//Randomize new rotation/special/equip shops
-		dbfunc.getDB().collection("shop_rotation").drop(function(err, result){
+		dbfunc.getDB().collection("shop_rotation").deleteMany({}, function(err, result){
 
-			dbfunc.getDB().collection("shop_special").drop(function(err, result){
+			dbfunc.getDB().collection("shop_special").deleteMany({}, function(err, result){
 
-				dbfunc.getDB().collection("shop_equip").drop(function(err, result){
+				dbfunc.getDB().collection("shop_equip").deleteMany({}, function(err, result){
 
 					shop.rotation = [];
 					shop.special = [];
@@ -345,6 +349,10 @@ function displayShop(message, args, character){
 		shopString4 += "\n|\n" + equipItem.name + "  |  Buy:  " + equipItem.id + "\n"
 			+ equipItem.description + "\n";
 		shopString4 += "Price: " + equipItem.price + " gold";
+		if(equipItem.stock != null){
+
+			shopString4 += "\nStock: " + equipItem.stock;
+		}
 	});
 
 	sender.send(shopString4);

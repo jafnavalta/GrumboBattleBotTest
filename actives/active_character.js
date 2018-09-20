@@ -12,6 +12,7 @@ let charfunc = require('../character/character.js');
 exports.prebattle = {};
 exports.preresults = {};
 exports.postresults = {};
+exports.final = {};
 
 ///////////////////////////////////
 // CHARACTER PREBATTLE FUNCTIONS //
@@ -269,37 +270,6 @@ exports.postresults.flimsy_rope = function(character, battleState, eventId, acti
 	dbfunc.reduceDuration(character, [character.postresults], eventId, actives);
 }
 
-exports.postresults.safety_hat = function(character, battleState, eventId, actives){
-
-	if(character.hp < 50){
-
-		battleState.hpLoss = Math.ceil(battleState.hpLoss*0.75);
-		battleState.endMessages.push("Your safety hat cut your damage in half!");
-	}
-}
-
-exports.postresults.dodge = function(character, battleState, eventId, actives){
-
-	var random = Math.random() * 100;
-	if(random < 8){
-
-		battleState.hpLoss = 0;
-		battleState.noDmgTaken = true;
-		battleState.endMessages.push("You dodged all attacks!");
-	}
-}
-
-exports.postresults.vision = function(character, battleState, eventId, actives){
-
-	var random = Math.random() * 100;
-	if(random < 20){
-
-		battleState.hpLoss -= character.res;
-		if(battleState.hpLoss < 0) battleState.hpLoss = 0;
-		battleState.endMessages.push("Your vision helped you dodge significant damage!");
-	}
-}
-
 exports.postresults.bleed = function(character, battleState, eventId, actives){
 
 	for(var i = 0; i < actives.length; i++){
@@ -393,30 +363,11 @@ exports.postresults.regen = function(character, battleState, eventId, actives){
 
 exports.postresults.miracle = function(character, battleState, eventId, actives){
 
-	battleState.miracle = false;
 	var random = Math.random() * 100;
 	if(random < character.res * 2){
 
 		battleState.hpLoss -= 12;
 		battleState.endMessages.push("Miracle reduced damage received!");
-	}
-	if(battleState.miracleUsed == null || battleState.miracleUsed == false){
-
-		var random2 = Math.random() * 100;
-		if(random2 < character.res * 2){
-
-			battleState.miracle = true;
-		}
-	}
-}
-
-exports.postresults.stand_your_ground = function(character, battleState, eventId, actives){
-
-	var random = Math.random() * 100;
-	if(random < character.def/8){
-
-		battleState.hpLoss -= 7;
-		battleState.endMessages.push("You stood your ground!");
 	}
 }
 
@@ -456,5 +407,67 @@ exports.postresults.barrier = function(character, battleState, eventId, actives)
 
 		battleState.hpLoss -= Math.floor(character.wis/12);
 		battleState.endMessages.push("Barrier reduced damage received!");
+	}
+}
+
+///////////////////////////////
+// CHARACTER FINAL FUNCTIONS //
+///////////////////////////////
+exports.final.vision = function(character, battleState, eventId, actives){
+
+	var random = Math.random() * 100;
+	if(random < 20){
+
+		battleState.hpLoss -= character.res;
+		if(battleState.hpLoss < 0) battleState.hpLoss = 0;
+		battleState.endMessages.push("Your vision helped you dodge significant damage!");
+	}
+}
+
+exports.final.stand_your_ground = function(character, battleState, eventId, actives){
+
+	var random = Math.random() * 100;
+	if(random < character.def/8){
+
+		battleState.hpLoss -= 7;
+		if(battleState.hpLoss < 0) battleState.hpLoss = 0;
+		battleState.endMessages.push("You stood your ground!");
+	}
+}
+
+exports.final.safety_hat = function(character, battleState, eventId, actives){
+
+	if(character.hp < 50){
+
+		battleState.hpLoss = Math.ceil(battleState.hpLoss*0.7);
+		battleState.endMessages.push("Your safety hat cut your damage by 30%!");
+	}
+}
+
+exports.final.dodge = function(character, battleState, eventId, actives){
+
+	var random = Math.random() * 100;
+	if(random < 8){
+
+		battleState.hpLoss = 0;
+		battleState.noDmgTaken = true;
+		battleState.endMessages.push("You dodged all attacks!");
+	}
+}
+
+exports.final.miracle = function(character, battleState, eventId, actives){
+
+	if(battleState.miracle == null){
+
+		var random = Math.random() * 100;
+		if(random < character.res * 2){
+
+			if(battleState.hpLoss >= character.hp){
+
+				battleState.miracle = true;
+				battleState.hpLoss = character.hp - 1;
+				battleState.endMessages.push("Miracle saved your life!");
+			}
+		}
 	}
 }
