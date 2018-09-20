@@ -68,7 +68,7 @@ exports.prebattle.red_eye = function(character, battleState, eventId, actives){
 
 	if(battleState.phase == 1){
 
-		if(!character.items.includes('feather_stone') || !character.items.includes('battle_potion')){
+		if((!character.items.includes('feather_stone') || !character.items.includes('battle_potion')) && !character.postresults.includes('iron_pendant')){
 
 			var active;
 			if(character.postresults.includes('petrify')){
@@ -97,7 +97,7 @@ exports.prebattle.red_eye = function(character, battleState, eventId, actives){
 		}
 		else{
 
-			battleState.preMessages.push("Your Feather Stone and Battle Potion protected you from Crimson Grumbo's Red Eye!");
+			battleState.preMessages.push("Your were protected from Crimson Grumbo's Red Eye!");
 		}
 	}
 }
@@ -227,7 +227,7 @@ exports.postresults.brojob = function(character, battleState, eventId, actives){
 
 exports.postresults.bleed = function(character, battleState, eventId, actives){
 
-	if(!battleState.win){
+	if(!battleState.win && !character.postresults.includes('iron_pendant')){
 
 		var active;
 		if(character.postresults.includes(eventId)){
@@ -258,7 +258,7 @@ exports.postresults.bleed = function(character, battleState, eventId, actives){
 
 exports.postresults.petrify = function(character, battleState, eventId, actives){
 
-	if(!battleState.win){
+	if(!battleState.win && !character.postresults.includes('iron_pendant')){
 
 		var active;
 		if(character.postresults.includes(eventId)){

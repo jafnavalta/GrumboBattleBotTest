@@ -39,7 +39,7 @@
 		"battleStates": [
 			"prebattle"
 		],
-		"description": "Increases chance of victory for the next battle. Scales depending on level difference from +1 for Grumbos who are 20 levels higher than you to +5 if the same level or lower. Can have multiple active at the same time but only 1 will be used up every battle. Unaffected by level difference modifiers. Consumed after use.",
+		"description": "Increases chance of victory for the next battle. Scales depending on level difference from +1 for Grumbos who are 20 levels higher than you to +5 if the same level or lower. Can have multiple active at the same time but only 1 will be used up every battle. Unaffected by level difference modifiers. Against bosses, deal an extra 3 damage. Consumed after use.",
 		"effect": "good",
 		"duration": 1,
 		"price": 175,
@@ -108,7 +108,7 @@
 		"battleStates": [
 			"prebattle"
 		],
-		"description": "If you're battle chance is below 20% after all modifiers, bring victory chance up to 20%. Consumed after use.",
+		"description": "If you're battle chance is below 20% after all modifiers, bring victory chance up to 20%. Doesn't work against bosses. Consumed after use.",
 		"effect": "good",
 		"duration": 1,
 		"price": 575,
@@ -176,7 +176,7 @@
 		"battleStates": [
 			"prebattle"
 		],
-		"description": "Increases victory chance by 5%. Every battle, the victory chance increased goes down by 1%, all the way down to -5% in the last battle. Can only have 1 active at a time.",
+		"description": "Increases victory chance by 5%. Every battle, the victory chance increased goes down by 1%, all the way down to -5% in the last battle. The same chance modifier is also applied to extra (or loss) damage done against bosses. Can only have 1 active at a time.",
 		"effect": "good",
 		"duration": 10,
 		"price": 225,
@@ -294,7 +294,7 @@
 		"battleStates": [
 			"prebattle"
 		],
-		"description": "Throw a shield at an enemy in battle. Increases chance of victory by DEF/3.",
+		"description": "Throw a shield at an enemy in battle. Increases chance of victory by DEF/3. Against bosses, deals an extra 6 damage.",
 		"effect": "good",
 		"duration": 1,
 		"price": 820,
@@ -338,5 +338,23 @@
 		"max": 3,
 		"stock": 1,
 		"weight": 5
+	},
+	"iron_pendant": {
+		"gameId": 10018,
+		"id": "iron_pendant",
+		"name": "Iron Pendant",
+		"command": "!grumbo items use iron_pendant",
+		"type": "toggle",
+		"battleStates": [
+			"postresults"
+		],
+		"description": "Prevents petrify and bleed. Petrify or Bleed that is already active will remain active. Use to activate indefinitely. Use again to deactivate.",
+		"effect": "good",
+		"duration": null,
+		"price": 3600,
+		"value": 750,
+		"max": 1,
+		"stock": null,
+		"weight": null
 	}
 }

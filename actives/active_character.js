@@ -95,7 +95,7 @@ exports.prebattle.throwing_shield = function(character, battleState, eventId, ac
 
 	battleState.chanceMod += Math.floor(character.def/3);
 	battleState.dmgMod += 6;
-	battleState.preMessages.push("You outsmarted the enemy!");
+	battleState.preMessages.push("You threw a shield at the enemy!");
 	dbfunc.reduceDuration(character, [character.prebattle], eventId, actives);
 }
 
@@ -407,6 +407,19 @@ exports.postresults.barrier = function(character, battleState, eventId, actives)
 
 		battleState.hpLoss -= Math.floor(character.wis/12);
 		battleState.endMessages.push("Barrier reduced damage received!");
+	}
+}
+
+exports.postresults.study = function(character, battleState, eventId, actives){
+
+	if(!battleState.isBoss){
+
+		var random = Math.random() * 100;
+		if(random < 12){
+
+			battleState.classExp += 1;
+			battleState.endMessages.push("You studied for extra class experience!");
+		}
 	}
 }
 

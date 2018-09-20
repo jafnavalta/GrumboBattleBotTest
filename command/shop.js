@@ -164,7 +164,7 @@ function updateRotationSpecialEquip(shopFunction){
 	var currentTime = date.getTime();
 	var currentRotation = Math.floor(currentTime/INTERVAL);
 	if(currentRotation > LR.lastRotation || shop.equip.length <= 0){ //Equip shop check for DB version 6+ when equips were added
-	
+
 		itemList = JSON.parse(fs.readFileSync("./values/items.json", "utf8"));
 		rotationList = JSON.parse(fs.readFileSync("./values/rotation_items_list.json", "utf8"));
 		specialList = JSON.parse(fs.readFileSync("./values/special_items_list.json", "utf8"));
@@ -346,7 +346,7 @@ function displayShop(message, args, character){
 	var shopString4 = "|\n[--- EQUIPS ---]\nThe next rotation is in " + hours + " hours " + minutes + " minutes";
 	shop.equip.forEach(function(equipItem){
 
-		shopString4 += "\n|\n" + equipItem.name + "  |  Buy:  " + equipItem.id + "\n"
+		shopString4 += "\n|\n" + equipItem.name + "  |  Lv Req: " + equipItem.level + "  |  Buy:  " + equipItem.id + "\n"
 			+ equipItem.description + "\n";
 		shopString4 += "Price: " + equipItem.price + " gold";
 		if(equipItem.stock != null){

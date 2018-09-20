@@ -507,5 +507,27 @@
 		],
 		"description": "5% chance to increase damage dealt by DEF/3.",
 		"duration": null
+	},
+	"study": {
+		"gameId": 70030,
+		"id": "study",
+		"name": "Study",
+		"effect": "good",
+		"battleStates": [
+			"postresults"
+		],
+		"description": "12% chance to increase class exp by 1. If you were to get more class exp than needed to level up a class, does not grant the extra 1 class exp. Doesn't work against bosses.",
+		"duration": null
+	},
+	"iron_pendant": {
+		"gameId": 70031,
+		"id": "iron_pendant",
+		"name": "Iron Pendant",
+		"effect": "good",
+		"battleStates": [
+			"postresults"
+		],
+		"description": "Prevents petrify and bleed. Petrify or Bleed that is already active will remain active. Use to activate indefinitely. Use again to deactivate.",
+		"duration": null
 	}
 }

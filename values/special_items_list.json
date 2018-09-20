@@ -98,5 +98,15 @@
 		"price": 1000,
 		"stock": 1,
 		"weight": 6
+	},
+	"special_11": {
+		"gameId": 30010,
+		"id": "special_11",
+		"name": "Iron Pendant",
+		"items": ["iron_pendant"],
+		"description": "This pendant prevents a stony and bloody effects. A bloody stone perhaps?",
+		"price": 3600,
+		"stock": 1,
+		"weight": 2
 	}
 }
