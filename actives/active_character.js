@@ -147,7 +147,7 @@ exports.prebattle.recoil = function(character, battleState, eventId, actives, gr
 	if(random < character.pow/10){
 
 		var mod = Math.abs(character.wis - character.def);
-		battleState.chanceMod += Math.floor(mod/5);
+		battleState.chanceMod += Math.floor(mod/3);
 		battleState.dmgMod += Math.floor(mod/2);
 		battleState.preMessages.push("Recoil affected the enemy!");
 	}

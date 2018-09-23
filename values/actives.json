@@ -405,7 +405,7 @@
 		"battleStates": [
 			"prebattle"
 		],
-		"description": "POW/10 % chance to increase chance of victory by the difference between your WIS and DEF divided by 5 and increases damage dealt against bosses by that same difference divided by 2.",
+		"description": "POW/10 % chance to increase chance of victory by the difference between your WIS and DEF divided by 3 and increases damage dealt against bosses by that same difference divided by 2.",
 		"duration": null
 	},
 	"stand_your_ground": {
