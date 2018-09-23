@@ -21,6 +21,7 @@ exports.connectToServer = function(callback){
 		assert.equal(null, error);
 		db = client.db();
 
+		//As of higher versions, DO NOT use a levels.json because of the actives/class tables not being dealt with. Leaving this if for note though, we have backup DBs just in case.
 		if(fs.existsSync("./levels.json")){
 
 			//If levels.json still exists, use it for DB

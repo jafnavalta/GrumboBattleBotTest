@@ -26,7 +26,7 @@
     "firstTime": "venom_mask",
     "lootchance": [100, 60, 20],
     "loot": ["", "antidote", "medicine", "challenge_ticket", "mini_magnet", "venom_plate", "venom_mask_ex"],
-    "weights": [40, 36, 16, 8, 5, 5, 5]
+    "weights": [40, 36, 16, 8, 5, 12, 12]
   },
   "mixtape_grumbo": {
     "gameId": 902,
@@ -55,7 +55,7 @@
     "firstTime": "safety_boots",
     "lootchance": [95, 55, 15, 5],
     "loot": ["", "medicine", "bandages", "class_ticket", "academy_jacket", "angel_wings"],
-    "weights": [31, 48, 23, 5, 24, 6]
+    "weights": [31, 48, 23, 5, 25, 10]
   },
   "crimson_grumbo": {
     "gameId": 901,
@@ -84,30 +84,35 @@
     "firstTime": "crimson_dagger",
     "lootchance": [90, 50, 10],
     "loot": ["", "battle_potion", "feather_stone", "battle_ticket", "blood_potion", "crimson_staff", "crimson_scepter"],
-    "weights": [35, 45, 15, 8, 8, 5, 5]
+    "weights": [35, 45, 15, 8, 8, 16, 16]
   },
-  "100_grumbo": {
+  "master_grumbo": {
     "gameId": 903,
-    "id": "100_grumbo",
-    "name": "TODO",
+    "id": "master_grumbo",
+    "name": "Master Grumbo",
     "level": 100,
     "hp": 1000,
     "max_hp": 1000,
     "base_chance": 50,
     "powBase": 160,
-    "wisBase": 200,
+    "wisBase": 185,
     "powX": 1.00,
 		"wisX": 1.00,
-    "description": "TODO",
-    "actives": [],
+    "description": "The Master of many Grumbos. Only those who are acknowledged by the Master Grumbo have a chance at beating him!",
+    "actives": ["teaching", "strategize", "evaluation", "gate_of_grumbo"],
     "prebattle": [],
 		"preresults": [],
-		"postresults": [],
-    "victory": "$name TODO",
-		"loss": "$name TODO",
-    "firstTime": "medicine",
-    "lootchance": [60, 30, 10],
-    "loot": ["", "medicine"],
-    "weights": [35, 45]
+		"postresults": [
+      "teaching",
+      "strategize",
+      "evaluation",
+      "gate_of_grumbo"
+    ],
+    "victory": "$name taught Master Grumbo the true way of the Grumbo!",
+		"loss": "It's 100 years too early for $name to take on Master Grumbo.",
+    "firstTime": "master_cloak",
+    "lootchance": [65, 35, 10],
+    "loot": ["", "medicine", "battle_potion", "class_ticket", "adventurers_spellbook", "grumbot_miner", "grumbo_whistle", "master_grumbos_blessing"],
+    "weights": [35, 45, 30, 16, 16, 4, 2, 1]
   }
 }

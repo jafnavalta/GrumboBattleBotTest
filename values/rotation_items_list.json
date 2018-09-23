@@ -60,7 +60,7 @@
 		"description": "Can only use 1 at a time. Gain 80 exp... or maybe lose 80 exp... or maybe...",
 		"effect": "neutral",
 		"duration": null,
-		"price": 175,
+		"price": 220,
 		"value": 50,
 		"max": 10,
 		"stock": 3,

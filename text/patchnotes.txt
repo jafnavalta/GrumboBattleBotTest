@@ -1,11 +1,13 @@
 GRUMBO PATCH NOTES
 Most recent from the top
 
-- Sep XX: Added 1 Boss, 1 Grumbo, 6 Items, 4 Equips
-- Sep XX: Recoil now scales off difference between WIS/DEF instead of POW/DEF.
-- Sep XX: Small buff to Revenge's activation rate from missing HP/2 to missing HP/1.5.
-- Sep XX: Crimson nerfed so max chance and regular chance increase is now 4 instead of 5.
-- Sep XX: Buffed Vision, Stand Your Ground, Dodge, Safety Hat so that their calculations happen at the very end.
+- Sep 23: Added 2 Bosses, 1 Grumbo, 6 Items, 12 Equips.
+- Sep 23: Adventurer Lv 6. Gets nothing new except the stat boost.
+- Sep 23: Increased the drop rate of boss exclusive drops.
+- Sep 23: Recoil now scales off difference between WIS/DEF instead of POW/DEF.
+- Sep 23: Small buff to Revenge's activation rate from missing HP/2 to missing HP/1.5.
+- Sep 23: Crimson nerfed so max chance and regular chance increase is now 4 instead of 5.
+- Sep 23: Buffed Vision, Stand Your Ground, Dodge, Safety Hat so that their calculations happen at the very end.
 - Sep 21: Hotfixed Flimsy Rope.
 
 - Sep 15: Added Cleric and Knight classes. All classes now go to class level 5.

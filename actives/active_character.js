@@ -398,7 +398,7 @@ exports.postresults.miracle = function(character, battleState, eventId, actives,
 exports.postresults.grab_bag = function(character, battleState, eventId, actives, grumbo){
 
 	var random = Math.random() * 100;
-	if(random < 66){
+	if(random < 66 && !battleState.isBoss){
 
 		if(random < 33){
 
@@ -500,6 +500,17 @@ exports.postresults.stimulus = function(character, battleState, eventId, actives
 	}
 }
 
+exports.postresults.conceal = function(character, battleState, eventId, actives, grumbo){
+
+	var random = Math.random() * 100;
+	if(random < character.spd){
+
+		battleState.hpLoss -= 5;
+		battleState.dmgMod += 10;
+		battleState.endMessages.push("You revealed the concealed knife!");
+	}
+}
+
 ///////////////////////////////
 // CHARACTER FINAL FUNCTIONS //
 ///////////////////////////////
@@ -572,6 +583,38 @@ exports.final.guardian_angel = function(character, battleState, eventId, actives
 			character.hp = character.res;
 			battleState.hpLoss = 0;
 			battleState.endMessages.push("You were saved by a Guardian Angel!");
+		}
+	}
+}
+
+exports.final.master_grumbos_protection = function(character, battleState, eventId, actives, grumbo){
+
+	if(battleState.hpLoss >= character.hp){
+
+		var random = Math.random() * 100;
+		if(random < 25){
+
+			battleState.hpLoss = 0;
+			battleState.dmgMod = character.res;
+			battleState.endMessages.push("Master Grumbo has given you another chance!");
+		}
+	}
+}
+
+exports.final.blessed = function(character, battleState, eventId, actives, grumbo){
+
+	if(!battleState.isBoss){
+
+		var random = Math.random() * 100;
+		if(random < 0.7){
+
+			var randomArray = ['pow', 'wis', 'def', 'res', 'spd', 'luk', 'pow'];
+			var random2 = Math.floor(Math.random() * (randomArray.length - 1));
+			var stat = randomArray[random2];
+			var statMod = stat + "Mod";
+			character[statMod] += 1;
+			charfunc.calculateStats(character);
+			battleState.endMessages.push("You were blessed with a permanent +1 boost to " + stat.toUpperCase() + "!");
 		}
 	}
 }

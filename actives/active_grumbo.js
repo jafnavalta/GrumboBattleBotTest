@@ -435,3 +435,61 @@ exports.postresults.final_track = function(character, battleState, eventId, acti
 		battleState.endMessages.push("Mixtape Grumbo dropped his hottest diss track!");
 	}
 }
+
+//BOSS Master Grumbo
+exports.postresults.strategize = function(character, battleState, eventId, actives, grumbo){
+
+		if(battleState.chanceMod < 6){
+
+			battleState.dmgMod -= 100;
+			battleState.preMessages.push("You were out strategized!");
+		}
+}
+
+//BOSS Master Grumbo
+exports.postresults.gate_of_grumbo = function(character, battleState, eventId, actives, grumbo){
+
+	if(battleState.phase % 5 == 0 && battleState.phase != 0){
+
+		var random = Math.random() * 100;
+		if(random < (character.spd + character.luk)*2){
+
+			battleState.hpLoss -= 50;
+			battleState.endMessages.push("You opened the Gate of Grumbo!");
+		}
+		else{
+
+			battleState.dmgMod -= 150;
+			battleState.endMessages.push("You were rejected by the Gate of Grumbo!");
+		}
+	}
+}
+
+//BOSS Master Grumbo
+exports.postresults.evaluation = function(character, battleState, eventId, actives, grumbo){
+
+	if(battleState.phase % 4 == 0 && battleState.phase != 0){
+
+		var diff = Math.abs(character.pow - character.wis);
+		if(diff < 45){
+
+			battleState.hpLoss += 45;
+			battleState.endMessages.push("You failed the evaluation!");
+		}
+		else{
+
+			var random = Math.random() * 100;
+			if(random < diff){
+
+				battleState.hpLoss -= 15;
+				battleState.endMessages.push("You passed the evaluation!");
+			}
+		}
+	}
+}
+
+//BOSS Master Grumbo
+exports.postresults.teaching = function(character, battleState, eventId, actives, grumbo){
+
+	battleState.hpLoss += 10 - Math.floor(Math.random() * character.spd);
+}
