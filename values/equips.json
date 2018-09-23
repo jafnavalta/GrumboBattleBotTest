@@ -282,7 +282,7 @@
     "effect": "good",
 		"price": 785,
 		"value": 155,
-		"stock": 2,
+		"stock": null,
 		"weight": 8
 	},
   "one_shin_guard": {
@@ -481,7 +481,7 @@
 		"price": 900,
 		"value": 420,
 		"stock": 1,
-		"weight": 8
+		"weight": 6
 	},
   "knights_shield": {
 		"gameId": 60021,
@@ -570,5 +570,49 @@
 		"value": 97,
 		"stock": null,
 		"weight": 10
+	},
+  "safety_boots": {
+		"gameId": 60025,
+		"id": "safety_boots",
+		"name": "Safety Boots",
+		"command": "!grumbo equip safety_boots",
+		"type": "bottom",
+    "classId": null,
+    "level": 45,
+    "pow": 0,
+    "wis": 6,
+    "def": 9,
+    "res": 1,
+    "spd": -2,
+    "luk": 0,
+    "active": "safety_boots",
+		"description": "Safety first! Why cover your head when you can cover your feet instead! DEF +9 / WIS +6 / RES +1 / SPD -2",
+    "effect": "good",
+		"price": 0,
+		"value": 1,
+		"stock": 0,
+		"weight": 0
+	},
+  "angel_wings": {
+		"gameId": 60026,
+		"id": "angel_wings",
+		"name": "Angel Wings",
+		"command": "!grumbo equip angel_wings",
+		"type": "armor",
+    "classId": "cleric",
+    "level": 60,
+    "pow": 0,
+    "wis": 10,
+    "def": 11,
+    "res": 4,
+    "spd": 0,
+    "luk": 4,
+    "active": "guardian_angel",
+		"description": "Wings blessed from the Guardians above. DEF +11 / WIS +10 / RES +4 / LUK +4",
+    "effect": "good",
+		"price": 0,
+		"value": 1,
+		"stock": 0,
+		"weight": 0
 	}
 }

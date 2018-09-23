@@ -23,8 +23,8 @@ let equipList = JSON.parse(fs.readFileSync("./values/equips.json", "utf8"));
 exports.commandBoss = function(message, args, character){
 
   //For testing
-  //character.hp = 40;
-  //character.battlesLeft = 5;
+  character.hp = 15;
+  character.battlesLeft = 5;
 
   if(args[2] == 'info' && (args.length == 4 || (args.length == 5 && args[4] == '-d'))){
 

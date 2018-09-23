@@ -34,9 +34,9 @@ exports.BASE_RES_EQ = BASE_RES_EQ;
 exports.BASE_SPD_EQ = BASE_SPD_EQ;
 exports.BASE_LUK_EQ = BASE_LUK_EQ;
 
-exports.powX = 1;
-exports.wisX = 1;
-exports.defX = 1;
+exports.powX = 0.97;
+exports.wisX = 0.97;
+exports.defX = 0.97;
 exports.resX = 1;
 exports.spdX = 1;
 exports.lukX = 1;

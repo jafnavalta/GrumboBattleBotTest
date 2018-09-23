@@ -25,8 +25,37 @@
 		"loss": "$name lay defeated in a pool of Venom Grumbo's toxic wasteland!",
     "firstTime": "venom_mask",
     "lootchance": [100, 60, 20],
-    "loot": ["", "antidote", "medicine", "mini_magnet", "venom_plate", "venom_mask_ex"],
-    "weights": [40, 36, 16, 5, 4, 4]
+    "loot": ["", "antidote", "medicine", "challenge_ticket", "mini_magnet", "venom_plate", "venom_mask_ex"],
+    "weights": [40, 36, 16, 8, 5, 5, 5]
+  },
+  "mixtape_grumbo": {
+    "gameId": 902,
+    "id": "mixtape_grumbo",
+    "name": "Mixtape Grumbo",
+    "level": 45,
+    "hp": 416,
+    "max_hp": 416,
+    "base_chance": 41,
+    "powBase": 80,
+    "wisBase": 146,
+    "powX": 1.00,
+		"wisX": 1.00,
+    "description": "Beware the super hot fire of the Mixtape Grumbo!",
+    "actives": ["show_me_your_mixtape", "disco_inferno", "final_track"],
+    "prebattle": [
+      "show_me_your_mixtape"
+    ],
+		"preresults": [],
+		"postresults": [
+      "disco_inferno",
+      "final_track"
+    ],
+    "victory": "$name dropped an even hotter album than Mixtape Grumbo!",
+		"loss": "Mixtape Grumbo's mixtape was too fire for $name!",
+    "firstTime": "safety_boots",
+    "lootchance": [95, 55, 15, 5],
+    "loot": ["", "medicine", "bandages", "class_ticket", "academy_jacket", "angel_wings"],
+    "weights": [31, 48, 23, 5, 24, 6]
   },
   "crimson_grumbo": {
     "gameId": 901,
@@ -54,7 +83,31 @@
 		"loss": "$name was smashed to bits by the Crimson Grumbo!",
     "firstTime": "crimson_dagger",
     "lootchance": [90, 50, 10],
-    "loot": ["", "battle_potion", "feather_stone", "blood_potion", "crimson_staff", "crimson_scepter"],
-    "weights": [35, 45, 15, 8, 4, 4]
+    "loot": ["", "battle_potion", "feather_stone", "battle_ticket", "blood_potion", "crimson_staff", "crimson_scepter"],
+    "weights": [35, 45, 15, 8, 8, 5, 5]
+  },
+  "100_grumbo": {
+    "gameId": 903,
+    "id": "100_grumbo",
+    "name": "TODO",
+    "level": 100,
+    "hp": 1000,
+    "max_hp": 1000,
+    "base_chance": 50,
+    "powBase": 160,
+    "wisBase": 200,
+    "powX": 1.00,
+		"wisX": 1.00,
+    "description": "TODO",
+    "actives": [],
+    "prebattle": [],
+		"preresults": [],
+		"postresults": [],
+    "victory": "$name TODO",
+		"loss": "$name TODO",
+    "firstTime": "medicine",
+    "lootchance": [60, 30, 10],
+    "loot": ["", "medicine"],
+    "weights": [35, 45]
   }
 }

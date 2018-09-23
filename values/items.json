@@ -158,7 +158,7 @@
 		"battleStates": [
 			"postresults"
 		],
-		"description": "Has a 50% chance of avoiding any post battle Grumbo active effects (good or bad). Gets used up even if an effect wasn't avoided.",
+		"description": "Has a 20% chance of avoiding any post battle Grumbo active effects (good or bad). Gets used up even if an effect wasn't avoided.",
 		"effect": "good",
 		"duration": 1,
 		"price": 200,
@@ -283,7 +283,7 @@
 		"value": 100,
 		"max": 1,
 		"stock": 1,
-		"weight": 6
+		"weight": 4
 	},
 	"throwing_shield": {
 		"gameId": 10016,
@@ -333,7 +333,7 @@
 		"description": "For 2 battles, increases chance of victory by 5-10%",
 		"effect": "good",
 		"duration": 2,
-		"price": 600,
+		"price": 700,
 		"value": 100,
 		"max": 3,
 		"stock": 1,
@@ -356,5 +356,93 @@
 		"max": 1,
 		"stock": null,
 		"weight": null
+	},
+	"trip_mine": {
+		"gameId": 10019,
+		"id": "trip_mine",
+		"name": "Trip Mine",
+		"command": "!grumbo items use trip_mine",
+		"type": "consume",
+		"battleStates": [
+			"prebattle"
+		],
+		"description": "Deals 10 damage. Doesn't do anything in regular battles, but it's duration will still be reduced. Consumed after use.",
+		"effect": "good",
+		"duration": 1,
+		"price": 201,
+		"value": 49,
+		"max": 10,
+		"stock": 4,
+		"weight": 9
+	},
+	"grumbo_whistle": {
+		"gameId": 10020,
+		"id": "grumbo_whistle",
+		"name": "Grumbo Whistle",
+		"command": "!grumbo items use grumbo_whistle",
+		"type": "toggle",
+		"battleStates": [
+			"postresults"
+		],
+		"description": "Pay 94 gold every activation to either reduce damage received by 5 or deal an extra 20 damage. Does nothing if you don't have enough gold. Still activates in regular battles. Use to activate indefinitely. Use again to deactivate.",
+		"effect": "good",
+		"duration": null,
+		"price": 1737,
+		"value": 777,
+		"max": 1,
+		"stock": 1,
+		"weight": 3
+	},
+	"class_ticket": {
+		"gameId": 10021,
+		"id": "class_ticket",
+		"name": "Class Ticket",
+		"command": "!grumbo items use class_ticket",
+		"type": "immediate",
+		"battleStates": [],
+		"description": "Allows you to class change immediately after using this ticket. Consumed after use.",
+		"effect": "good",
+		"duration": null,
+		"price": 1200,
+		"value": 240,
+		"max": 1,
+		"stock": 1,
+		"weight": 2
+	},
+	"adrenaline": {
+		"gameId": 10022,
+		"id": "adrenaline",
+		"name": "Adrenaline",
+		"command": "!grumbo items use adrenaline",
+		"type": "indefinite",
+		"battleStates": [
+			"postresults"
+		],
+		"description": "If you have less than or equal to 10 HP at the beginning of the battle/phase, recover 20 HP at the end of it. Item is consumed after use but the active doesn't get used up until it activates. Activates only once per boss battle.",
+		"effect": "good",
+		"duration": null,
+		"price": 499,
+		"value": 75,
+		"max": 2,
+		"stock": 5,
+		"weight": 7
+	},
+	"stimulus": {
+		"gameId": 10023,
+		"id": "stimulus",
+		"name": "Stimulus",
+		"command": "!grumbo items use stimulus",
+		"type": "indefinite",
+		"battleStates": [
+			"postresults"
+		],
+		"description": "If you have less than or equal to 20 HP at the beginning of the battle/phase, deal 40 damage at the end of it. Damage is not reduced by phase loss. Item is consumed after use but the active doesn't get used up until it activates. Activates only once per boss battle.",
+		"effect": "good",
+		"duration": null,
+		"price": 549,
+		"value": 75,
+		"max": 2,
+		"stock": 5,
+		"weight": 6
 	}
 }
