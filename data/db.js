@@ -90,7 +90,7 @@ exports.createNewCharacter = function(message, callback){
 		challengesLeft: 3,
 		challengetime: 9999999999999,
 		gold: 700,
-		items: ['battle_ticket', 'challenge_ticket', 'battle_potion', 'battle_potion'],
+		items: ['medicine', 'medicine', 'medicine', 'battle_ticket', 'challenge_ticket', 'battle_potion', 'battle_potion'],
 		prebattle: [],
 		preresults: [],
 		postresults: [],
