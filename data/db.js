@@ -156,13 +156,13 @@ exports.removeActive = function(active){
 }
 
 //Update the rotation and special shops
-exports.updateRotationSpecialEquip = function(rotation, special, equip, callback){
+exports.updateRotationSpecialEquip = function(message, rotation, special, equip, callback){
 
-	db.collection("shop_rotation").insertMany(rotation, function (err, result){
+	db.collection("shop_rotation" + message.guild.id).insertMany(rotation, function (err, result){
 
-		db.collection("shop_special").insertMany(special, function (err, result){
+		db.collection("shop_special" + message.guild.id).insertMany(special, function (err, result){
 
-			db.collection("shop_equip").insertMany(equip, function (err, result){
+			db.collection("shop_equip" + message.guild.id).insertMany(equip, function (err, result){
 
 				callback();
 			});
@@ -171,9 +171,9 @@ exports.updateRotationSpecialEquip = function(rotation, special, equip, callback
 }
 
 //Update a rotation item
-exports.updateRotationItem = function(item){
+exports.updateRotationItem = function(message, item){
 
-	db.collection("shop_rotation").updateOne(
+	db.collection("shop_rotation" + message.guild.id).updateOne(
 		{"shop": "rotation", "id": item.id},
 		{$set: item},
 		{upsert: true}
@@ -181,9 +181,9 @@ exports.updateRotationItem = function(item){
 }
 
 //Update a rotation item
-exports.updateSpecialItem = function(item){
+exports.updateSpecialItem = function(message, item){
 
-	db.collection("shop_special").updateOne(
+	db.collection("shop_special" + message.guild.id).updateOne(
 		{"shop": "special", "id": item.id},
 		{$set: item},
 		{upsert: true}
@@ -191,9 +191,9 @@ exports.updateSpecialItem = function(item){
 }
 
 //Update an equip item
-exports.updateEquipItem = function(item){
+exports.updateEquipItem = function(message, item){
 
-	db.collection("shop_equip").updateOne(
+	db.collection("shop_equip" + message.guild.id).updateOne(
 		{"shop": "equip", "id": item.id},
 		{$set: item},
 		{upsert: true}
