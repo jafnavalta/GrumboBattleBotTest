@@ -14,12 +14,13 @@ let activesList = JSON.parse(fs.readFileSync("./values/actives.json", "utf8"));
 //ALL classes should have these.
 exports.className = "Rogue";
 
-exports.CLASS_LEVEL_MAX = 5;
+exports.CLASS_LEVEL_MAX = 6;
 
 //Actives
 const LEVEL_1_ACTIVE = 'second_chance';
 const LEVEL_3_ACTIVE = 'quick_step';
 const LEVEL_4_ACTIVE = 'power_of_wealth';
+const LEVEL_6_ACTIVE = 'double_attack';
 
 const BASE_POW_EQ = -2;
 const BASE_WIS_EQ = 2;
@@ -145,6 +146,10 @@ exports.setClassLevelFunc.rogue5 = function(character){
 
 exports.setClassLevelFunc.rogue6 = function(character){
 
+  var active = classactivefunc.getActive(character, LEVEL_6_ACTIVE);
+  dbfunc.pushToState(character, active.id, active, active.battleStates, 1);
+  character.spdEq += 2;
+  character.lukEq += 2;
 }
 
 exports.setClassLevelFunc.rogue7 = function(character){
@@ -199,6 +204,10 @@ exports.removeClassLevelFunc.rogue5 = function(character){
 
 exports.removeClassLevelFunc.rogue6 = function(character){
 
+  var active = classactivefunc.getActive(character, LEVEL_6_ACTIVE);
+  dbfunc.spliceFromState(character, active.id, active, active.battleStates, active);
+  character.spdEq -= 2;
+  character.lukEq -= 2;
 }
 
 exports.removeClassLevelFunc.rogue7 = function(character){

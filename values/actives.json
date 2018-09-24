@@ -716,5 +716,17 @@
 		],
 		"description": "0.7% chance to permanently increase a random stat by 1. Does not activate against bosses.",
 		"duration": null
+	},
+	"double_attack": {
+		"gameId": 70049,
+		"id": "double_attack",
+		"name": "Double Attack",
+		"effect": "good",
+		"battleStates": [
+			"prebattle",
+			"preresults"
+		],
+		"description": "SPD/2.5 % chance to increase chance of victory by SPD/5 and double your damage dealt before any other damage increases (raw damage from your POW or WIS).",
+		"duration": null
 	}
 }

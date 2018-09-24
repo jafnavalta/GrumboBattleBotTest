@@ -214,6 +214,18 @@ exports.prebattle.trip_mine = function(character, battleState, eventId, actives,
 	dbfunc.reduceDuration(character, [character.prebattle], eventId, actives);
 }
 
+exports.prebattle.double_attack = function(character, battleState, eventId, actives, grumbo){
+	
+	battleState.double_attack = false;
+	var random = Math.random() * 100;
+	if(random < character.spd/2.5){
+
+		battleState.double_attack = true;
+		battleState.chanceMod += character.spd/5;
+		battleState.preMessages.push("You double attacked!");
+	}
+}
+
 ////////////////////////////////////
 // CHARACTER PRERESULTS FUNCTIONS //
 ////////////////////////////////////
@@ -253,6 +265,14 @@ exports.preresults.stand_your_ground = function(character, battleState, eventId,
 			battleState.win = true;
 			battleState.preResMessages.push("You stood your ground!");
 		}
+	}
+}
+
+exports.preresults.double_attack = function(character, battleState, eventId, actives, grumbo){
+	
+	if(battleState.double_attack){
+
+		battleState.dmgMod += battleState.dmgMod;
 	}
 }
 

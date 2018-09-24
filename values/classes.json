@@ -73,7 +73,8 @@
 				"SPD +2 / LUK +2 when classed as a Rogue.",
 				"Quick Step your way to victory.",
 				"The Rogue can show enemies the Power of Wealth.",
-				"SPD +2 / POW +4 / RES +1 when classed as a Rogue."
+				"SPD +2 / POW +4 / RES +1 when classed as a Rogue.",
+				"SPD +2 / LUK +2 when classed as a Rogue. Rogue can trigger a Double Attack.",
 		]
 	},
   "cleric": {
