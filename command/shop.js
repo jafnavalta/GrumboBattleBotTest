@@ -117,9 +117,10 @@ function updateShop(message, shopFunction){
 */
 function initShop(message, shopFunction){
 
-	shop.standard = standardShop;
+	if(shop.standard.length == 0) shop.standard = standardShop;
 	dbfunc.getDB().collection("shop_equip" + message.guild.id).find().toArray(function(err, equip){
 
+		shop.equip[message.guild.id] = [];
 		if(equip != null){
 
 			for(var i = 0; i < equip.length; i++){
@@ -130,6 +131,7 @@ function initShop(message, shopFunction){
 		}
 		dbfunc.getDB().collection("shop_rotation" + message.guild.id).find().toArray(function(err, rotation){
 
+			shop.rotation[message.guild.id] = [];
 			if(rotation != null){
 
 				for(var i = 0; i < rotation.length; i++){
@@ -141,6 +143,7 @@ function initShop(message, shopFunction){
 			}
 			dbfunc.getDB().collection("shop_special" + message.guild.id).find().toArray(function(err, special){
 
+				shop.special[message.guild.id] = [];
 				if(special != null){
 
 					for(var i = 0; i < special.length; i++){
@@ -283,7 +286,7 @@ function displayShop(message, args, character){
 
 	var shopString = "---------- THE GRUMBO SHOP ----------\n " + message.member.displayName + ": " + character.gold + " gold\n"
 		+ "|\n[--- STANDARD ITEMS ---]";
-	shop.standard[message.guild.id].forEach(function(itemId){
+	shop.standard.forEach(function(itemId){
 
 		var item = itemList[itemId];
 		shopString += "\n|\n" + item.name + "  |  Buy:  " + item.id + "\n"
