@@ -62,6 +62,9 @@ exports.createNewCharacter = function(message, callback){
 		level: 1,
 		experience: 0,
 		_id: message.author.id,
+		server: message.guild.id,
+		serverareyousure: false,
+		servertime: 0, //Last time they changed servers
 		powMod: 0, //Permanent mods to stats. Base is calculated below. When switching classes/leveling up these factor in last in calculations
 		wisMod: 0,
 		defMod: 0,

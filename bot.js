@@ -3,6 +3,9 @@ var Discord = require('discord.js');
 var auth = require('./auth.json');
 const client = new Discord.Client();
 
+//TIME BETWEEN CHANGING SERVERS
+const SERVER_CHANGE_WAIT_TIME = 86400000; //24 hours
+
 //THIS SHOULD BE THE SAME AS THE VALUE IN CLASS
 const CLASS_CHANGE_WAIT_TIME = 43200000; //12 hours
 
@@ -89,7 +92,54 @@ function listen(){
 					}
 					else{
 
-						parseCommand(message);
+						if(character.servertime == null){
+							
+							//For people who started on Version 8
+							character.server = message.guild.id;
+							character.serverareyousure = false;
+							character.servertime = 0;
+						}
+						var date = new Date();
+						var currentTime = date.getTime();
+						var timeSinceLastChange = currentTime - character.servertime;
+						//Same server
+						if(character.server == message.guild.id){
+							
+							//Reset server change confirmation
+							character.serverareyousure = false;
+							if(timeSinceLastChange/SERVER_CHANGE_WAIT_TIME >= 1){
+								
+								//Carry on as usual if they've been on their new server for over 24 hours
+								parseCommand(message);
+							}
+							else{
+								
+								//Class changed too recently
+								var hours = Math.floor((SERVER_CHANGE_WAIT_TIME - timeSinceLastChange)/3600000);
+								var minutes = Math.ceil(((SERVER_CHANGE_WAIT_TIME - timeSinceLastChange) % 3600000) / 60000);
+								message.channel.send("You've changed servers too recently " + message.member.displayName + "!"
+									+ "\nYou can issue commands again to GrumboBattleBot in " + hours + " hours " + minutes + " minutes");
+							}
+						}
+						//Different server
+						else{
+							
+							//Already asked for confirmation, proceed with server change
+							if(character.serverareyousure == true){
+								
+								character.server = message.guild.id;
+								character.serverareyousure = false;
+								character.servertime = currentTime;
+								message.channel.send("You've changed servers! You must wait 24 hours before you are able to issue commands again to GrumboBattleBot.");
+							}
+							//Ask for confirmation
+							else{
+								
+								character.serverareyousure = true;
+								message.channel.send("You've issued a GrumboBattleBot command in a different server. If you want to proceed with changing servers, "
+									+ "issue another command in this server. You must wait 24 hours before you are able to issue commands again to GrumboBattleBot after changing servers.");
+							}
+						}
 					}
 				});
 			}
