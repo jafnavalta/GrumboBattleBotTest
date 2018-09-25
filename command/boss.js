@@ -16,7 +16,7 @@ let activeList = JSON.parse(fs.readFileSync("./values/actives.json", "utf8"));
 let itemList = JSON.parse(fs.readFileSync("./values/items.json", "utf8"));
 let equipList = JSON.parse(fs.readFileSync("./values/equips.json", "utf8"));
 
-const BOSS_WAIT_TIME = 14400000; //4 hours
+const BOSS_WAIT_TIME = 1; //4 hours
 
 exports.BOSS_WAIT_TIME = BOSS_WAIT_TIME;
 
@@ -26,8 +26,12 @@ exports.BOSS_WAIT_TIME = BOSS_WAIT_TIME;
 exports.commandBoss = function(message, args, character){
 
   //For testing
-  //character.hp = 100;
-  //character.battlesLeft = 5;
+  character.hp = 100;
+  character.battlesLeft = 5;
+  //TODO this
+  //TODO boss wait time
+  //TODO boss level
+  //TODO class change time
 
   if(args[2] == 'info' && (args.length == 4 || (args.length == 5 && args[4] == '-d'))){
 

@@ -372,7 +372,7 @@
 			"postresults",
 			"final"
 		],
-		"description": "(RES * 2)% chance to reduce damage received by 12. If you were to take damage that would reduce your HP to 0, (RES * 2)% chance to reduce your HP to 1 instead. The revive effect will not activate multiple times in a boss battle.",
+		"description": "(RES * 1.5)% chance to reduce damage received by 7. If you were to take damage that would reduce your HP to 0, (RES * 1.5)% chance to reduce your HP to 1 instead. The revive effect will not activate multiple times in a boss battle.",
 		"duration": null
 	},
 	"holy": {
@@ -383,7 +383,7 @@
 		"battleStates": [
 			"prebattle"
 		],
-		"description": "RES % chance to increase chance of victory by WIS/12 and damage by WIS/8.",
+		"description": "RES/1.5 % chance to increase chance of victory by WIS/12 and damage by WIS/8.",
 		"duration": null
 	},
 	"armory": {
@@ -405,7 +405,7 @@
 		"battleStates": [
 			"prebattle"
 		],
-		"description": "POW/10 % chance to increase chance of victory by the difference between your WIS and DEF divided by 3 and increases damage dealt against bosses by that same difference divided by 2.",
+		"description": "POW/10 % chance to increase chance of victory by the difference between your (WIS*0.9) and (DEF*1.1) divided by 3 and increases damage dealt against bosses by that same difference divided by 1.5.",
 		"duration": null
 	},
 	"stand_your_ground": {
@@ -417,7 +417,7 @@
 			"preresults",
 			"final"
 		],
-		"description": "DEF/8 % chance to outright win against Grumbos who are lower level than you. Against bosses, DEF/8 % chance to reduce damage received by 7.",
+		"description": "DEF/8 % chance to outright win against Grumbos who are lower level than you. If you were to receive damage equal to or more than 25, DEF/8% chance to negate the damage completely.",
 		"duration": null
 	},
 	"grab_bag": {
@@ -727,6 +727,17 @@
 			"preresults"
 		],
 		"description": "SPD/2.5 % chance to increase chance of victory by SPD/5 and double your damage dealt before any other damage increases (raw damage from your POW or WIS).",
+		"duration": null
+	},
+	"for_honor": {
+		"gameId": 70050,
+		"id": "for_honor",
+		"name": "For Honor",
+		"effect": "good",
+		"battleStates": [
+			"final"
+		],
+		"description": "If your HP were to be reduced below 2, remain alive with 2 HP. The next 2 attacks you receive will do 1 damage. Only activates once per boss battle.",
 		"duration": null
 	}
 }

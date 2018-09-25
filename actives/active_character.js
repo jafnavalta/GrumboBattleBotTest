@@ -120,7 +120,7 @@ exports.prebattle.blood_potion = function(character, battleState, eventId, activ
 exports.prebattle.holy = function(character, battleState, eventId, actives, grumbo){
 
 	var random = Math.random() * 100;
-	if(random < character.res){
+	if(random < character.res/1.5){
 
 		battleState.chanceMod += Math.floor(character.wis/12);
 		battleState.dmgMod += Math.ceil(character.wis/8);
@@ -146,9 +146,9 @@ exports.prebattle.recoil = function(character, battleState, eventId, actives, gr
 	var random = Math.random() * 100;
 	if(random < character.pow/10){
 
-		var mod = Math.abs(character.wis - character.def);
+		var mod = Math.ceil(Math.abs((character.wis*0.9) - (character.def*1.1)));
 		battleState.chanceMod += Math.floor(mod/3);
-		battleState.dmgMod += Math.floor(mod/2);
+		battleState.dmgMod += Math.floor(mod/1.5);
 		battleState.preMessages.push("Recoil affected the enemy!");
 	}
 }
@@ -211,11 +211,12 @@ exports.prebattle.shield_bash = function(character, battleState, eventId, active
 exports.prebattle.trip_mine = function(character, battleState, eventId, actives, grumbo){
 
 	battleState.dmgMod += 10;
+	battleState.preMessages.push("A trip mine exploded!");
 	dbfunc.reduceDuration(character, [character.prebattle], eventId, actives);
 }
 
 exports.prebattle.double_attack = function(character, battleState, eventId, actives, grumbo){
-	
+
 	battleState.double_attack = false;
 	var random = Math.random() * 100;
 	if(random < character.spd/2.5){
@@ -269,7 +270,7 @@ exports.preresults.stand_your_ground = function(character, battleState, eventId,
 }
 
 exports.preresults.double_attack = function(character, battleState, eventId, actives, grumbo){
-	
+
 	if(battleState.double_attack){
 
 		battleState.dmgMod += battleState.dmgMod;
@@ -408,9 +409,9 @@ exports.postresults.regen = function(character, battleState, eventId, actives, g
 exports.postresults.miracle = function(character, battleState, eventId, actives, grumbo){
 
 	var random = Math.random() * 100;
-	if(random < character.res * 2){
+	if(random < character.res * 1.5){
 
-		battleState.hpLoss -= 12;
+		battleState.hpLoss -= 7;
 		battleState.endMessages.push("Miracle reduced damage received!");
 	}
 }
@@ -548,10 +549,9 @@ exports.final.vision = function(character, battleState, eventId, actives, grumbo
 exports.final.stand_your_ground = function(character, battleState, eventId, actives, grumbo){
 
 	var random = Math.random() * 100;
-	if(random < character.def/8){
+	if(random < character.def/8 && battleState.hpLoss >= 25 && character.hp > 2){
 
-		battleState.hpLoss -= 7;
-		if(battleState.hpLoss < 0) battleState.hpLoss = 0;
+		battleState.hpLoss = 0;
 		battleState.endMessages.push("You stood your ground!");
 	}
 }
@@ -581,7 +581,7 @@ exports.final.miracle = function(character, battleState, eventId, actives, grumb
 	if(battleState.miracle == null){
 
 		var random = Math.random() * 100;
-		if(random < character.res * 2){
+		if(random < character.res * 1.5){
 
 			if(battleState.hpLoss >= character.hp){
 
@@ -636,5 +636,20 @@ exports.final.blessed = function(character, battleState, eventId, actives, grumb
 			charfunc.calculateStats(character);
 			battleState.endMessages.push("You were blessed with a permanent +1 boost to " + stat.toUpperCase() + "!");
 		}
+	}
+}
+
+exports.final.for_honor = function(character, battleState, eventId, actives, grumbo){
+
+	if(character.hp <= 2){
+
+		battleState.hpLoss = 1;
+		battleState.endMessages.push("For Honor!");
+	}
+	else if(character.hp - battleState.hpLoss <= 2 && battleState.for_honor == null){
+
+		battleState.for_honor = true;
+		battleState.hpLoss = character.hp - 2;
+		battleState.endMessages.push("For Honor!");
 	}
 }

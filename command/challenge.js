@@ -11,11 +11,11 @@ let charfunc = require('../character/character.js');
 var guildChallenges = {};
 
 exports.commandChallenge = function(message, args, character){
-	
+
 	if(guildChallenges[message.guild.id] == null){
-		
+
 		guildChallenges[message.guild.id] = {
-			
+
 			onChallenge: false,
 			onChallengeAccept: false,
 			challengerID: null,
@@ -184,7 +184,7 @@ function issueChallenge(message, opponent, args){
 	guildChallenges[message.guild.id].opponentID = opponent.id;
 	guildChallenges[message.guild.id].wager = args[3];
 
-	message.channel.send(message.member.displayName + ' has challenged ' + opponent.displayName + ' to a wager of ' 
+	message.channel.send(message.member.displayName + ' has challenged ' + opponent.displayName + ' to a wager of '
 	+ guildChallenges[message.guild.id].wager + ' ' + guildChallenges[message.guild.id].wagerType + '!\n'
 		+ opponent.displayName + ' has 25 seconds to accept the challenge!');
 
@@ -248,7 +248,7 @@ function doExpChallenge(message, character, challenger, currentTime){
 	}
 
 	message.channel.send(message.member.displayName + " Lv" + character.level + " is facing off against challenger "
-		+ message.guild.members.get(guildChallenges[message.guild.id].challengerID).displayName + " Lv" + challenger.level + " for " 
+		+ message.guild.members.get(guildChallenges[message.guild.id].challengerID).displayName + " Lv" + challenger.level + " for "
 		+ guildChallenges[message.guild.id].wager + " experience!\n"
 		+ message.member.displayName + " has a " + chance + "% chance of winning!\n"
 		+ "The challenge has begun...\n");
@@ -257,7 +257,7 @@ function doExpChallenge(message, character, challenger, currentTime){
 	setTimeout(function(){
 
 		//Determine battle results
-		var result = Math.floor(Math.random() * 100) + 1;
+		var result = Math.random() * 100;
 
 		//If challenger loses
 		if(result <= chance){
@@ -302,10 +302,19 @@ function doGoldChallenge(message, character, challenger, currentTime){
 	setTimeout(function(){
 
 		//Determine battle results
-		var result = Math.floor(Math.random() * 100) + 1;
+		var result = Math.floor(Math.random() * 100);
+		var result2 = Math.floor(Math.random() * 100);
+		while(result == result2){
+
+			result = Math.floor(Math.random() * 100);
+			result2 = Math.floor(Math.random() * 100);
+		}
+
+		message.channel.send(message.member.displayName + " rolled a " + result +
+			"!\n" + message.guild.members.get(guildChallenges[message.guild.id].challengerID).displayName + " rolled a " + result2 + "!");
 
 		//If challenger loses
-		if(result <= 50){
+		if(result > result2){
 
 			//Winner results
 			calculateGoldChallengeResults(message, character, challenger,

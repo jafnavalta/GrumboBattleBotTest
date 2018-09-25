@@ -14,12 +14,13 @@ let activesList = JSON.parse(fs.readFileSync("./values/actives.json", "utf8"));
 //ALL classes should have these.
 exports.className = "Knight";
 
-exports.CLASS_LEVEL_MAX = 5;
+exports.CLASS_LEVEL_MAX = 6;
 
 //Actives
 const LEVEL_1_ACTIVE = 'armory';
 const LEVEL_3_ACTIVE = 'recoil';
 const LEVEL_5_ACTIVE = 'stand_your_ground';
+const LEVEL_6_ACTIVE = 'for_honor';
 
 const BASE_POW_EQ = 0;
 const BASE_WIS_EQ = -5;
@@ -35,10 +36,10 @@ exports.BASE_RES_EQ = BASE_RES_EQ;
 exports.BASE_SPD_EQ = BASE_SPD_EQ;
 exports.BASE_LUK_EQ = BASE_LUK_EQ;
 
-exports.powX = 0.90;
+exports.powX = 0.93;
 exports.wisX = 0.72;
-exports.defX = 1.19;
-exports.resX = 0.90;
+exports.defX = 1.15;
+exports.resX = 1;
 exports.spdX = 1;
 exports.lukX = 1;
 
@@ -144,6 +145,12 @@ exports.setClassLevelFunc.knight5 = function(character){
 
 exports.setClassLevelFunc.knight6 = function(character){
 
+  var active = classactivefunc.getActive(character, LEVEL_6_ACTIVE);
+  dbfunc.pushToState(character, active.id, active, active.battleStates, 1);
+  character.spdEq += 5;
+  character.resEq += 4;
+  character.powEq += 4;
+  character.defEq += 1;
 }
 
 exports.setClassLevelFunc.knight7 = function(character){
@@ -197,6 +204,12 @@ exports.removeClassLevelFunc.knight5 = function(character){
 
 exports.removeClassLevelFunc.knight6 = function(character){
 
+  var active = classactivefunc.getActive(character, LEVEL_6_ACTIVE);
+  dbfunc.spliceFromState(character, active.id, active, active.battleStates, active);
+  character.spdEq -= 5;
+  character.resEq -= 4;
+  character.powEq -= 4;
+  character.defEq -= 1;
 }
 
 exports.removeClassLevelFunc.knight7 = function(character){

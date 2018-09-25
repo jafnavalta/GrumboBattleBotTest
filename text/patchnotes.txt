@@ -1,6 +1,11 @@
 GRUMBO PATCH NOTES
 Most recent from the top
 
+- Sep XX: Rogue Lv 7. Knight Lv 6.
+- Sep XX: Nerfed Miracle activation rate to RES*1.5 from *2. Damage reduction to 7 from 12.
+- Sep XX: Buffed Knight skills and a little bit in stats.
+- Sep XX: Capped SPD at 50.
+
 - Sep 23: Added Boss timer. Bosses now only require 2 battle stock instead of 3.
 - Sep 23: Added 2 Bosses, 1 Grumbo, 6 Items, 12 Equips.
 - Sep 23: Adventurer Lv 6. Gets nothing new except the stat boost.

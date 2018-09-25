@@ -86,6 +86,7 @@ exports.calculateStats = function(character){
 	character.def = Math.ceil(exports.calculateBaseDEF(character) * classStats.defX) + character.defMod + character.defEq;
 	character.res = Math.ceil(exports.calculateBaseRES(character) * classStats.resX) + character.resMod + character.resEq;
 	character.spd = Math.ceil(exports.calculateBaseSPD(character) * classStats.spdX) + character.spdMod + character.spdEq;
+	if(character.spd > 50) character.spd = 50; //CAP SPEED
 	character.luk = Math.ceil(exports.calculateBaseLUK(character) * classStats.lukX) + character.lukMod + character.lukEq;
 }
 

@@ -90,7 +90,7 @@
     "gameId": 903,
     "id": "master_grumbo",
     "name": "Master Grumbo",
-    "level": 100,
+    "level": 60,
     "hp": 1000,
     "max_hp": 1000,
     "base_chance": 50,

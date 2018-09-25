@@ -69,12 +69,13 @@
 		"className": "Rogue",
     "description": "The quick and slippery rogue. Gain a permanent +1 boost to SPD every class level.",
 		"perks": [
-		    "The Rogue very rarely gets a second chance when losing.",
+		    "The Rogue very rarely gets a Second Chance when losing.",
 				"SPD +2 / LUK +2 when classed as a Rogue.",
 				"Quick Step your way to victory.",
 				"The Rogue can show enemies the Power of Wealth.",
 				"SPD +2 / POW +4 / RES +1 when classed as a Rogue.",
 				"SPD +2 / LUK +2 when classed as a Rogue. Rogue can trigger a Double Attack.",
+				"SPD +1 / LUK +5 / POW +4 when classed as a Rogue."
 		]
 	},
   "cleric": {
@@ -98,10 +99,10 @@
 	},
   "knight": {
 		"gameId": 105,
-    "pow": "C+",
+    "pow": "B-",
     "wis": "D",
-    "def": "A+",
-    "res": "D-",
+    "def": "A",
+    "res": "D",
     "spd": "F",
     "luk": "C",
 		"classId": "knight",
@@ -112,7 +113,8 @@
 				"DEF +4 when classed as a Knight.",
 				"Recoil can activate against enemies.",
 				"SPD +5 / RES +4 / POW +4 when classed as a Knight.",
-				"Stand Your Ground against weaker enemies."
+				"Stand Your Ground against weaker enemies and hard hitting attacks.",
+				"SPD +5 / RES +4 / POW +4 / DEF +1 when classed as a Knight. Knight gains the For Honor active."
 		]
 	}
 }

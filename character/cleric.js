@@ -37,8 +37,8 @@ exports.BASE_LUK_EQ = BASE_LUK_EQ;
 
 exports.powX = 0.78;
 exports.wisX = 1.16;
-exports.defX = 0.75;
-exports.resX = 1.4;
+exports.defX = 0.74;
+exports.resX = 1.38;
 exports.spdX = 1;
 exports.lukX = 1;
 
