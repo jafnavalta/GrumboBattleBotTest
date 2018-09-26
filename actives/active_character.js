@@ -5,6 +5,9 @@ let dbfunc = require('../data/db.js');
 const fs = require("fs");
 let activesList = JSON.parse(fs.readFileSync("./values/actives.json", "utf8"));
 
+//State constants
+let statefunc = require('../state/state.js');
+
 //Character functions
 let charfunc = require('../character/character.js');
 
@@ -46,7 +49,7 @@ exports.prebattle.battle_potion = function(character, battleState, eventId, acti
 
 exports.prebattle.charm_of_wumbo = function(character, battleState, eventId, actives, grumbo){
 
-	if(!battleState.isBoss){
+	if(battleState.state == statefunc.BATTLE){
 
 		battleState.minMod += 15;
 		dbfunc.reduceDuration(character, [character.prebattle], eventId, actives);
@@ -166,7 +169,7 @@ exports.prebattle.revenge = function(character, battleState, eventId, actives, g
 
 exports.prebattle.explosion = function(character, battleState, eventId, actives, grumbo){
 
-	if(battleState.isBoss){
+	if(battleState.state == statefunc.BOSS){
 
 		var random = Math.random() * 100;
 		if(random < character.wis/11){
@@ -232,7 +235,7 @@ exports.prebattle.double_attack = function(character, battleState, eventId, acti
 ////////////////////////////////////
 exports.preresults.observation = function(character, battleState, eventId, actives, grumbo){
 
-	if(battleState.win && !battleState.isBoss){
+	if(battleState.win && battleState.state == statefunc.BATTLE){
 
 		var random = Math.random() * 100;
 		if(random < 10){
@@ -258,7 +261,7 @@ exports.preresults.second_chance = function(character, battleState, eventId, act
 
 exports.preresults.stand_your_ground = function(character, battleState, eventId, actives, grumbo){
 
-	if(!battleState.win && !battleState.isBoss && battleState.levelDiffActual > 0){
+	if(!battleState.win && battleState.state == statefunc.BATTLE && battleState.levelDiffActual > 0){
 
 		var random = Math.random() * 100;
 		if(random < character.def/8){
@@ -419,7 +422,7 @@ exports.postresults.miracle = function(character, battleState, eventId, actives,
 exports.postresults.grab_bag = function(character, battleState, eventId, actives, grumbo){
 
 	var random = Math.random() * 100;
-	if(random < 66 && !battleState.isBoss){
+	if(random < 66 && battleState.state == statefunc.BATTLE){
 
 		if(random < 33){
 
@@ -457,7 +460,7 @@ exports.postresults.barrier = function(character, battleState, eventId, actives,
 
 exports.postresults.study = function(character, battleState, eventId, actives, grumbo){
 
-	if(!battleState.isBoss){
+	if(battleState.state == statefunc.BATTLE){
 
 		var random = Math.random() * 100;
 		if(random < 12){
@@ -482,7 +485,7 @@ exports.postresults.grumbo_whistle = function(character, battleState, eventId, a
 		else{
 
 			battleState.dmgMod += 20;
-			if(battleState.isBoss){
+			if(battleState.state == statefunc.BOSS){
 
 				battleState.endMessages.push("Grumbo came by and dealt an additional 20 damage!");
 			}
@@ -571,7 +574,6 @@ exports.final.dodge = function(character, battleState, eventId, actives, grumbo)
 	if(random < 8){
 
 		battleState.hpLoss = 0;
-		battleState.noDmgTaken = true;
 		battleState.endMessages.push("You dodged all attacks!");
 	}
 }
@@ -623,7 +625,7 @@ exports.final.master_grumbos_protection = function(character, battleState, event
 
 exports.final.blessed = function(character, battleState, eventId, actives, grumbo){
 
-	if(!battleState.isBoss){
+	if(battleState.state == statefunc.BATTLE){
 
 		var random = Math.random() * 100;
 		if(random < 0.7){

@@ -5,7 +5,7 @@ const fs = require("fs");
 let itemList = JSON.parse(fs.readFileSync("./values/items.json", "utf8"));
 
 //Initialize state for state constants and functions
-let state = require('../state.js');
+let state = require('../state/state.js');
 
 exports.commandItems = function(message, args, character){
 

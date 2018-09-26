@@ -179,7 +179,7 @@ exports.postresults.gold_boost_1 = function(character, battleState, eventId, act
 
 exports.postresults.assassinate = function(character, battleState, eventId, actives, grumbo){
 
-	if(!battleState.win && !battleState.noDmgTaken){
+	if(!battleState.win){
 
 		character.battlesLeft -= character.battlesLeft - 1;
 		battleState.hpLoss += charfunc.MAX_HP;

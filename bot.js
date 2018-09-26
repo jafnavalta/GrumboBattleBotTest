@@ -6,9 +6,6 @@ const client = new Discord.Client();
 //TIME BETWEEN CHANGING SERVERS
 const SERVER_CHANGE_WAIT_TIME = 86400000; //24 hours
 
-//THIS SHOULD BE THE SAME AS THE VALUE IN CLASS
-const CLASS_CHANGE_WAIT_TIME = 43200000; //12 hours
-
 //Config
 let config = require('./config.js');
 

@@ -5,7 +5,8 @@ let dbfunc = require('../data/db.js');
 const fs = require("fs");
 
 //Initialize functions
-let state = require('../state.js');
+let state = require('../state/state_boss.js');
+let statefunc = require('../state/state.js');
 let charfunc = require('../character/character.js');
 let classfunc = require('../character/class.js');
 
@@ -225,7 +226,7 @@ function doBoss(message, args, character, currentTime, actives, boss){
 
 		//Prebattle determinations
 		var battleState = {};
-		battleState.isBoss = true;
+		battleState.state = statefunc.BOSS;
     battleState.enemyLevel = args[3];
     battleState.phase = 0;
 
@@ -349,12 +350,11 @@ function recursiveBossPhase2(battleState, message, args, character, currentTime,
       endMessageString += "# " + username + "  HP  " + character.hp + "  |  " + boss.name + "  HP  " + boss.hp + "\n#\n"
         + "######### END PHASE " + battleState.phase + " ########";
 
-      //Save battle results
-      dbfunc.updateCharacter(character);
-
       //Wait a bit before next phase
       if(character.hp > 0 && boss.hp > 0){
 
+        //Save battle results
+        dbfunc.updateCharacter(character);
         message.channel.send(endMessageString);
         recursiveBossPhase(battleState, message, args, character, currentTime, actives2, boss);
       }

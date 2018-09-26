@@ -9,7 +9,7 @@ let equipList = JSON.parse(fs.readFileSync("./values/equips.json", "utf8"));
 let activeList = JSON.parse(fs.readFileSync("./values/actives.json", "utf8"));
 
 //Initialize state for state constants and functions
-let state = require('../state.js');
+let state = require('../state/state.js');
 
 //Classes
 let classes = require('../character/classes.js').classes;

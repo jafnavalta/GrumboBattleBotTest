@@ -5,7 +5,8 @@ let dbfunc = require('../data/db.js');
 const fs = require("fs");
 
 //Initialize functions
-let state = require('../state.js');
+let state = require('../state/state_battle.js');
+let statefunc = require('../state/state.js');
 let charfunc = require('../character/character.js');
 let classfunc = require('../character/class.js');
 
@@ -130,7 +131,7 @@ function doBattle(message, args, character, currentTime, actives){
 		//Prebattle determinations
 		var grumbo = getRandomGrumbo(args[3]);
 		var battleState = {};
-		battleState.isBoss = false;
+		battleState.state = statefunc.BATTLE;
 		battleState.enemyLevel = args[3];
 		state.prebattle(message, args, character, battleState, actives, grumbo);
 
@@ -254,7 +255,7 @@ function doBattle(message, args, character, currentTime, actives){
 */
 exports.calculateBattleExp = function(character, levelDiff, battleState){
 
-	var exp = 100;
+	var exp = 85;
 	//Low level Grumbo
 	if(levelDiff > 0){
 
@@ -278,7 +279,7 @@ exports.calculateBattleExp = function(character, levelDiff, battleState){
 */
 function calculateLowLevelExp(exp, levelDiff){
 
-	exp = exp - Math.floor(levelDiff * Math.pow(1.057, levelDiff)) - (Math.floor(Math.random() * 10) + 3);
+	exp = exp - Math.floor(levelDiff * Math.pow(1.052, levelDiff)) - (Math.floor(Math.random() * 10) + 3);
 	if(levelDiff > 3){
 
 		exp = exp - (Math.floor(Math.random() * 10) + 4);
@@ -303,7 +304,7 @@ function calculateLowLevelExp(exp, levelDiff){
 */
 function calculateHighLevelExp(exp, levelDiff){
 
-	exp = exp - Math.ceil(levelDiff * Math.pow(1.136, Math.abs(levelDiff))) + Math.floor(Math.random() * 20 ) + 5;
+	exp = exp - Math.ceil(levelDiff * Math.pow(1.131, Math.abs(levelDiff))) + Math.floor(Math.random() * 20 ) + 5;
 	if(levelDiff < -3){
 
 		exp = exp - Math.floor(Math.random() * 10);

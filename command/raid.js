@@ -5,7 +5,7 @@ let dbfunc = require('../data/db.js');
 const fs = require("fs");
 
 //Initialize functions
-let state = require('../state.js');
+let state = require('../state/state.js');
 let charfunc = require('../character/character.js');
 let classfunc = require('../character/class.js');
 

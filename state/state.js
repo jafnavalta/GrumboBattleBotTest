@@ -31,17 +31,21 @@ const PRERESULTS = "preresults"; //After battle ends but before results are calc
 const POSTRESULTS = "postresults"; //After results are calculated
 const FINAL = "final"; //Final character state after everything else
 
+//Battle types
+const BATTLE = "battle";
+const BOSS = "boss";
+const RAID = "raid";
+
 //Battle functions
-let battlefunc = require('./command/battle.js');
+let battlefunc = require('../command/battle.js');
 
 //Active functions
-let characterfunc = require('./actives/active_character.js');
-let grumbofunc = require('./actives/active_grumbo.js');
-let usefunc = require('./actives/active_use.js');
+let characterfunc = require('../actives/active_character.js');
+let grumbofunc = require('../actives/active_grumbo.js');
+let usefunc = require('../actives/active_use.js');
 
 //Character functions, not to be confused with the active character functions, characterfunc
-let charfunc = require('./character/character.js');
-let classfunc = require('./character/class.js');
+let charfunc = require('../character/character.js');
 
 //EXPORTS
 exports.IMMEDIATE = IMMEDIATE;
@@ -57,6 +61,10 @@ exports.NEUTRAL = NEUTRAL;
 exports.PREBATTLE = PREBATTLE;
 exports.PRERESULTS = PRERESULTS;
 exports.POSTRESULTS = POSTRESULTS;
+
+exports.BATTLE = BATTLE;
+exports.BOSS = BOSS;
+exports.RAID = RAID;
 
 ///////////
 // ITEMS //
@@ -388,7 +396,6 @@ exports.postresults = function(message, character, battleState, actives, grumbo)
 	//Postresults base/modifiers
 	battleState.endMessages = [];
 	battleState.avoidPostResults = false;
-	battleState.noDmgTaken = false;
 	battleState.hpLoss = 3;
 	battleState.classExp = 1;
 

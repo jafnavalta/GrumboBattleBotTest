@@ -13,7 +13,7 @@ let activeList = JSON.parse(fs.readFileSync("./values/actives.json", "utf8"));
 let LR = JSON.parse(fs.readFileSync("./values/shop_lastrotation.json", "utf8")); //Set value in this file to 0 to force shop rotation
 
 //Initialize state for state constants and functions
-let state = require('../state.js');
+let state = require('../state/state.js');
 
 //Weighted Arrays for randomly choosig items for rotation/special/equip shop
 let weighedRotation = [];
@@ -168,7 +168,7 @@ function updateRotationSpecialEquip(message, shopFunction){
 	var currentTime = date.getTime();
 	var currentRotation = Math.floor(currentTime/INTERVAL);
 	if(LR[message.guild.id] == null){
-	
+
 		LR[message.guild.id] = 0;
 	}
 	if(currentRotation > LR[message.guild.id] || shop.equip[message.guild.id].length <= 0){ //Equip shop check for DB version 6+ when equips were added
@@ -258,7 +258,7 @@ function updateRotationSpecialEquip(message, shopFunction){
 					}
 
 					//Update db with new rotation/special/equip and then perform shop function
-					dbfunc.updateRotationSpecialEquip(message, shop.rotation[message.guild.id], shop.special[message.guild.id], 
+					dbfunc.updateRotationSpecialEquip(message, shop.rotation[message.guild.id], shop.special[message.guild.id],
 						shop.equip[message.guild.id], function(){ shopFunction() });
 				});
 			});
