@@ -423,7 +423,7 @@ exports.calculateWISMod = function(character, grumbo, battleState){
 */
 exports.calculateHPLoss = function(message, character, battleState, actives, grumbo){
 
-	if(!battleState.win || battleState.isBoss){
+	if(!battleState.win || battleState.state == statfunc.BOSS){
 
 		var dmg = Math.floor((grumbo.pow - character.def)/2.2);
 		if(dmg < 0) dmg = 0;
