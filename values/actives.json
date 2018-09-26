@@ -292,9 +292,10 @@
 		"name": "Venom Bite",
 		"effect": "neutral",
 		"battleStates": [
+			"preresults",
 			"postresults"
 		],
-		"description": "Deals 3 extra damage. Multiplies total damage by 5 if the target is poisoned.",
+		"description": "Deals damage equivalent to damage received during battles + 3. Multiplies total damage by 5 if the target is poisoned.",
 		"duration": null
 	},
 	"equalizer": {
@@ -325,9 +326,10 @@
 		"name": "Rock Smash",
 		"effect": "neutral",
 		"battleStates": [
+			"preresults",
 			"postresults"
 		],
-		"description": "Activates in Phase 1 against Crimson Grumbo. If DEF > 150, receive an additional 100 damage. Otherwise, receive additional damage equal to DEF/10.",
+		"description": "Deals damage equivalent to damage received during battles + 5. Following additional effects only activate on Phase 1 against Crimson Grumbo. If DEF > 150, receive an additional 100 damage. Otherwise, receive additional damage equal to DEF/10.",
 		"duration": null
 	},
 	"crimson_blood": {
@@ -591,9 +593,10 @@
 		"name": "Disco Inferno",
 		"effect": "neutral",
 		"battleStates": [
+			"preresults",
 			"postresults"
 		],
-		"description": "Deals 6 damage. From phase 4 onward, heals for the difference between his WIS and your WIS (heals for 0 if you have more). That same difference % chance to deal 60 damage.",
+		"description": "Deals damage equivalent to damage received during battles + 6. From phase 4 onward, heals for the difference between his WIS and your WIS (heals for 0 if you have more). That same difference % chance to deal 60 damage.",
 		"duration": null
 	},
 	"safety_boots": {
@@ -679,9 +682,10 @@
 		"name": "Teaching",
 		"effect": "neutral",
 		"battleStates": [
+			"preresults",
 			"postresults"
 		],
-		"description": "Master Grumbo's regular attack every phase. Deal an additional 10 damage. Reduced by a random number between 0 and your SPD. Can be reduced below 0.",
+		"description": "Master Grumbo's regular attack every phase. Deals damage equivalent to damage received during battles + 12. Reduced by a random number between 0 and your SPD. Can be reduced below 0.",
 		"duration": null
 	},
 	"master_grumbos_protection": {

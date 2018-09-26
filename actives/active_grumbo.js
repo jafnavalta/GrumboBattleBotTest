@@ -116,6 +116,37 @@ exports.prebattle.show_me_your_mixtape = function(character, battleState, eventI
 /////////////////////////////////
 // GRUMBO PRERESULTS FUNCTIONS //
 /////////////////////////////////
+//BOSS Venom Grumbo regular attack
+exports.preresults.venom_bite = function(character, battleState, eventId, actives, grumbo){
+
+	var dmg = Math.floor((grumbo.pow - character.def)/2.2) + 3;
+	if(dmg < 3) dmg = 3;
+	battleState.hpLoss = dmg;
+}
+
+//BOSS Mixtape Grumbo regular attack
+exports.preresults.disco_inferno = function(character, battleState, eventId, actives, grumbo){
+
+	var dmg = Math.floor((grumbo.pow - character.def)/2.2) + 3;
+	if(dmg < 3) dmg = 3;
+	battleState.hpLoss = dmg;
+}
+
+//BOSS Crimson Grumbo regular attack
+exports.preresults.rock_smash = function(character, battleState, eventId, actives, grumbo){
+
+	var dmg = Math.floor((grumbo.pow - character.def)/2.2) + 3;
+	if(dmg < 3) dmg = 3;
+	battleState.hpLoss = dmg;
+}
+
+//BOSS Master Grumbo regular attack
+exports.preresults.teaching = function(character, battleState, eventId, actives, grumbo){
+
+	var dmg = Math.floor((grumbo.pow - character.def)/2.2) + 3;
+	if(dmg < 3) dmg = 3;
+	battleState.hpLoss = dmg;
+}
 
 //////////////////////////////////
 // GRUMBO POSTRESULTS FUNCTIONS //
@@ -343,7 +374,7 @@ exports.postresults.venom_bite = function(character, battleState, eventId, activ
 //BOSS Venom Grumbo
 exports.postresults.equalizer = function(character, battleState, eventId, actives, grumbo){
 
-	if(battleState.bossHp < 120 && battleState.equalized == null){
+	if(grumbo.hp < 120 && battleState.equalized == null){
 
 		battleState.equalized = true;
 		if(character.res < 8 || character.pow < 85 || character.wis < 85){
@@ -491,5 +522,5 @@ exports.postresults.evaluation = function(character, battleState, eventId, activ
 //BOSS Master Grumbo
 exports.postresults.teaching = function(character, battleState, eventId, actives, grumbo){
 
-	battleState.hpLoss += 10 - Math.floor(Math.random() * character.spd);
+	battleState.hpLoss += 12 - Math.floor(Math.random() * character.spd);
 }

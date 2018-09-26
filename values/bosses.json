@@ -16,7 +16,9 @@
     "prebattle": [
       "venom"
     ],
-		"preresults": [],
+		"preresults": [
+      "venom_bite"
+    ],
 		"postresults": [
       "venom_bite",
       "equalizer"
@@ -45,7 +47,9 @@
     "prebattle": [
       "show_me_your_mixtape"
     ],
-		"preresults": [],
+		"preresults": [
+      "disco_inferno"
+    ],
 		"postresults": [
       "disco_inferno",
       "final_track"
@@ -74,7 +78,9 @@
     "prebattle": [
       "red_eye"
     ],
-		"preresults": [],
+		"preresults": [
+      "rock_smash"
+    ],
 		"postresults": [
       "rock_smash",
       "crimson_blood"
@@ -101,7 +107,9 @@
     "description": "The Master of many Grumbos. Only those who are acknowledged by the Master Grumbo have a chance at beating him!",
     "actives": ["teaching", "strategize", "evaluation", "gate_of_grumbo"],
     "prebattle": [],
-		"preresults": [],
+		"preresults": [
+      "teaching"
+    ],
 		"postresults": [
       "teaching",
       "strategize",

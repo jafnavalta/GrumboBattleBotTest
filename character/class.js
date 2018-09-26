@@ -12,7 +12,7 @@ let classes = require('./classes.js').classes;
 
 //Character/state functions
 let charfunc = require('./character.js');
-let state = require('../state.js');
+let state = require('../state/state.js');
 
 const CLASS_EXP_TO_LEVEL = 25;
 const CLASS_CHANGE_WAIT_TIME = 43200000; //12 hours

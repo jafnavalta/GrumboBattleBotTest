@@ -419,11 +419,11 @@ exports.calculateWISMod = function(character, grumbo, battleState){
 }
 
 /**
-* Calculates HP Loss. Max 50 before actives.
+* Calculates HP Loss.
 */
 exports.calculateHPLoss = function(message, character, battleState, actives, grumbo){
 
-	if(!battleState.win || battleState.state == statfunc.BOSS){
+	if(!battleState.win){
 
 		var dmg = Math.floor((grumbo.pow - character.def)/2.2);
 		if(dmg < 0) dmg = 0;

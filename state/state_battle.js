@@ -1,12 +1,12 @@
 //Initialize DB
-let dbfunc = require('./data/db.js');
+let dbfunc = require('../data/db.js');
 
 //Initialize items
 const fs = require("fs");
 let activesList = JSON.parse(fs.readFileSync("./values/actives.json", "utf8"));
 
 //State constants
-let statefunc = require(./state.js);
+let statefunc = require("./state.js");
 
 //Battle functions
 let battlefunc = require('../command/battle.js');

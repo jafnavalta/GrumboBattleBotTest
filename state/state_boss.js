@@ -1,12 +1,12 @@
 //Initialize DB
-let dbfunc = require('./data/db.js');
+let dbfunc = require('../data/db.js');
 
 //Initialize items
 const fs = require("fs");
 let activesList = JSON.parse(fs.readFileSync("./values/actives.json", "utf8"));
 
 //State constants
-let statefunc = require(./state.js);
+let statefunc = require("./state.js");
 
 //Battle functions
 let battlefunc = require('../command/battle.js');
@@ -139,10 +139,6 @@ exports.postresults = function(message, character, battleState, actives, grumbo)
 	//Postresults base/modifiers
 	battleState.endMessages = [];
 	battleState.avoidPostResults = false;
-	battleState.hpLoss = 3;
-  battleState.bossHp = grumbo.hp;
-
-	battlefunc.calculateHPLoss(message, character, battleState, actives, grumbo);
 
 	//Postresults character active functions
 	for(var i = character.postresults.length - 1; i >= 0; i--){
