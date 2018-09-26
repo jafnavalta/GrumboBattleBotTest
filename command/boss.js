@@ -428,7 +428,8 @@ function finishBoss(battleState, message, args, character, currentTime, actives,
               lootedItem = equipList[lootedId];
               if(character.equips.includes(lootedItem.id)){
 
-                winString += "You tried to loot " + lootedItem.name + " but you already own it!\n";
+                character.gold += lootedItem.value;
+                winString += lootedItem.name + " yielded " + lootedItem.value + " gold!\n";
               }
               else{
 
@@ -449,7 +450,8 @@ function finishBoss(battleState, message, args, character, currentTime, actives,
                 }
                 if(hasCount >= lootedItem.max){
 
-                  winString += "You tried to loot " + lootedItem.name + " but you have too many in your items!\n";
+                  character.gold += lootedItem.value;
+                  winString += lootedItem.name + " yielded " + lootedItem.value + " gold!\n";
                 }
                 else{
 

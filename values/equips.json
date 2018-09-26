@@ -347,7 +347,7 @@
 		"description": "A masked dropped by the Venom Grumbo. RES +7 / DEF +7 / WIS +9",
     "effect": "good",
 		"price": 0,
-		"value": 1,
+		"value": 100,
 		"stock": 0,
 		"weight": 0
 	},
@@ -369,7 +369,7 @@
 		"description": "Venom Grumbo's personal mask. RES +9 / DEF +9 / WIS +16",
     "effect": "good",
 		"price": 0,
-		"value": 1,
+		"value": 150,
 		"stock": 0,
 		"weight": 0
 	},
@@ -391,7 +391,7 @@
 		"description": "The red dagger dropped by the Crimson Grumbo. POW +28 / WIS +10 / RES +1 / SPD +2 / DEF -6",
     "effect": "good",
 		"price": 0,
-		"value": 1,
+		"value": 200,
 		"stock": 0,
 		"weight": 0
 	},
@@ -413,7 +413,7 @@
 		"description": "Magician only. The red scepter dropped by the Crimson Grumbo. WIS +30 / POW +8 / RES +2 / SPD +1 / DEF -4",
     "effect": "good",
 		"price": 0,
-		"value": 1,
+		"value": 275,
 		"stock": 0,
 		"weight": 0
 	},
@@ -435,7 +435,7 @@
 		"description": "Cleric only. The red staff dropped by the Crimson Grumbo. WIS +25 / POW +6 / RES +3 / DEF -2",
     "effect": "good",
 		"price": 0,
-		"value": 1,
+		"value": 260,
 		"stock": 0,
 		"weight": 0
 	},
@@ -457,7 +457,7 @@
 		"description": "Knight only. A chestplate made from the skin of the Venom Grumbo. DEF +6 / SPD +6 / POW +4 / WIS +4 / RES -1",
     "effect": "good",
 		"price": 0,
-		"value": 1,
+		"value": 180,
 		"stock": 0,
 		"weight": 0
 	},
@@ -545,7 +545,7 @@
 		"description": "A jacket from the Academy which gives you the ability to Study! WIS +12 / DEF +4",
     "effect": "good",
 		"price": 0,
-		"value": 1,
+		"value": 220,
 		"stock": 0,
 		"weight": 0
 	},
@@ -589,7 +589,7 @@
 		"description": "Safety first! Why cover your head when you can cover your feet instead! DEF +9 / WIS +10 / RES +1",
     "effect": "good",
 		"price": 0,
-		"value": 1,
+		"value": 175,
 		"stock": 0,
 		"weight": 0
 	},
@@ -611,7 +611,7 @@
 		"description": "Cleric only. Wings blessed from the Guardians above. DEF +11 / WIS +10 / RES +4 / LUK +4",
     "effect": "good",
 		"price": 0,
-		"value": 1,
+		"value": 265,
 		"stock": 0,
 		"weight": 0
 	},
@@ -633,7 +633,7 @@
 		"description": "A cloak passed down to the successor of the Master Grumbo. POW +17 / WIS +17 / DEF +12 / LUK +3 / SPD +2 / RES +1",
     "effect": "good",
 		"price": 0,
-		"value": 1,
+		"value": 475,
 		"stock": 0,
 		"weight": 0
 	},
@@ -787,7 +787,7 @@
 		"description": "Adventurer only. A spellbook given to the best of Adventurers. WIS +45 / POW -16",
     "effect": "good",
 		"price": 0,
-		"value": 1,
+		"value": 400,
 		"stock": 0,
 		"weight": 0
 	}
