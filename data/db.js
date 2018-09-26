@@ -38,7 +38,7 @@ exports.connectToServer = function(callback){
 		else{
 
 			//Unlock characters
-			db.collection("characters").updateMany({}, {$set: {"battleLock": false}}, {upsert: true}, function (err, result){
+			db.collection("characters").updateMany({}, {$set: {"battleLock": false, "raidLock": false}}, {upsert: true}, function (err, result){
 
 				checkVersion(callback);
 			});
@@ -84,6 +84,8 @@ exports.createNewCharacter = function(message, callback){
 		battletime: 9999999999999,
 		battleLock: false,
 		bosstime: 0,
+		raidtime: 0,
+		raidLock: false,
 		challengeWins: 0,
 		challengeLosses: 0,
 		challengeWinrate: 0,
@@ -563,6 +565,38 @@ function runMigrations(version, callback){
 						function(){
 
 							version.version = 8;
+							runMigrations(version, callback);
+					});
+				}
+				else{
+
+					module.exports.updateCharacter(character);
+				}
+			};
+		});
+	}
+
+	//Migration 8 to 9: raids
+	else if(version.version <= 8){
+
+		db.collection("characters").find().toArray(function(error, characters){
+
+			for(var i = 0; i < characters.length; i++){
+
+				var character = characters[i];
+				character.raidtime = 0;
+				character.raidLock = false;
+
+				if(i == characters.length - 1){
+
+					//final character to update, finish this migration
+					db.collection("characters").updateOne(
+						{"_id": character._id},
+						{$set: character},
+						{upsert: true},
+						function(){
+
+							version.version = 9;
 							runMigrations(version, callback);
 					});
 				}

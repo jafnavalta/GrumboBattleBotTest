@@ -1,6 +1,6 @@
 exports.COMMAND = '!grumtest';
 exports.DBURI = 'mongodb://127.0.0.1:27017/grumbobattlebottest';
-exports.VERSION = 8;
+exports.VERSION = 9;
 
 //Version 1 was first DB
 //Version 2 was RPG stats
@@ -10,3 +10,4 @@ exports.VERSION = 8;
 //Version 6 was correcting starting adventurer stat mods
 //Version 7 was adding the FINAL state
 //Version 8 was boss stock
+//Version 9 was raids

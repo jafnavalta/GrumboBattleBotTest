@@ -21,7 +21,7 @@ const BOSS_WAIT_TIME = 1; //4 hours
 exports.BOSS_WAIT_TIME = BOSS_WAIT_TIME;
 
 /**
-* Battle command
+* Boss command
 */
 exports.commandBoss = function(message, args, character){
 
@@ -32,6 +32,7 @@ exports.commandBoss = function(message, args, character){
   //TODO boss wait time
   //TODO boss level
   //TODO class change time
+  //TODO raid wait time
 
   if(args[2] == 'info' && (args.length == 4 || (args.length == 5 && args[4] == '-d'))){
 
@@ -131,7 +132,7 @@ exports.commandBoss = function(message, args, character){
   		//Character is already in a battle
   		if(character.battleLock){
 
-  			message.channel.send("You are already in battle " + message.member.displayName + "!");
+  			message.channel.send("You are currently locked from battle " + message.member.displayName + "!");
   		}
       else if(character.hp <= 0){
 

@@ -49,7 +49,7 @@ exports.commandBattle = function(message, args, character){
 			//Character is already in a battle
 			if(character.battleLock){
 
-				message.channel.send("You are already in battle " + message.member.displayName + "!");
+				message.channel.send("You are currently locked from battle " + message.member.displayName + "!");
 			}
 			//User tried to fight a Grumbo who has a level lower than 1
 			else if(args[3] < 1){

@@ -538,7 +538,7 @@ exports.postresults.conceal = function(character, battleState, eventId, actives,
 exports.final.vision = function(character, battleState, eventId, actives, grumbo){
 
 	var random = Math.random() * 100;
-	if(random < 20){
+	if(random < 12){
 
 		battleState.hpLoss -= character.res;
 		if(battleState.hpLoss < 0) battleState.hpLoss = 0;

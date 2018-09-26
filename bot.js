@@ -18,6 +18,7 @@ let dbfunc = require('./data/db.js');
 //Initialize game functions
 let battlefunc = require('./command/battle.js');
 let bossfunc = require('./command/boss.js');
+let raidfunc = require('./command/raid.js');
 let challengefunc = require('./command/challenge.js');
 let itemsfunc = require('./command/items.js');
 let shopfunc = require('./command/shop.js');
@@ -291,12 +292,20 @@ function parseCommand(message){
 			battlefunc.commandBattle(message, args, character);
 		}
 
-		//////////////////
-		// !! BATTLE !! //
-		//////////////////
+		////////////////
+		// !! BOSS !! //
+		////////////////
 		else if(args[1] == 'boss'){
 
 			bossfunc.commandBoss(message, args, character);
+		}
+
+		////////////////
+		// !! RAID !! //
+		////////////////
+		else if(args[1] == 'raid'){
+
+			raidfunc.commandRaid(message, args, character);
 		}
 
 		/////////////////////
