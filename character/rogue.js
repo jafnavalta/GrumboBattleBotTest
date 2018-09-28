@@ -22,22 +22,28 @@ const LEVEL_3_ACTIVE = 'quick_step';
 const LEVEL_4_ACTIVE = 'power_of_wealth';
 const LEVEL_6_ACTIVE = 'double_attack';
 
+const BASE_HP_EQ = 0;
 const BASE_POW_EQ = -2;
 const BASE_WIS_EQ = 2;
+const BASE_SKL_EQ = 0;
 const BASE_DEF_EQ = -2;
 const BASE_RES_EQ = 2;
 const BASE_SPD_EQ = 5;
 const BASE_LUK_EQ = 10;
 
+exports.BASE_HP_EQ = BASE_HP_EQ;
 exports.BASE_POW_EQ = BASE_POW_EQ;
 exports.BASE_WIS_EQ = BASE_WIS_EQ;
+exports.BASE_SKL_EQ = BASE_SKL_EQ;
 exports.BASE_DEF_EQ = BASE_DEF_EQ;
 exports.BASE_RES_EQ = BASE_RES_EQ;
 exports.BASE_SPD_EQ = BASE_SPD_EQ;
 exports.BASE_LUK_EQ = BASE_LUK_EQ;
 
-exports.powX = 0.94;
-exports.wisX = 1.06;
+exports.hpX = 0.95;
+exports.powX = 1.05;
+exports.wisX = 1.03;
+exports.sklX = 1.23;
 exports.defX = 0.86;
 exports.resX = 1.01;
 exports.spdX = 1;
@@ -155,6 +161,7 @@ exports.setClassLevelFunc.rogue6 = function(character){
 exports.setClassLevelFunc.rogue7 = function(character){
 
   character.spdEq += 1;
+  character.sklEq += 2;
   character.lukEq += 5;
   character.powEq += 4;
 }
@@ -216,6 +223,7 @@ exports.removeClassLevelFunc.rogue6 = function(character){
 exports.removeClassLevelFunc.rogue7 = function(character){
 
   character.spdEq -= 1;
+  character.sklEq -= 2;
   character.lukEq -= 5;
   character.powEq -= 4;
 }

@@ -97,8 +97,8 @@ exports.commandClass = function(character, message, args){
 		if(details != null){
 
 			detailsString = details.className + "\n" + details.description + "\n"
-        + "POW  " + details.pow + "  |  WIS  " + details.wis + "\n"
-        + "DEF    " + details.def + "  |  RES  " + details.res + "\n"
+        + "HP      " + details.hp + "  |  POW  " + details.pow + "  |  WIS  " + details.wis + "\n"
+        + "SKL    " + details.skl + "  |  DEF  " + details.def + "  |  RES  " + details.res + "\n"
         + "SPD    " + details.spd + "  |  LUK  " + details.luk + "\n\n";
 
 				detailsString += "Max Lv:  " + classesjs[classId].CLASS_LEVEL_MAX + "\n";

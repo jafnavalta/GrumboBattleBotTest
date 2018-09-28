@@ -19,7 +19,7 @@
 			"prebattle",
 			"postresults"
 		],
-		"description": "Decreases chance of victory by 5% for the next battle. Lose 5 extra HP per battle.",
+		"description": "Decreases chance of victory by 5% for the next battle. Lose 5% HP per battle.",
 		"duration": 3
 	},
 	"fools_gold": {
@@ -162,7 +162,7 @@
 		"battleStates": [
 			"prebattle"
 		],
-		"description": "35% chance to double the WIS bonus chance in battle. Against bosses, increases damage dealt by initial WIS bonus chance as well.",
+		"description": "18% chance to double the WIS bonus chance in battle. Against bosses, increases damage dealt by initial WIS bonus chance as well.",
 		"duration": null
 	},
 	"second_chance": {
@@ -228,7 +228,7 @@
 		"battleStates": [
 			"postresults"
 		],
-		"description": "Bleed for extra damage based on duration. Also reduces your DEF and RES by 5 until it's gone.",
+		"description": "Bleed for a % of your HP based on duration. Also reduces your DEF and RES by 5 until it's gone.",
 		"duration": 5
 	},
 	"petrify": {
@@ -295,7 +295,7 @@
 			"preresults",
 			"postresults"
 		],
-		"description": "Deals damage equivalent to damage received during battles + 3. Multiplies total damage by 5 if the target is poisoned.",
+		"description": "Deals damage equivalent to damage received during battles + 6. Multiplies total damage by 5 if the target is poisoned.",
 		"duration": null
 	},
 	"equalizer": {
@@ -306,7 +306,7 @@
 		"battleStates": [
 			"postresults"
 		],
-		"description": "Activates when below 120 HP. If you have less than POW 85 or WIS 85 or RES 8, receive damage equal to the difference between your POW and WIS. Only activates once.",
+		"description": "Activates when below 120 HP. If you have less than POW 82 or WIS 82 or RES 7, receive damage equal to the difference between your POW and WIS. Only activates once.",
 		"duration": null
 	},
 	"red_eye": {
@@ -329,7 +329,7 @@
 			"preresults",
 			"postresults"
 		],
-		"description": "Deals damage equivalent to damage received during battles + 5. Following additional effects only activate on Phase 1 against Crimson Grumbo. If DEF > 150, receive an additional 100 damage. Otherwise, receive additional damage equal to DEF/10.",
+		"description": "Deals damage equivalent to damage received during battles + 10. Following additional effects only activate on Phase 1 against Crimson Grumbo. If DEF > 150, receive an additional 100 damage. Otherwise, receive additional damage equal to DEF/10.",
 		"duration": null
 	},
 	"crimson_blood": {
@@ -351,7 +351,7 @@
 		"battleStates": [
 			"prebattle"
 		],
-		"description": "Increases max chance of victory by 4%. (DEF/10 + RES*2)% chance of increasing chance of victory by 4.",
+		"description": "Increases max chance of victory by 3%. (DEF/10 + RES*2)% chance of increasing chance of victory by 3.",
 		"duration": null
 	},
 	"regen": {
@@ -374,7 +374,7 @@
 			"postresults",
 			"final"
 		],
-		"description": "(RES * 1.5)% chance to reduce damage received by 7. If you were to take damage that would reduce your HP to 0, (RES * 1.5)% chance to reduce your HP to 1 instead. The revive effect will not activate multiple times in a boss battle.",
+		"description": "(RES * 1.5)% chance to reduce damage received by 7% of your max HP. If you were to take damage that would reduce your HP to 0, (RES * 1.5)% chance to reduce your HP to 1 instead. The revive effect will not activate multiple times in a boss battle.",
 		"duration": null
 	},
 	"holy": {
@@ -385,7 +385,7 @@
 		"battleStates": [
 			"prebattle"
 		],
-		"description": "RES/1.5 % chance to increase chance of victory by WIS/12 and damage by WIS/8.",
+		"description": "RES/2.2 % chance to increase chance of victory by WIS/12 and damage by WIS/8.",
 		"duration": null
 	},
 	"armory": {
@@ -419,7 +419,7 @@
 			"preresults",
 			"final"
 		],
-		"description": "DEF/8 % chance to outright win against Grumbos who are lower level than you. If you were to receive damage equal to or more than 25, DEF/8% chance to negate the damage completely.",
+		"description": "DEF/8 % chance to outright win against Grumbos who are lower level than you. If you were to receive damage equal to or more than 25% your max HP, DEF/8 % chance to negate the damage completely.",
 		"duration": null
 	},
 	"grab_bag": {
@@ -452,7 +452,7 @@
 		"battleStates": [
 			"prebattle"
 		],
-		"description": "Higher chance of activation the lower the HP you are. Increases chance of victory by POW/12. Against bosses, deal extra damage equal to POW/5.",
+		"description": "Higher chance of activation the lower the HP you are. Increases chance of victory by POW/13. Against bosses, deal extra damage equal to POW/5.",
 		"duration": null
 	},
 	"explosion": {
@@ -474,7 +474,7 @@
 		"battleStates": [
 			"postresults"
 		],
-		"description": "RES% chance to reduce damage received by WIS/12. Can heal if damage reduced is more than damage received.",
+		"description": "RES% chance to reduce damage received by WIS/14. Can heal if damage reduced is more than damage received.",
 		"duration": null
 	},
 	"power_of_wealth": {
@@ -596,7 +596,7 @@
 			"preresults",
 			"postresults"
 		],
-		"description": "Deals damage equivalent to damage received during battles + 6. From phase 4 onward, heals for the difference between his WIS and your WIS (heals for 0 if you have more). That same difference % chance to deal 60 damage.",
+		"description": "Deals damage equivalent to damage received during battles + 7. From phase 4 onward, heals for the difference between his WIS and your WIS (heals for 0 if you have more). That same difference % chance to deal 60 damage.",
 		"duration": null
 	},
 	"safety_boots": {
@@ -607,7 +607,7 @@
 		"battleStates": [
 			"postresults"
 		],
-		"description": "When HP < 50, reduces damage by 2.",
+		"description": "When HP < 50%, reduces damage by 2.",
 		"duration": null
 	},
 	"adrenaline": {
@@ -618,7 +618,7 @@
 		"battleStates": [
 			"postresults"
 		],
-		"description": "If you have less than or equal to 10 HP at the beginning of the battle/phase, recover 20 HP at the end of it. Item is consumed after use but the active doesn't get used up until it activates. Activates only once per boss battle.",
+		"description": "If you have less than or equal to 10% HP at the beginning of the battle/phase, recover 20 HP at the end of it. Item is consumed after use but the active doesn't get used up until it activates. Activates only once per boss battle.",
 		"duration": 1
 	},
 	"stimulus": {
@@ -629,7 +629,7 @@
 		"battleStates": [
 			"postresults"
 		],
-		"description": "If you have less than or equal to 20 HP at the beginning of the battle/phase, deal 40 damage at the end of it. Damage is not reduced by phase loss. Item is consumed after use but the active doesn't get used up until it activates. Activates only once per boss battle.",
+		"description": "If you have less than or equal to 20% HP at the beginning of the battle/phase, deal 40 damage at the end of it. Damage is not reduced by phase loss. Item is consumed after use but the active doesn't get used up until it activates. Activates only once per boss battle.",
 		"duration": 1
 	},
 	"guardian_angel": {
@@ -685,7 +685,7 @@
 			"preresults",
 			"postresults"
 		],
-		"description": "Master Grumbo's regular attack every phase. Deals damage equivalent to damage received during battles + 12. Reduced by a random number between 0 and your SPD. Can be reduced below 0.",
+		"description": "Master Grumbo's regular attack every phase. Deals damage equivalent to damage received during battles + 22. Reduced by a random number between 0 and your SPD. Can be reduced below 0.",
 		"duration": null
 	},
 	"master_grumbos_protection": {

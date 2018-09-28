@@ -21,22 +21,28 @@ const LEVEL_1_ACTIVE = 'outsmart';
 const LEVEL_4_ACTIVE = 'explosion';
 const LEVEL_5_ACTIVE = 'barrier';
 
+const BASE_HP_EQ = 0;
 const BASE_POW_EQ = -5;
 const BASE_WIS_EQ = 6;
+const BASE_SKL_EQ = 0;
 const BASE_DEF_EQ = -5;
 const BASE_RES_EQ = 2;
 const BASE_SPD_EQ = 0;
 const BASE_LUK_EQ = 0;
 
+exports.BASE_HP_EQ = BASE_HP_EQ;
 exports.BASE_POW_EQ = BASE_POW_EQ;
 exports.BASE_WIS_EQ = BASE_WIS_EQ;
+exports.BASE_SKL_EQ = BASE_SKL_EQ;
 exports.BASE_DEF_EQ = BASE_DEF_EQ;
 exports.BASE_RES_EQ = BASE_RES_EQ;
 exports.BASE_SPD_EQ = BASE_SPD_EQ;
 exports.BASE_LUK_EQ = BASE_LUK_EQ;
 
+exports.hpX = 0.88;
 exports.powX = 0.84;
 exports.wisX = 1.34;
+exports.sklX = 1.02;
 exports.defX = 0.79;
 exports.resX = 1.1;
 exports.spdX = 1;

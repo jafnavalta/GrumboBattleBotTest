@@ -204,8 +204,10 @@ exports.indefinite = function(message, character, eventId, event, amount){
 */
 exports.equip = function(message, character, equip){
 
+	character.hpEq += equip.hp;
 	character.powEq += equip.pow;
 	character.wisEq += equip.wis;
+	character.sklEq += equip.skl;
 	character.defEq += equip.def;
 	character.resEq += equip.res;
 	character.spdEq += equip.spd;
@@ -231,8 +233,10 @@ exports.equip = function(message, character, equip){
 */
 exports.unequip = function(message, character, equip){
 
+	character.hpEq -= equip.hp;
 	character.powEq -= equip.pow;
 	character.wisEq -= equip.wis;
+	character.sklEq -= equip.skl;
 	character.defEq -= equip.def;
 	character.resEq -= equip.res;
 	character.spdEq -= equip.spd;

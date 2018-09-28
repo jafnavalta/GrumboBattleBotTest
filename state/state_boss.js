@@ -10,6 +10,7 @@ let statefunc = require("./state.js");
 
 //Battle functions
 let battlefunc = require('../command/battle.js');
+let bossfunc = require('../command/boss.js');
 
 //Active functions
 let characterfunc = require('../actives/active_character.js');
@@ -34,9 +35,10 @@ exports.prebattle = function(message, args, character, battleState, actives, gru
 	battleState.hpMod = 0;
 	battleState.powMod = 0;
 	battleState.wisMod = 0;
+	battleState.sklMod = 0;
 	battleState.dmgMod = 0;
 
-	battlefunc.calculateCharacterMods(message, args, character, battleState, actives, grumbo);
+	bossfunc.calculateCharacterMods(message, args, character, battleState, actives, grumbo);
 
 	//Prebattle character active functions
 	for(var i = character.prebattle.length - 1; i >= 0; i--){
@@ -68,7 +70,7 @@ exports.prebattle = function(message, args, character, battleState, actives, gru
 	};
 
 	//Calculate prebattle variables
-	battleState.chance = Math.floor(Math.random() * 4) - 2 + battleState.chanceMod + battleState.powMod + battleState.wisMod + battleState.hpMod;
+	battleState.chance = Math.floor(Math.random() * 4) - 2 + battleState.chanceMod + battleState.powMod + battleState.wisMod + battleState.sklMod + battleState.hpMod;
 	battleState.chance += grumbo.base_chance;
 	var charDmg = character.pow;
 	if(charDmg < character.wis) charDmg = Math.ceil(character.wis * (0.95));
@@ -97,7 +99,11 @@ exports.preresults = function(message, character, battleState, actives, grumbo){
 	if(battleState.result >= battleState.chance){
 
 		battleState.win = false;
-		battleState.dmgMod = Math.ceil(battleState.dmgMod/1.9);
+		var sklShrink = battleState.sklMod/100;
+		if(sklShrink < 0) sklShrink = 0;
+		var divider = 2.2 - (sklShrink*2.2);
+		if(divider < 1.50) divider = 1.50;
+		battleState.dmgMod = Math.ceil(battleState.dmgMod/divider);
 	}
 
 	//Preresults character active functions

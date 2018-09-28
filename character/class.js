@@ -15,7 +15,7 @@ let charfunc = require('./character.js');
 let state = require('../state/state.js');
 
 const CLASS_EXP_TO_LEVEL = 25;
-const CLASS_CHANGE_WAIT_TIME = 43200000; //12 hours
+const CLASS_CHANGE_WAIT_TIME = 1; //12 hours
 
 exports.CLASS_CHANGE_WAIT_TIME = CLASS_CHANGE_WAIT_TIME;
 
@@ -132,8 +132,10 @@ function setClass(character, classFromDB, newClass){
   character.classId = newClass;
   character.classLevel = classFromDB.classLevel;
   character.classExp = classFromDB.classExp;
+  character.hpEq += classfunc.BASE_HP_EQ;
   character.powEq += classfunc.BASE_POW_EQ;
   character.wisEq += classfunc.BASE_WIS_EQ;
+  character.sklEq += classfunc.BASE_SKL_EQ;
   character.defEq += classfunc.BASE_DEF_EQ;
   character.resEq += classfunc.BASE_RES_EQ;
   character.spdEq += classfunc.BASE_SPD_EQ;
@@ -177,8 +179,10 @@ function setClass(character, classFromDB, newClass){
 function removeClass(message, character){
 
   var classfunc = classes[character.classId];
+  character.hpEq -= classfunc.BASE_HP_EQ;
   character.powEq -= classfunc.BASE_POW_EQ;
   character.wisEq -= classfunc.BASE_WIS_EQ;
+  character.sklEq -= classfunc.BASE_SKL_EQ;
   character.defEq -= classfunc.BASE_DEF_EQ;
   character.resEq -= classfunc.BASE_RES_EQ;
   character.spdEq -= classfunc.BASE_SPD_EQ;

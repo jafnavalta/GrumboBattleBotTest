@@ -1,9 +1,19 @@
 GRUMBO PATCH NOTES
 Most recent from the top
 
+- Sep XX: Equip class reassignment + Rework of Equip stats
+- Sep XX: Added SKL stat.
+- Sep XX: Added Max HP stat.
 - Sep XX: Rogue Lv 7. Knight Lv 6.
 - Sep XX: Buffed Knight skills and a little bit of stats.
 - Sep XX: Capped SPD at 50.
+- Sep XX: Removed -d from shop command.
+- Sep XX: Scaled Miracle.
+- Sep XX: Nerfed Revenge activation rate.
+- Sep XX: Nerfed Barrier damage reduction.
+- Sep XX: Nerfed Crimson again down to 3 from 4.
+- Sep XX: Nerfed Equalizer activation thresholds.
+- Sep XX: Nerfed Outsmart activation rate.
 - Sep XX: Nerfed Vision activation rate to 12 from 20,
 
 - Sep 25: Nerfed Holy activation rate.

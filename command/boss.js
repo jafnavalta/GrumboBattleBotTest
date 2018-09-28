@@ -27,13 +27,15 @@ exports.BOSS_WAIT_TIME = BOSS_WAIT_TIME;
 exports.commandBoss = function(message, args, character){
 
   //For testing
-  character.hp = 100;
+  character.hp = character.maxHP;
   character.battlesLeft = 5;
   //TODO this
   //TODO boss wait time
   //TODO boss level
   //TODO class change time
   //TODO raid wait time
+  //TODO test battle ticket
+  //TODO fix power of wealth
 
   if(args[2] == 'info' && (args.length == 4 || (args.length == 5 && args[4] == '-d'))){
 
@@ -223,6 +225,7 @@ function doBoss(message, args, character, currentTime, actives, boss){
     //Initialize boss stats
     boss.pow = boss.powBase;
     boss.wis = boss.wisBase;
+    boss.skl = boss.sklBase;
 
 		//Prebattle determinations
 		var battleState = {};
@@ -342,7 +345,7 @@ function recursiveBossPhase2(battleState, message, args, character, currentTime,
 
       character.hp -= battleState.hpLoss;
       if(character.hp < 0) character.hp = 0;
-      else if(character.hp > charfunc.MAX_HP) character.hp = charfunc.MAX_HP;
+      else if(character.hp > character.maxHP) character.hp = character.maxHP;
       boss.hp -= battleState.dmgMod;
       if(boss.hp < 0) boss.hp = 0;
       else if(boss.hp > boss.max_hp) boss.hp = boss.max_hp;
@@ -611,6 +614,7 @@ exports.calculateCharacterMods = function(message, args, character, battleState,
 	exports.calculateHPMod(character, battleState);
 	exports.calculatePOWMod(character, grumbo, battleState);
 	exports.calculateWISMod(character, grumbo, battleState);
+  exports.calculateSKLMod(character, grumbo, battleState);
 }
 
 /**
@@ -618,7 +622,7 @@ exports.calculateCharacterMods = function(message, args, character, battleState,
 */
 exports.calculateHPMod = function(character, battleState){
 
-	if(character.hp >= charfunc.MAX_HP - 5){
+  if(character.hp >= character.maxHP * 0.95){
 
 		battleState.hpMod += 5;
 	}
@@ -626,15 +630,15 @@ exports.calculateHPMod = function(character, battleState){
 
 		battleState.hpMod -= 50;
 	}
-	else if(character.hp <= 5){
+	else if(character.hp <= character.maxHP * 0.05){
 
 		battleState.hpMod -= 25;
 	}
-	else if(character.hp <= 20){
+	else if(character.hp <= character.maxHP * 0.20){
 
 		battleState.hpMod -= 10;
 	}
-	else if(character.hp <= 45){
+	else if(character.hp <= character.maxHP * 0.45){
 
 		battleState.hpMod -= 5;
 	}
@@ -645,8 +649,8 @@ exports.calculateHPMod = function(character, battleState){
 */
 exports.calculatePOWMod = function(character, grumbo, battleState){
 
-	battleState.powMod += Math.ceil((character.pow - grumbo.pow)/4);
-	if(battleState.powMod > 10)	battleState.powMod = 10;
+	battleState.powMod += Math.ceil((character.pow - grumbo.pow)/6);
+	if(battleState.powMod > 15)	battleState.powMod = 15;
 }
 
 /**
@@ -654,8 +658,17 @@ exports.calculatePOWMod = function(character, grumbo, battleState){
 */
 exports.calculateWISMod = function(character, grumbo, battleState){
 
-	battleState.wisMod += Math.ceil((character.wis - grumbo.wis)/6);
-	if(battleState.wisMod > 10) battleState.wisMod = 10;
+	battleState.wisMod += Math.ceil((character.wis - grumbo.wis)/9);
+	if(battleState.wisMod > 15) battleState.wisMod = 15;
+}
+
+/**
+* Calculates the skl chance mod. Max 25 before actives.
+*/
+exports.calculateSKLMod = function(character, grumbo, battleState){
+
+	battleState.sklMod += Math.ceil(character.skl - grumbo.skl);
+	if(battleState.sklMod > 35) battleState.sklMod = 35;
 }
 
 /**
@@ -670,29 +683,6 @@ exports.calculateHPLoss = function(message, character, battleState, actives, gru
 		battleState.hpLoss += dmg;
 	}
 }
-
-/**
-* Randomize Grumbo.
-*/
-function getRandomGrumbo(grumboLevel){
-
-	var random = Math.floor(Math.random() * (weighedGrumbos.length - 1));
-	var grumboId = weighedGrumbos[random];
-	var grumbo = grumboList[grumboId];
-	calculateGrumboStats(grumbo, grumboLevel);
-
-	return grumbo;
-}
-
-/**
-* Calculate Grumbo stats.
-*/
-function calculateGrumboStats(grumbo, grumboLevel){
-
-	grumbo.pow = Math.ceil((grumbo.powBase + (grumboLevel*1)) * grumbo.powX) + Math.floor(Math.random() * 4) - 2;
-	grumbo.wis = Math.ceil((grumbo.wisBase + (grumboLevel*1)) * grumbo.wisX) + Math.floor(Math.random() * 4) - 2;
-}
-
 
 /**
 * Determines if x is an integer.

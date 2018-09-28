@@ -359,9 +359,10 @@ function displayStats(character, message, args){
 		else weapon = "-----";
 		var statsString = username + " Lv" + character.level + " with " + character.experience + " EXP  |  " + character.gold + " Gold"
 						+ "\n" + classList[character.classId].className + " Lv" + character.classLevel + " with " + character.classExp + " EXP"
-						+ "\nHP " + character.hp + "/100"
-						+ "\nPOW " + character.pow + "  |  WIS " + character.wis + "  |  DEF " + character.def
-						+ "\nRES " + character.res + "  |  SPD " + character.spd + "  |  LUK " + character.luk
+						+ "\nHP " + character.hp + "/" + character.maxHP
+						+ "\nPOW " + character.pow + "  |  WIS " + character.wis + "  |  SKL " + character.skl
+						+ "\nDEF " + character.def + "  |  RES " + character.res
+						+ "\nSPD " + character.spd + "  |  LUK " + character.luk
 						+ "\nHead: " + head
 						+ "\nArmor: " + armor
 						+ "\nBottom: " + bottom

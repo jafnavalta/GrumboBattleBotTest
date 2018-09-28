@@ -21,22 +21,28 @@ const LEVEL_1_ACTIVE = 'regen';
 const LEVEL_3_ACTIVE = 'miracle';
 const LEVEL_4_ACTIVE = 'holy';
 
+const BASE_HP_EQ = 0;
 const BASE_POW_EQ = -6;
 const BASE_WIS_EQ = 2;
+const BASE_SKL_EQ = 0;
 const BASE_DEF_EQ = -6;
 const BASE_RES_EQ = 7;
 const BASE_SPD_EQ = 3;
 const BASE_LUK_EQ = 0;
 
+exports.BASE_HP_EQ = BASE_HP_EQ;
 exports.BASE_POW_EQ = BASE_POW_EQ;
 exports.BASE_WIS_EQ = BASE_WIS_EQ;
+exports.BASE_SKL_EQ = BASE_SKL_EQ;
 exports.BASE_DEF_EQ = BASE_DEF_EQ;
 exports.BASE_RES_EQ = BASE_RES_EQ;
 exports.BASE_SPD_EQ = BASE_SPD_EQ;
 exports.BASE_LUK_EQ = BASE_LUK_EQ;
 
+exports.hpX = 0.84;
 exports.powX = 0.78;
-exports.wisX = 1.16;
+exports.wisX = 1.19;
+exports.sklX = 0.96;
 exports.defX = 0.74;
 exports.resX = 1.38;
 exports.spdX = 1;

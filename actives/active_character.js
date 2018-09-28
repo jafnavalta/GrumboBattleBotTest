@@ -86,10 +86,10 @@ exports.prebattle.wild_swing = function(character, battleState, eventId, actives
 exports.prebattle.outsmart = function(character, battleState, eventId, actives, grumbo){
 
 	var random = Math.random() * 100;
-	if(random < 35 && battleState.wisMod > 0){
+	if(random < 18 && battleState.wisMod > 0){
 
 		battleState.dmgMod += battleState.wisMod;
-		battleState.wisMod = battleState.wisMod * 2;
+		battleState.chanceMod += battleState.wisMod;
 		battleState.preMessages.push("You outsmarted the enemy!");
 	}
 }
@@ -104,13 +104,13 @@ exports.prebattle.throwing_shield = function(character, battleState, eventId, ac
 
 exports.prebattle.crimson = function(character, battleState, eventId, actives, grumbo){
 
-	battleState.maxMod += 4;
+	battleState.maxMod += 3;
 	var random = Math.random() * 100;
 	var increase = (character.def/10) + (character.res*2);
 	if(random < increase){
 
-		battleState.chanceMod += 4;
-		battleState.preMessages.push("Crimson increased chance of victory by 4%!");
+		battleState.chanceMod += 3;
+		battleState.preMessages.push("Crimson increased chance of victory by 3%!");
 	}
 }
 
@@ -123,7 +123,7 @@ exports.prebattle.blood_potion = function(character, battleState, eventId, activ
 exports.prebattle.holy = function(character, battleState, eventId, actives, grumbo){
 
 	var random = Math.random() * 100;
-	if(random < character.res/1.5){
+	if(random < character.res/2.2){
 
 		battleState.chanceMod += Math.floor(character.wis/12);
 		battleState.dmgMod += Math.ceil(character.wis/8);
@@ -159,9 +159,9 @@ exports.prebattle.recoil = function(character, battleState, eventId, actives, gr
 exports.prebattle.revenge = function(character, battleState, eventId, actives, grumbo){
 
 	var random = Math.random() * 100;
-	if(random < (100 - character.hp)/1.5){
+	if(random < (character.maxHP - character.hp)/2.25){
 
-		battleState.chanceMod += Math.floor(character.pow/12);
+		battleState.chanceMod += Math.floor(character.pow/13);
 		battleState.dmgMod += Math.floor(character.pow/5);
 		battleState.preMessages.push("You attack back in Revenge!");
 	}
@@ -183,7 +183,7 @@ exports.prebattle.explosion = function(character, battleState, eventId, actives,
 exports.prebattle.power_of_wealth = function(character, battleState, eventId, actives, grumbo){
 
 	var random = Math.random() * 100;
-	if(random < character.luk*0.8){
+	if(random < character.luk*0.0){ //TODO Should be 0.8
 
 		battleState.chanceMod += Math.floor(character.gold/1500);
 		battleState.dmgMod += Math.floor(character.gold/150);
@@ -285,7 +285,7 @@ exports.preresults.double_attack = function(character, battleState, eventId, act
 /////////////////////////////////////
 exports.postresults.poison = function(character, battleState, eventId, actives, grumbo){
 
-	battleState.hpLoss += 5;
+	battleState.hpLoss += Math.floor(character.maxHP * 0.05);
 	dbfunc.reduceDuration(character, [character.prebattle, character.postresults], eventId, actives);
 }
 
@@ -307,7 +307,7 @@ exports.postresults.bleed = function(character, battleState, eventId, actives, g
 
 		if(actives[i].id == eventId){
 
-			battleState.hpLoss += actives[i].duration;
+			battleState.hpLoss += Math.floor(character.maxHP * (actives[i].duration/100));
 			if(actives[i].duration <= 1){
 
 				character.resEq += 5;
@@ -414,7 +414,7 @@ exports.postresults.miracle = function(character, battleState, eventId, actives,
 	var random = Math.random() * 100;
 	if(random < character.res * 1.5){
 
-		battleState.hpLoss -= 7;
+		battleState.hpLoss -= Math.ceil(character.maxHP * 0.07);
 		battleState.endMessages.push("Miracle reduced damage received!");
 	}
 }
@@ -453,7 +453,7 @@ exports.postresults.barrier = function(character, battleState, eventId, actives,
 	var random = Math.random() * 100;
 	if(random < character.res){
 
-		battleState.hpLoss -= Math.floor(character.wis/12);
+		battleState.hpLoss -= Math.floor(character.wis/14);
 		battleState.endMessages.push("Barrier reduced damage received!");
 	}
 }
@@ -495,7 +495,7 @@ exports.postresults.grumbo_whistle = function(character, battleState, eventId, a
 
 exports.postresults.safety_boots = function(character, battleState, eventId, actives, grumbo){
 
-	if(character.hp < 50){
+	if(character.hp < character.maxHP/2){
 
 		battleState.hpLoss -= 2;
 		battleState.endMessages.push("Your safety boots cut your damage by 2!");
@@ -504,7 +504,7 @@ exports.postresults.safety_boots = function(character, battleState, eventId, act
 
 exports.postresults.adrenaline = function(character, battleState, eventId, actives, grumbo){
 
-	if(battleState.adrenaline == null && character.hp <= 10){
+	if(battleState.adrenaline == null && character.hp <= character.maxHP * 0.1){
 
 		battleState.adrenaline = true;
 		battleState.hpLoss -= 20;
@@ -515,7 +515,7 @@ exports.postresults.adrenaline = function(character, battleState, eventId, activ
 
 exports.postresults.stimulus = function(character, battleState, eventId, actives, grumbo){
 
-	if(battleState.stimulus == null && character.hp <= 20){
+	if(battleState.stimulus == null && character.hp <= character.maxHP * 0.2){
 
 		battleState.stimulus = true;
 		battleState.dmgMod += 40;
@@ -552,7 +552,7 @@ exports.final.vision = function(character, battleState, eventId, actives, grumbo
 exports.final.stand_your_ground = function(character, battleState, eventId, actives, grumbo){
 
 	var random = Math.random() * 100;
-	if(random < character.def/8 && battleState.hpLoss >= 25 && character.hp > 2){
+	if(random < character.def/8 && battleState.hpLoss >= character.maxHP * 0.25 && character.hp > 2){
 
 		battleState.hpLoss = 0;
 		battleState.endMessages.push("You stood your ground!");
@@ -630,7 +630,7 @@ exports.final.blessed = function(character, battleState, eventId, actives, grumb
 		var random = Math.random() * 100;
 		if(random < 0.7){
 
-			var randomArray = ['pow', 'wis', 'def', 'res', 'spd', 'luk', 'pow'];
+			var randomArray = ['hp', 'pow', 'wis', 'skl', 'def', 'res', 'spd', 'luk', 'hp'];
 			var random2 = Math.floor(Math.random() * (randomArray.length - 1));
 			var stat = randomArray[random2];
 			var statMod = stat + "Mod";

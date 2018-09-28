@@ -231,12 +231,12 @@ function doBattle(message, args, character, currentTime, actives){
 
 			character.hp -= battleState.hpLoss;
 			if(character.hp < 0) character.hp = 0;
-			else if(character.hp > charfunc.MAX_HP) character.hp = charfunc.MAX_HP;
+			else if(character.hp > character.maxHP) character.hp = character.maxHP;
 			character.classExp += battleState.classExp;
 			classfunc.levelUpClass(character, battleState);
 
 			endMessageString += "Here are your current stats:\n" + username + " Lv" + character.level + "  |  "
-					+ character.experience + " EXP  |  " + character.hp + " HP  |  " + character.gold + " Gold  |  Wins " + character.wins
+					+ character.experience + " EXP  |  " + character.hp + "/" + character.maxHP + " HP  |  " + character.gold + " Gold  |  Wins " + character.wins
 					+ "  |  Losses " + character.losses + "   |   Win% " + character.winrate + "\n"
 					+ classList[character.classId].className + " Lv" + character.classLevel + "  |  " + character.classExp + " Class EXP" + "\n"
 					+ "You have " + character.battlesLeft + "/5 battles left"
@@ -255,7 +255,7 @@ function doBattle(message, args, character, currentTime, actives){
 */
 exports.calculateBattleExp = function(character, levelDiff, battleState){
 
-	var exp = 85;
+	var exp = 86;
 	//Low level Grumbo
 	if(levelDiff > 0){
 
@@ -304,7 +304,7 @@ function calculateLowLevelExp(exp, levelDiff){
 */
 function calculateHighLevelExp(exp, levelDiff){
 
-	exp = exp - Math.ceil(levelDiff * Math.pow(1.131, Math.abs(levelDiff))) + Math.floor(Math.random() * 20 ) + 5;
+	exp = exp - Math.ceil(levelDiff * Math.pow(1.130, Math.abs(levelDiff))) + Math.floor(Math.random() * 20 ) + 5;
 	if(levelDiff < -3){
 
 		exp = exp - Math.floor(Math.random() * 10);
@@ -378,7 +378,7 @@ exports.calculateCharacterMods = function(message, args, character, battleState,
 */
 exports.calculateHPMod = function(character, battleState){
 
-	if(character.hp >= charfunc.MAX_HP - 5){
+	if(character.hp >= character.maxHP * 0.95){
 
 		battleState.hpMod += 5;
 	}
@@ -386,15 +386,15 @@ exports.calculateHPMod = function(character, battleState){
 
 		battleState.hpMod -= 50;
 	}
-	else if(character.hp <= 5){
+	else if(character.hp <= character.maxHP * 0.05){
 
 		battleState.hpMod -= 25;
 	}
-	else if(character.hp <= 20){
+	else if(character.hp <= character.maxHP * 0.20){
 
 		battleState.hpMod -= 10;
 	}
-	else if(character.hp <= 45){
+	else if(character.hp <= character.maxHP * 0.45){
 
 		battleState.hpMod -= 5;
 	}
@@ -405,7 +405,7 @@ exports.calculateHPMod = function(character, battleState){
 */
 exports.calculatePOWMod = function(character, grumbo, battleState){
 
-	battleState.powMod += Math.ceil((character.pow - grumbo.pow)/4);
+	battleState.powMod += Math.ceil((character.pow - grumbo.pow)/5);
 	if(battleState.powMod > 10)	battleState.powMod = 10;
 }
 
@@ -414,7 +414,7 @@ exports.calculatePOWMod = function(character, grumbo, battleState){
 */
 exports.calculateWISMod = function(character, grumbo, battleState){
 
-	battleState.wisMod += Math.ceil((character.wis - grumbo.wis)/6);
+	battleState.wisMod += Math.ceil((character.wis - grumbo.wis)/7.5);
 	if(battleState.wisMod > 10) battleState.wisMod = 10;
 }
 

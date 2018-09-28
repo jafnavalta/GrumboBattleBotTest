@@ -1,6 +1,6 @@
 exports.COMMAND = '!grumtest';
 exports.DBURI = 'mongodb://127.0.0.1:27017/grumbobattlebottest';
-exports.VERSION = 9;
+exports.VERSION = 14;
 
 //Version 1 was first DB
 //Version 2 was RPG stats
@@ -11,3 +11,6 @@ exports.VERSION = 9;
 //Version 7 was adding the FINAL state
 //Version 8 was boss stock
 //Version 9 was raids
+//Version 10-11 is Max HP
+//Version 12 is SKL
+//Version 13-14 is Equip class reassignment and Master Cloak || Equip stats should total 40-50% of their req level

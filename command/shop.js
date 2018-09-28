@@ -68,7 +68,7 @@ exports.initWeighedArrays = function(){
 exports.commandShop = function(message, args, character){
 
 	//Display shop
-	if(args.length == 2 || (args.length == 3 && args[2] == '-d')){
+	if(args.length == 2){
 
 		//Update then display
 		updateShop(message, function(){ displayShop(message, args, character) });
@@ -278,11 +278,6 @@ function displayShop(message, args, character){
 
 	//DM user
 	var sender = message.author;
-	if(args.length == 3){
-
-		//Message channel
-		sender = message.channel;
-	}
 
 	var shopString = "---------- THE GRUMBO SHOP ----------\n " + message.member.displayName + ": " + character.gold + " gold\n"
 		+ "|\n[--- STANDARD ITEMS ---]";

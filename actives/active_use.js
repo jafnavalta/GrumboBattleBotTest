@@ -7,6 +7,7 @@ let activesList = JSON.parse(fs.readFileSync("./values/actives.json", "utf8"));
 
 //Initialize functions
 let charfunc = require('../character/character.js');
+let battlefunc = require('../command/battle.js');
 
 //Initialize states
 //consume/toggle use regular active effects
@@ -18,7 +19,7 @@ exports.nonconsume = {};
 /////////////////////////
 exports.immediate.medicine = function(message, character, state, eventId, event, amount){
 
-	if(character.hp < 100){
+	if(character.hp < character.maxHP){
 
 		var used = 0;
 		for(var i = 0; i < amount; i++){
@@ -27,9 +28,9 @@ exports.immediate.medicine = function(message, character, state, eventId, event,
 			character.items.splice(index, 1);
 			character.hp += 40;
 			used++;
-			if(character.hp >= 100){
+			if(character.hp >= character.maxHP){
 
-				character.hp = 100;
+				character.hp = character.maxHP;
 				break;
 			}
 		}
@@ -51,6 +52,9 @@ exports.immediate.battle_ticket = function(message, character, state, eventId, e
 			character.items.splice(index, 1);
 		}
 		character.battletime -= charfunc.calculateWaitTime(character) * amount;
+		var date = new Date();
+		var currentTime = date.getTime();
+		exports.restockBattles(currentTime, character);
 	}
 	else{
 
@@ -206,7 +210,7 @@ exports.immediate.master_grumbos_blessing = function(message, character, state, 
 
 	var index = character.items.indexOf(eventId);
 	character.items.splice(index, 1);
-	var randomArray = ['pow', 'wis', 'def', 'res', 'spd', 'luk', 'pow'];
+	var randomArray = ['hp', 'pow', 'wis', 'skl', 'def', 'res', 'spd', 'luk', 'hp'];
 	var random = Math.floor(Math.random() * (randomArray.length - 1));
 	var stat = randomArray[random];
 	var statMod = stat + "Mod";

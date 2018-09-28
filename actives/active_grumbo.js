@@ -213,7 +213,7 @@ exports.postresults.assassinate = function(character, battleState, eventId, acti
 	if(!battleState.win){
 
 		character.battlesLeft -= character.battlesLeft - 1;
-		battleState.hpLoss += charfunc.MAX_HP;
+		battleState.hpLoss += character.maxHP;
 		battleState.endMessages.push("The Grumbassassin performed a swift grumbassassination!");
 	}
 }
@@ -250,7 +250,7 @@ exports.postresults.permaboost = function(character, battleState, eventId, activ
 
 	if(battleState.win){
 
-		var randomArray = ['pow', 'wis', 'def', 'res', 'spd', 'luk', 'pow'];
+		var randomArray = ['hp', 'pow', 'wis', 'skl', 'def', 'res', 'spd', 'luk', 'hp'];
 		var random = Math.floor(Math.random() * (randomArray.length - 1));
 		var stat = randomArray[random];
 		var statMod = stat + "Mod";
@@ -362,7 +362,7 @@ exports.postresults.root = function(character, battleState, eventId, actives, gr
 //BOSS Venom Grumbo
 exports.postresults.venom_bite = function(character, battleState, eventId, actives, grumbo){
 
-	battleState.hpLoss += 3 + Math.floor((Math.random() * 4) - 2);
+	battleState.hpLoss += 6 + Math.floor((Math.random() * 4) - 2);
 	if(character.prebattle.includes('poison')){
 
 		var active;
@@ -377,7 +377,7 @@ exports.postresults.equalizer = function(character, battleState, eventId, active
 	if(grumbo.hp < 120 && battleState.equalized == null){
 
 		battleState.equalized = true;
-		if(character.res < 8 || character.pow < 85 || character.wis < 85){
+		if(character.res < 7 || character.pow < 82 || character.wis < 82){
 
 			battleState.hpLoss += Math.abs(character.pow - character.wis);
 			battleState.endMessages.push("Venom Grumbo has panicked and used the Equalizer active!");
@@ -392,7 +392,7 @@ exports.postresults.equalizer = function(character, battleState, eventId, active
 //BOSS Crimson Grumbo
 exports.postresults.rock_smash = function(character, battleState, eventId, actives, grumbo){
 
-	var damage = 5 + Math.floor((Math.random() * 6) - 3);
+	var damage = 10 + Math.floor((Math.random() * 6) - 3);
 	if(battleState.phase == 1){
 
 		damage = Math.ceil(character.def/10);
@@ -438,7 +438,7 @@ exports.postresults.crimson_blood = function(character, battleState, eventId, ac
 //BOSS Mixtape Grumbo
 exports.postresults.disco_inferno = function(character, battleState, eventId, actives, grumbo){
 
-	battleState.hpLoss += 6;
+	battleState.hpLoss += 7;
 	if(battleState.phase >= 4){
 
 		battleState.endMessages.push("Disco Inferno is rolling!");
@@ -522,5 +522,5 @@ exports.postresults.evaluation = function(character, battleState, eventId, activ
 //BOSS Master Grumbo
 exports.postresults.teaching = function(character, battleState, eventId, actives, grumbo){
 
-	battleState.hpLoss += 12 - Math.floor(Math.random() * character.spd);
+	battleState.hpLoss += 22 - Math.floor(Math.random() * character.spd);
 }

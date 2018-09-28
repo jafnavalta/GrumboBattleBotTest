@@ -10,6 +10,8 @@ let charfunc = require('../character/character.js');
 
 //For old character file
 const fs = require("fs");
+let equipList = JSON.parse(fs.readFileSync("./values/equips.json", "utf8"));
+let activesList = JSON.parse(fs.readFileSync("./values/actives.json", "utf8"));
 
 var db;
 
@@ -59,20 +61,24 @@ exports.createNewCharacter = function(message, callback){
 	//The 'active' table for active effects is a separate table
 	var newCharacter = {
 
-		level: 1,
+		level: 5,
 		experience: 0,
 		_id: message.author.id,
 		server: message.guild.id,
 		serverareyousure: false,
 		servertime: 0, //Last time they changed servers
-		powMod: 0, //Permanent mods to stats. Base is calculated below. When switching classes/leveling up these factor in last in calculations
+		hpMod: 0, //Permanent mods to stats. Base is calculated below. When switching classes/leveling up these factor in last in calculations
+		powMod: 0,
 		wisMod: 0,
+		sklMod: 0,
 		defMod: 0,
 		resMod: 0,
 		spdMod: 0,
 		lukMod: 0,
-		powEq: 0, //Equip/Temp mods to stats. When switching classes/leveling up these factor in second last in calculations
+		hpEq: 0, //Equip/Temp mods to stats. When switching classes/leveling up these factor in second last in calculations
+		powEq: 0,
 		wisEq: 0,
+		sklEq: 0,
 		defEq: 0,
 		resEq: 0,
 		spdEq: 0,
@@ -91,7 +97,7 @@ exports.createNewCharacter = function(message, callback){
 		challengeWinrate: 0,
 		challengesLeft: 3,
 		challengetime: 9999999999999,
-		gold: 700,
+		gold: 750,
 		items: ['medicine', 'medicine', 'medicine', 'battle_ticket', 'challenge_ticket', 'battle_potion', 'battle_potion'],
 		prebattle: [],
 		preresults: [],
@@ -597,6 +603,275 @@ function runMigrations(version, callback){
 						function(){
 
 							version.version = 9;
+							runMigrations(version, callback);
+					});
+				}
+				else{
+
+					module.exports.updateCharacter(character);
+				}
+			};
+		});
+	}
+
+	//Migration 9 to 11: HP
+	if(version.version <= 10){
+
+		db.collection("characters").find().toArray(function(error, characters){
+
+			for(var i = 0; i < characters.length; i++){
+
+				var character = characters[i];
+				character.hpMod = 0;
+				character.hpEq = 0;
+
+				for(var key in equipList){
+
+					var equip = equipList[key];
+					if(character[equip.type] == key){
+
+						character.hpEq += equip.hp;
+					}
+				}
+
+				charfunc.calculateStats(character);
+
+				if(i == characters.length - 1){
+
+					//final character to update, finish this migration
+					db.collection("characters").updateOne(
+						{"_id": character._id},
+						{$set: character},
+						{upsert: true},
+						function(){
+
+							version.version = 11;
+							runMigrations(version, callback);
+					});
+				}
+				else{
+
+					module.exports.updateCharacter(character);
+				}
+			};
+		});
+	}
+
+	//Migration 11 to 12: SKL
+	if(version.version <= 11){
+
+		db.collection("characters").find().toArray(function(error, characters){
+
+			for(var i = 0; i < characters.length; i++){
+
+				var character = characters[i];
+				character.sklMod = 0;
+				character.sklEq = 0;
+
+				for(var key in equipList){
+
+					var equip = equipList[key];
+					if(character[equip.type] == key){
+
+						character.sklEq += equip.skl;
+					}
+				}
+
+				charfunc.calculateStats(character);
+
+				if(i == characters.length - 1){
+
+					//final character to update, finish this migration
+					db.collection("characters").updateOne(
+						{"_id": character._id},
+						{$set: character},
+						{upsert: true},
+						function(){
+
+							version.version = 12;
+							runMigrations(version, callback);
+					});
+				}
+				else{
+
+					module.exports.updateCharacter(character);
+				}
+			};
+		});
+	}
+
+	//Migration 12 to 14: Equip reassignment and master cloak
+	if(version.version <= 13){
+
+		db.collection("characters").find().toArray(function(error, characters){
+
+			for(var i = 0; i < characters.length; i++){
+
+				var character = characters[i];
+
+				for(var key in equipList){
+
+					var equip = equipList[key];
+					//Character has it equipped
+					if(character[equip.type] == key){
+
+						//Reworked stats of equips from version 12 to 13
+						if(equip.id == 'master_cloak'){
+
+							character.defEq -= 1;
+							character.powEq -= 5;
+							character.wisEq -= 5;
+						}
+						if(equip.id == 'mikes'){
+
+							character.spdEq += 3;
+						}
+						if(equip.id == 'monocle'){
+
+							character.wisEq += 1;
+						}
+						if(equip.id == 'water_staff'){
+
+							character.wisEq -= 6;
+						}
+						if(equip.id == 'baseball_bat'){
+
+							character.wisEq += 4;
+						}
+						if(equip.id == 'grumbo_poncho'){
+
+							character.defEq -= 3;
+						}
+						if(equip.id == 'a_tip'){
+
+							character.powEq -= 4;
+							character.spdEq -= 1;
+						}
+						if(equip.id == 'grumdeagle'){
+
+							character.powEq -= 7;
+						}
+						if(equip.id == 'mighty_shirt'){
+
+							character.defEq -= 2;
+							character.spdEq -= 1;
+						}
+						if(equip.id == 'venom_mask'){
+
+							character.defEq -= 2;
+							character.wisEq -= 4;
+						}
+						if(equip.id == 'venom_mask_ex'){
+
+							character.defEq -= 3;
+							character.wisEq -= 6;
+							character.resEq -= 1;
+						}
+						if(equip.id == 'venom_plate'){
+
+							character.defEq -= 2;
+							character.resEq += 3;
+							character.spdEq -= 2;
+						}
+						if(equip.id == 'gold_sneakers'){
+
+							character.defEq -= 4;
+						}
+						if(equip.id == 'knights_shield'){
+
+							character.defEq -= 1;
+							character.spdEq -= 1;
+						}
+						if(equip.id == 'tank_top'){
+
+							character.powEq += 6;
+							character.wisEq += 6;
+							character.defEq -= 3;
+							character.resEq -= 1;
+						}
+						if(equip.id == 'safety_boots'){
+
+							character.defEq -= 2;
+							character.resEq += 1;
+						}
+						if(equip.id == 'angel_wings'){
+
+							character.defEq -= 2;
+							character.wisEq -= 1;
+						}
+						if(equip.id == 'battle_greaves'){
+
+							character.defEq -= 3;
+							character.powEq -= 1;
+						}
+						if(equip.id == 'pointy_shoes'){
+
+							character.defEq -= 1;
+							character.wisEq -= 1;
+							character.spdEq -= 2;
+						}
+						if(equip.id == 'white_boots'){
+
+							character.defEq -= 2;
+						}
+						if(equip.id == 'wartorn_headpiece'){
+
+							character.defEq -= 4;
+							character.spdEq -= 2;
+							character.resEq -= 2;
+							character.lukEq -= 2;
+						}
+						if(equip.id == 'concealed_knife'){
+
+							character.defEq -= 1;
+							character.wisEq -= 8;
+						}
+						if(equip.id == 'ox_headband'){
+
+							character.defEq -= 1;
+						}
+						if(equip.id == 'adventurers_spellbook'){
+
+							character.wisEq -= 5;
+							character.powEq += 1;
+						}
+						//Last one, remove equip if wrong class
+						if(equip.classId != character.classId && equip.classId != null){
+
+							character.hpEq -= equip.hp;
+							character.powEq -= equip.pow;
+							character.wisEq -= equip.wis;
+							character.sklEq -= equip.skl;
+							character.defEq -= equip.def;
+							character.resEq -= equip.res;
+							character.spdEq -= equip.spd;
+							character.lukEq -= equip.luk;
+
+							if(equip.active != null){
+
+								var active = activesList[equip.active];
+								active._id = character._id + equip.active;
+							  active.character = character._id;
+								exports.spliceFromState(character, active.id, active, active.battleStates, active);
+							}
+
+							character[equip.type] = "";
+						}
+					}
+				}
+
+				charfunc.calculateStats(character);
+
+				if(i == characters.length - 1){
+
+					//final character to update, finish this migration
+					db.collection("characters").updateOne(
+						{"_id": character._id},
+						{$set: character},
+						{upsert: true},
+						function(){
+
+							version.version = 14;
 							runMigrations(version, callback);
 					});
 				}

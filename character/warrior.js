@@ -21,23 +21,29 @@ const LEVEL_1_ACTIVE = 'wild_swing';
 const LEVEL_4_ACTIVE = 'lifesteal';
 const LEVEL_5_ACTIVE = 'revenge';
 
+const BASE_HP_EQ = 0;
 const BASE_POW_EQ = 5;
 const BASE_WIS_EQ = -3;
+const BASE_SKL_EQ = 0;
 const BASE_DEF_EQ = -2;
 const BASE_RES_EQ = -3;
 const BASE_SPD_EQ = 0;
 const BASE_LUK_EQ = 0;
 
+exports.BASE_HP_EQ = BASE_HP_EQ;
 exports.BASE_POW_EQ = BASE_POW_EQ;
 exports.BASE_WIS_EQ = BASE_WIS_EQ;
+exports.BASE_SKL_EQ = BASE_SKL_EQ;
 exports.BASE_DEF_EQ = BASE_DEF_EQ;
 exports.BASE_RES_EQ = BASE_RES_EQ;
 exports.BASE_SPD_EQ = BASE_SPD_EQ;
 exports.BASE_LUK_EQ = BASE_LUK_EQ;
 
-exports.powX = 1.23;
-exports.wisX = 0.77;
-exports.defX = 0.90;
+exports.hpX = 1.08;
+exports.powX = 1.26;
+exports.wisX = 0.75;
+exports.sklX = 0.85;
+exports.defX = 0.85;
 exports.resX = 1;
 exports.spdX = 1;
 exports.lukX = 1;

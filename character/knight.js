@@ -22,22 +22,28 @@ const LEVEL_3_ACTIVE = 'recoil';
 const LEVEL_5_ACTIVE = 'stand_your_ground';
 const LEVEL_6_ACTIVE = 'for_honor';
 
+const BASE_HP_EQ = 0;
 const BASE_POW_EQ = 0;
 const BASE_WIS_EQ = -5;
+const BASE_SKL_EQ = 0;
 const BASE_DEF_EQ = 6;
 const BASE_RES_EQ = -12;
 const BASE_SPD_EQ = -15;
 const BASE_LUK_EQ = 0;
 
+exports.BASE_HP_EQ = BASE_HP_EQ;
 exports.BASE_POW_EQ = BASE_POW_EQ;
 exports.BASE_WIS_EQ = BASE_WIS_EQ;
+exports.BASE_SKL_EQ = BASE_SKL_EQ;
 exports.BASE_DEF_EQ = BASE_DEF_EQ;
 exports.BASE_RES_EQ = BASE_RES_EQ;
 exports.BASE_SPD_EQ = BASE_SPD_EQ;
 exports.BASE_LUK_EQ = BASE_LUK_EQ;
 
-exports.powX = 0.93;
+exports.hpX = 1.12;
+exports.powX = 0.91;
 exports.wisX = 0.72;
+exports.sklX = 1.17;
 exports.defX = 1.15;
 exports.resX = 1;
 exports.spdX = 1;
@@ -150,6 +156,7 @@ exports.setClassLevelFunc.knight6 = function(character){
   character.spdEq += 5;
   character.resEq += 4;
   character.powEq += 4;
+  character.sklEq += 1;
   character.defEq += 1;
 }
 
@@ -209,6 +216,7 @@ exports.removeClassLevelFunc.knight6 = function(character){
   character.spdEq -= 5;
   character.resEq -= 4;
   character.powEq -= 4;
+  character.sklEq -= 1;
   character.defEq -= 1;
 }
 

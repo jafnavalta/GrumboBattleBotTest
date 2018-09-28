@@ -1,8 +1,10 @@
 {
 	"adventurer": {
 		"gameId": 100,
+		"hp": "B",
     "pow": "B",
     "wis": "B",
+		"skl": "B",
     "def": "B",
     "res": "B",
     "spd": "B",
@@ -21,8 +23,10 @@
 	},
   "warrior": {
 		"gameId": 101,
+		"hp": "A-",
     "pow": "A+",
     "wis": "D+",
+		"skl": "C",
     "def": "C+",
     "res": "C+",
     "spd": "B",
@@ -40,8 +44,10 @@
 	},
   "magician": {
 		"gameId": 102,
+		"hp": "C+",
     "pow": "C",
     "wis": "S+",
+		"skl": "B+",
     "def": "C-",
     "res": "A-",
     "spd": "B",
@@ -59,8 +65,10 @@
 	},
   "rogue": {
 		"gameId": 103,
+		"hp": "B-",
     "pow": "B-",
     "wis": "B+",
+		"skl": "S-",
     "def": "C",
     "res": "A-",
     "spd": "A",
@@ -75,13 +83,15 @@
 				"The Rogue can show enemies the Power of Wealth.",
 				"SPD +2 / POW +4 / RES +1 when classed as a Rogue.",
 				"SPD +2 / LUK +2 when classed as a Rogue. Rogue can trigger a Double Attack.",
-				"SPD +1 / LUK +5 / POW +4 when classed as a Rogue."
+				"SPD +1 / SKL +2 / LUK +5 / POW +4 when classed as a Rogue."
 		]
 	},
   "cleric": {
 		"gameId": 104,
+		"hp": "C",
     "pow": "D+",
     "wis": "A",
+		"skl": "C+",
     "def": "D+",
     "res": "S++",
     "spd": "B+",
@@ -99,8 +109,10 @@
 	},
   "knight": {
 		"gameId": 105,
+		"hp": "A",
     "pow": "B-",
     "wis": "D",
+		"skl": "A+",
     "def": "A",
     "res": "D",
     "spd": "F",
@@ -114,7 +126,7 @@
 				"Recoil can activate against enemies.",
 				"SPD +5 / RES +4 / POW +4 when classed as a Knight.",
 				"Stand Your Ground against weaker enemies and hard hitting attacks.",
-				"SPD +5 / RES +4 / POW +4 / DEF +1 when classed as a Knight. Knight gains the For Honor active."
+				"SPD +5 / RES +4 / POW +4 / SKL +1 / DEF +1 when classed as a Knight. Knight gains the For Honor active."
 		]
 	}
 }

@@ -18,7 +18,7 @@ EQUIPS
 !grumbo unequip <equip_command>  |  Unequip. Removes equip active affects as well.
 |
 SHOP
-!grumbo shop -d  |  Display the shop.
+!grumbo shop  |  Display the shop.
 !grumbo shop buy <shop_item_command> [amount]  |  Buy the specified item [amount] times if possible.
 !grumbo shop sell <shop_item_command> [amount]  |  Sell a specified item [amount] times if possible.
 |
