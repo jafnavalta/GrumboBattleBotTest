@@ -53,7 +53,7 @@ exports.commandBoss = function(message, args, character){
       var firstTime = itemList[boss.firstTime];
       if(firstTime == null) firstTime = equipList[boss.firstTime];
       var bossString = boss.name + "  |  Lv Req: " + boss.level + "  |  Command: " + boss.id + "\n"
-        + "HP " + boss.hp + "  |  POW " + boss.powBase + "  |  WIS " + boss.wisBase + "\n"
+        + "HP " + boss.hp + "  |  POW " + boss.powBase + "  |  WIS " + boss.wisBase + "  |  SKL " + boss.sklBase + "\n"
         + "Base Phase Victory Chance: " + boss.base_chance + "%\n"
         + boss.description + "\n"
         + "Actives: ";
