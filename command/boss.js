@@ -34,7 +34,6 @@ exports.commandBoss = function(message, args, character){
   //TODO boss level
   //TODO class change time
   //TODO raid wait time
-  //TODO test battle ticket
   //TODO fix power of wealth
 
   if(args[2] == 'info' && (args.length == 4 || (args.length == 5 && args[4] == '-d'))){
@@ -173,7 +172,6 @@ exports.commandBoss = function(message, args, character){
 
       message.channel.send(bossId + " is not a correct boss command.");
     }
-
 	}
 	else{
 
@@ -216,12 +214,6 @@ function doBoss(message, args, character, currentTime, actives, boss){
 			{$set: {"battleLock": character.battleLock}},
 		function(error, result){
 
-    character.bosstime = currentTime;
-    if(character.battlesLeft == 5){
-
-  		character.battletime = currentTime;
-  	}
-
     //Initialize boss stats
     boss.pow = boss.powBase;
     boss.wis = boss.wisBase;
@@ -232,6 +224,7 @@ function doBoss(message, args, character, currentTime, actives, boss){
 		battleState.state = statefunc.BOSS;
     battleState.phase = 0;
 
+    character.bosstime = currentTime;
 		if(character.battlesLeft == 5){
 
 			character.battletime = currentTime;

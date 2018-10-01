@@ -395,6 +395,12 @@ function displayStats(character, message, args){
     	var minutes = Math.ceil(((bossfunc.BOSS_WAIT_TIME - timeSinceLastBoss) % 3600000) / 60000);
 			statsString = statsString + "\nYou can boss again in " + hours + " hours " + minutes + " minutes";
 		}
+		if(timeSinceLastRaid/raidfunc.RAID_WAIT_TIME < 1){
+
+			var hours = Math.floor((raidfunc.RAID_WAIT_TIME - timeSinceLastRaid)/3600000);
+    	var minutes = Math.ceil(((raidfunc.RAID_WAIT_TIME - timeSinceLastRaid) % 3600000) / 60000);
+			statsString = statsString + "\nYou can raid again in " + hours + " hours " + minutes + " minutes";
+		}
 		sender.send(statsString);
 
 		//Save battle results

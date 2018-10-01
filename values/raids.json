@@ -1,0 +1,30 @@
+{
+  "dumbo": {
+    "gameId": 800,
+    "id": "dumbo",
+    "name": "Dumbo",
+    "level": 50,
+    "hp": 1250,
+    "max_hp": 1250,
+    "base_chance": 50,
+    "powBase": 122,
+    "wisBase": 50,
+    "sklBase": 50,
+    "spdBase": 10,
+    "powX": 1.00,
+		"wisX": 1.00,
+    "sklX": 1.00,
+    "spdX": 1.00,
+    "description": "It's Dumbo. He's dumb. Very dumb. Dumbo.",
+    "actives": [],
+    "prebattle": [],
+		"preresults": [],
+		"postresults": [],
+    "victory": "Dumbo has finally been taught that he is in fact, incredibly dumb!",
+		"loss": "Your raid group was no match for Dumbo's absolutely insane intellect!",
+    "gold": 225,
+    "lootchance": [100, 60, 20],
+    "loot": ["", "medicine"],
+    "weights": [20, 46]
+  }
+}
