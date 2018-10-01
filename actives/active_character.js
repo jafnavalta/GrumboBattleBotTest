@@ -406,7 +406,7 @@ exports.postresults.crimson_blood = function(character, battleState, eventId, ac
 
 exports.postresults.regen = function(character, battleState, eventId, actives, grumbo){
 
-	battleState.hpLoss -= 3;
+	battleState.hpLoss -= Math.ceil(character.maxHP * 0.025);
 }
 
 exports.postresults.miracle = function(character, battleState, eventId, actives, grumbo){
@@ -532,6 +532,15 @@ exports.postresults.conceal = function(character, battleState, eventId, actives,
 		battleState.hpLoss -= 5;
 		battleState.dmgMod += 10;
 		battleState.endMessages.push("You revealed the concealed knife!");
+	}
+}
+
+exports.postresults.roll = function(character, battleState, eventId, actives, grumbo){
+
+	if(battleState.win){
+
+		battleState.hpLoss -= Math.ceil(character.maxHP * 0.04);
+		battleState.endMessages.push("You rolled!");
 	}
 }
 

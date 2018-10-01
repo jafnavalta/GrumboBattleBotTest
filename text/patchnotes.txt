@@ -8,7 +8,7 @@ Most recent from the top
 - Sep XX: Buffed Knight skills and a little bit of stats.
 - Sep XX: Capped SPD at 50.
 - Sep XX: Removed -d from shop command.
-- Sep XX: Scaled Miracle.
+- Sep XX: Scaled Miracle and Regen.
 - Sep XX: Nerfed Revenge activation rate.
 - Sep XX: Nerfed Barrier damage reduction.
 - Sep XX: Nerfed Crimson again down to 3 from 4.

@@ -362,7 +362,7 @@
 		"battleStates": [
 			"postresults"
 		],
-		"description": "Reduce HP loss by 3 HP every battle.",
+		"description": "Reduce HP loss by 2.5% HP every battle/phase/etc.",
 		"duration": null
 	},
 	"miracle": {
@@ -374,7 +374,7 @@
 			"postresults",
 			"final"
 		],
-		"description": "(RES * 1.5)% chance to reduce damage received by 7% of your max HP. If you were to take damage that would reduce your HP to 0, (RES * 1.5)% chance to reduce your HP to 1 instead. The revive effect will not activate multiple times in a boss battle.",
+		"description": "(RES * 1.5)% chance to reduce damage received by 7% of your max HP. If you were to take damage that would reduce your HP to 0, (RES * 1.5)% chance to reduce your HP to 1 instead. The revive effect will not activate multiple times in a battle.",
 		"duration": null
 	},
 	"holy": {
@@ -618,7 +618,7 @@
 		"battleStates": [
 			"postresults"
 		],
-		"description": "If you have less than or equal to 10% HP at the beginning of the battle/phase, recover 20 HP at the end of it. Item is consumed after use but the active doesn't get used up until it activates. Activates only once per boss battle.",
+		"description": "If you have less than or equal to 10% HP at the beginning of the battle/phase, recover 20 HP at the end of it. Item is consumed after use but the active doesn't get used up until it activates. Activates only once per battle.",
 		"duration": 1
 	},
 	"stimulus": {
@@ -629,7 +629,7 @@
 		"battleStates": [
 			"postresults"
 		],
-		"description": "If you have less than or equal to 20% HP at the beginning of the battle/phase, deal 40 damage at the end of it. Damage is not reduced by phase loss. Item is consumed after use but the active doesn't get used up until it activates. Activates only once per boss battle.",
+		"description": "If you have less than or equal to 20% HP at the beginning of the battle/phase, deal 40 damage at the end of it. Damage is not reduced by phase loss. Item is consumed after use but the active doesn't get used up until it activates. Activates only once per battle.",
 		"duration": 1
 	},
 	"guardian_angel": {
@@ -741,7 +741,18 @@
 		"battleStates": [
 			"final"
 		],
-		"description": "If your HP were to be reduced below 2, remain alive with 2 HP. The next 2 attacks you receive will do 1 damage. Only activates once per boss battle.",
+		"description": "If your HP were to be reduced below 2, remain alive with 2 HP. The next 2 attacks you receive will do 1 damage. Only activates once per battle.",
+		"duration": null
+	},
+	"roll": {
+		"gameId": 70051,
+		"id": "roll",
+		"name": "Roll",
+		"effect": "good",
+		"battleStates": [
+			"postresults"
+		],
+		"description": "Reduce damage received by 4% of max HP if you win the battle/phase/etc. Can heal.",
 		"duration": null
 	}
 }

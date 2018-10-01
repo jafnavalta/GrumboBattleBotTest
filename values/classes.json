@@ -66,7 +66,7 @@
   "rogue": {
 		"gameId": 103,
 		"hp": "B-",
-    "pow": "B-",
+    "pow": "B+",
     "wis": "B+",
 		"skl": "S-",
     "def": "C",
@@ -127,6 +127,23 @@
 				"SPD +5 / RES +4 / POW +4 when classed as a Knight.",
 				"Stand Your Ground against weaker enemies and hard hitting attacks.",
 				"SPD +5 / RES +4 / POW +4 / SKL +1 / DEF +1 when classed as a Knight. Knight gains the For Honor active."
+		]
+	},
+  "archer": {
+		"gameId": 106,
+		"hp": "B-",
+    "pow": "B-",
+    "wis": "C+",
+		"skl": "S+",
+    "def": "C",
+    "res": "B",
+    "spd": "B",
+    "luk": "C",
+		"classId": "archer",
+		"className": "Archer",
+    "description": "The Archer rarely misses their shot. Gain a permanent +1 boost to SKL every class level.",
+		"perks": [
+		    "The Archer can Roll out of potential damage with every successful attack."
 		]
 	}
 }

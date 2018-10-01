@@ -38,8 +38,87 @@ exports.commandRaid = function(message, args, character){
   exports.restockBattles(currentTime, character);
   var timeSinceLastRaid = currentTime - character.raidtime;
 
+  //RAID INFO
+  if(args[2] == 'info' && (args.length == 4 || (args.length == 5 && args[4] == '-d'))){
+
+    //DM user
+		var sender = message.author;
+		if(args.length == 5){
+
+			//Message channel
+			sender = message.channel;
+		}
+
+    var raid = raidList[args[3]];
+    if(raid != null){
+
+      var raidString = raid.name + "  |  Lv Req: " + raid.level + "  |  Command: " + raid.id + "\n"
+        + "HP " + raid.hp + "  |  POW " + raid.powBase + "  |  WIS " + raid.wisBase + "  |  SKL " + raid.sklBase + "  |  SPD " + raid.spdBase + "\n"
+        + "Base Turn Victory Chance: " + raid.base_chance + "%\n"
+        + raid.description + "\n"
+        + "Actives: ";
+      for(var i = 0; i < raid.actives.length; i++){
+
+        var activeName = activeList[raid.actives[i]].name;
+        raidString += activeName;
+        if(i == raid.actives.length - 1){
+
+          raidString += "\n";
+        }
+        else{
+
+          raidString += ", ";
+        }
+      }
+      raidString += "Loot: ";
+      for(var j = 0; j < raid.loot.length; j++){
+
+        if(raid.loot[j] != ""){
+
+          var lootedItem = itemList[raid.loot[j]];
+          if(lootedItem == null) lootedItem = equipList[raid.loot[j]];
+          raidString += lootedItem.name;
+          if(j == raid.loot.length - 1){
+
+            raidString += "\n";
+          }
+          else{
+
+            raidString += ", ";
+          }
+        }
+      }
+      raidString += "Gold: " + raid.gold;
+      sender.send(raidString);
+    }
+    else{
+
+      sender.send(args[3] + " is not a valid raid command.");
+    }
+  }
+
+  //AVAILABLE RAIDS
+  else if(args.length == 2 || (args.length == 3 && args[2] == '-d')){
+
+    //DM user
+		var sender = message.author;
+		if(args.length == 3){
+
+			//Message channel
+			sender = message.channel;
+		}
+
+    var raidsString = "Raid List\n\n";
+    for(var key in raidList){
+
+      var raid = raidList[key];
+      raidsString += raid.name + "  |  Lv Req: " + raid.level + "  |  Command: " + raid.id + "\n";
+    };
+    sender.send(raidsString);
+  }
+
   //ASSEMBLE
-  if(args[2] == 'assemble' && args.length == 3){
+  else if(args[2] == 'assemble' && args.length == 3){
 
     //Not enough battles left
     if(character.battlesLeft < 1){

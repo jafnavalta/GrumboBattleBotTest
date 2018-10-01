@@ -41,8 +41,8 @@ exports.BASE_SPD_EQ = BASE_SPD_EQ;
 exports.BASE_LUK_EQ = BASE_LUK_EQ;
 
 exports.hpX = 1.10;
-exports.powX = 0.91;
-exports.wisX = 0.72;
+exports.powX = 0.92;
+exports.wisX = 0.73;
 exports.sklX = 1.17;
 exports.defX = 1.15;
 exports.resX = 1;

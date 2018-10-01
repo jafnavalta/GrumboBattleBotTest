@@ -53,7 +53,7 @@ exports.setClassLevelFunc = {};
 exports.removeClassLevelFunc = {};
 
 //////////////////////////////
-// CLASS LEVEL UP FUNCTIONS // //TODO Typically, anything permanent followed by accompanying setClassLevelFunc.
+// CLASS LEVEL UP FUNCTIONS // Typically, anything permanent followed by accompanying setClassLevelFunc.
 //////////////////////////////
 exports.levelUp.warrior1 = function(character){
 
