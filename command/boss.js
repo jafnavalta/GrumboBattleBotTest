@@ -230,7 +230,6 @@ function doBoss(message, args, character, currentTime, actives, boss){
 		//Prebattle determinations
 		var battleState = {};
 		battleState.state = statefunc.BOSS;
-    battleState.enemyLevel = args[3];
     battleState.phase = 0;
 
 		if(character.battlesLeft == 5){

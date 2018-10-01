@@ -470,11 +470,11 @@ exports.postresults.final_track = function(character, battleState, eventId, acti
 //BOSS Master Grumbo
 exports.postresults.strategize = function(character, battleState, eventId, actives, grumbo){
 
-		if(battleState.chanceMod < 6){
+	if(battleState.chanceMod < 6){
 
-			battleState.dmgMod -= 100;
-			battleState.preMessages.push("You were out strategized!");
-		}
+		battleState.dmgMod -= 100;
+		battleState.endMessages.push("You were out strategized!");
+	}
 }
 
 //BOSS Master Grumbo

@@ -255,7 +255,7 @@ function doBattle(message, args, character, currentTime, actives){
 */
 exports.calculateBattleExp = function(character, levelDiff, battleState){
 
-	var exp = 86;
+	var exp = 88;
 	//Low level Grumbo
 	if(levelDiff > 0){
 
@@ -279,7 +279,7 @@ exports.calculateBattleExp = function(character, levelDiff, battleState){
 */
 function calculateLowLevelExp(exp, levelDiff){
 
-	exp = exp - Math.floor(levelDiff * Math.pow(1.052, levelDiff)) - (Math.floor(Math.random() * 10) + 3);
+	exp = exp - Math.floor(levelDiff * Math.pow(1.052, levelDiff)) - (Math.floor(Math.random() * 6) + 3);
 	if(levelDiff > 3){
 
 		exp = exp - (Math.floor(Math.random() * 10) + 4);
@@ -304,26 +304,26 @@ function calculateLowLevelExp(exp, levelDiff){
 */
 function calculateHighLevelExp(exp, levelDiff){
 
-	exp = exp - Math.ceil(levelDiff * Math.pow(1.130, Math.abs(levelDiff))) + Math.floor(Math.random() * 20 ) + 5;
+	exp = exp - Math.ceil(levelDiff * Math.pow(1.125, Math.abs(levelDiff))) + Math.floor(Math.random() * 15) + 5;
 	if(levelDiff < -3){
 
 		exp = exp - Math.floor(Math.random() * 10);
 	}
 	if(levelDiff < -7){
 
-		exp = exp + Math.floor(Math.random() * 15) + 5;
+		exp = exp + Math.floor(Math.random() * 10) + 5;
 	}
 	if(levelDiff < -12){
 
-		exp = exp + Math.floor(Math.random() * 25) + 15;
+		exp = exp + Math.floor(Math.random() * 10) + 10;
 	}
 	if(levelDiff < -16){
 
-		exp = exp + Math.floor(Math.random() * 30) + 20;
+		exp = exp + Math.floor(Math.random() * 10) + 15;
 	}
 	if(levelDiff == -20){
 
-		exp = exp + Math.floor(Math.random() * 35) + 25;
+		exp = exp + Math.floor(Math.random() * 10) + 20;
 	}
 	return exp;
 }

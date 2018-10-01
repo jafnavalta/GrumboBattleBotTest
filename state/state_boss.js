@@ -28,6 +28,7 @@ let charfunc = require('../character/character.js');
 exports.prebattle = function(message, args, character, battleState, actives, grumbo){
 
 	//Prebattle base/modifiers
+	battleState.levelDiffActual = 0;
 	battleState.preMessages = [];
 	battleState.chanceMod = 0;
 	battleState.minMod = 0;
