@@ -173,7 +173,7 @@
 		"battleStates": [
 			"preresults"
 		],
-		"description": "When you lose, 4% chance to win instead.",
+		"description": "When you lose, 7% chance to win instead.",
 		"duration": null
 	},
 	"dodge": {
@@ -496,7 +496,7 @@
 		"battleStates": [
 			"prebattle"
 		],
-		"description": "SPD% chance to increase chance of victory by 4%.",
+		"description": "SPD% chance to increase chance of victory by 5%.",
 		"duration": null
 	},
 	"shield_bash": {
@@ -753,6 +753,28 @@
 			"postresults"
 		],
 		"description": "Reduce damage received by 4% of max HP if you win the battle/phase/etc. Can heal.",
+		"duration": null
+	},
+	"sureshot": {
+		"gameId": 70052,
+		"id": "sureshot",
+		"name": "Sureshot",
+		"effect": "good",
+		"battleStates": [
+			"prebattle"
+		],
+		"description": "SKL/7.5 % chance to increase of non-battle chance of victory by 20%.",
+		"duration": null
+	},
+	"headshot": {
+		"gameId": 70052,
+		"id": "headshot",
+		"name": "Headshot",
+		"effect": "good",
+		"battleStates": [
+			"postresults"
+		],
+		"description": "SKL/6 % chance to deal 1.5x damage on phase victory. In regular battles, SKL/7% chance to increase gold gained by 10%",
 		"duration": null
 	}
 }

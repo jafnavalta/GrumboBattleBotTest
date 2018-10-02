@@ -1,38 +1,28 @@
 GRUMBO PATCH NOTES
 Most recent from the top
 
-- Sep XX: Equip class reassignment + Rework of Equip stats
-- Sep XX: Added SKL stat.
-- Sep XX: Added Max HP stat.
-- Sep XX: Rogue Lv 7. Knight Lv 6.
-- Sep XX: Buffed Knight skills and a little bit of stats.
-- Sep XX: Capped SPD at 50.
-- Sep XX: Removed -d from shop command.
-- Sep XX: Scaled Miracle and Regen.
-- Sep XX: Nerfed Observation activation rate.
-- Sep XX: Nerfed Revenge activation rate.
-- Sep XX: Nerfed Barrier damage reduction.
-- Sep XX: Nerfed Crimson again down to 3 from 4.
-- Sep XX: Nerfed Equalizer activation thresholds.
-- Sep XX: Nerfed Outsmart activation rate.
-- Sep XX: Nerfed Vision activation rate to 12 from 20,
+- Oct XX: Equip class reassignment + Rework of Equip stats
+- Oct XX: Rogue Lv 7. Knight Lv 6.
+- Oct XX: New Archer class up to Lv 5.
+- Oct XX: Damage reduction on boss phase loss now scales off SKL.
+- Oct XX: Added SKL stat.
+- Oct XX: Added Max HP stat.
+- Oct XX: Capped SPD at 50.
+- Oct XX: Removed -d from shop command.
 
-- Sep 25: Nerfed Holy activation rate.
-- Sep 25: Nerfed Miracle activation rate to RES*1.5 from *2. Damage reduction to 7 from 12.
-- Sep 25: Fixed long equip/item list bug.
+- Oct XX: Scaled Miracle and Regen.
+- Oct XX: Buffed/Reworked Knight skills and a little bit of stats.
+- Oct XX: Buffed Second Chance activation rate.
+- Oct XX: Buffed Quick Step to 5 from 4.
+- Oct XX: Nerfed Observation activation rate.
+- Oct XX: Nerfed Revenge activation rate.
+- Oct XX: Nerfed Barrier damage reduction.
+- Oct XX: Nerfed Crimson again down to 3 from 4.
+- Oct XX: Nerfed Equalizer activation thresholds.
+- Oct XX: Nerfed Outsmart activation rate.
+- Oct XX: Nerfed Vision activation rate to 12 from 20,
 
-- Sep 23: Added Boss timer. Bosses now only require 2 battle stock instead of 3.
-- Sep 23: Added 2 Bosses, 1 Grumbo, 6 Items, 12 Equips.
-- Sep 23: Adventurer Lv 6. Gets nothing new except the stat boost.
-- Sep 23: Increased the drop rate of boss exclusive drops.
-- Sep 23: Recoil now scales off difference between WIS/DEF instead of POW/DEF.
-- Sep 23: Small buff to Revenge's activation rate from missing HP/2 to missing HP/1.5.
-- Sep 23: Crimson nerfed so max chance and regular chance increase is now 4 instead of 5.
-- Sep 23: Buffed Vision, Stand Your Ground, Dodge, Safety Hat so that their calculations happen at the very end.
-- Sep 21: Hotfixed Flimsy Rope.
-
-- Sep 15: Added Cleric and Knight classes. All classes now go to class level 5.
-- Sep 15: Added boss command and boss loot. 2 Bosses added to start.
+- Sep 30: Nerfed overall experience gain.
 
 Consult help/guide for more information
 !grumbo help

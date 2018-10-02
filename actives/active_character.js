@@ -196,7 +196,7 @@ exports.prebattle.quick_step = function(character, battleState, eventId, actives
 	var random = Math.random() * 100;
 	if(random < character.spd){
 
-		battleState.chanceMod += 4;
+		battleState.chanceMod += 5;
 		battleState.preMessages.push("You quick stepped!");
 	}
 }
@@ -230,6 +230,16 @@ exports.prebattle.double_attack = function(character, battleState, eventId, acti
 	}
 }
 
+exports.prebattle.sureshot = function(character, battleState, eventId, actives, grumbo){
+
+	var random = Math.random() * 100;
+	if(random < character.skl/7.5 && battleState.state != statefunc.BATTLE){
+
+		battleState.chanceMod += 20;
+		battleState.preMessages.push("Sureshot massively increased chance of victory!");
+	}
+}
+
 ////////////////////////////////////
 // CHARACTER PRERESULTS FUNCTIONS //
 ////////////////////////////////////
@@ -251,7 +261,7 @@ exports.preresults.second_chance = function(character, battleState, eventId, act
 	if(!battleState.win){
 
 		var random = Math.random() * 100;
-		if(random < 4){
+		if(random < 7){
 
 			battleState.win = true;
 			battleState.preResMessages.push("The second chance succeeded!");
@@ -541,6 +551,33 @@ exports.postresults.roll = function(character, battleState, eventId, actives, gr
 
 		battleState.hpLoss -= Math.ceil(character.maxHP * 0.04);
 		battleState.endMessages.push("You rolled!");
+	}
+}
+
+exports.postresults.headshot = function(character, battleState, eventId, actives, grumbo){
+
+	if(battleState.win){
+
+		var random = Math.random() * 100;
+		if(battleState.state == statefunc.BATTLE){
+
+			if(random < character.skl/7){
+
+				battleState.gold += Math.ceil(battleState.gold * 0.1);
+				battleState.endMessages.push("You headshot the enemy!");
+			}
+		}
+		else{
+
+			if(random < character.skl/6){
+
+				if(battleState.dmgMod > 0){
+
+					battleState.dmgMod += Math.ceil(battleState.dmgMod * 1.5);
+					battleState.endMessages.push("You headshot the enemy!");
+				}
+			}
+		}
 	}
 }
 

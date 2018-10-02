@@ -141,9 +141,13 @@
     "luk": "C",
 		"classId": "archer",
 		"className": "Archer",
-    "description": "The Archer rarely misses their shot. Gain a permanent +1 boost to SKL every class level.",
+    "description": "The Archer rarely misses their shot. Gain a permanent +1 boost to SKL every odd class level and +2 every even class level.",
 		"perks": [
-		    "The Archer can Roll out of potential damage with every successful attack."
+		    "The Archer can Roll out of potential damage with every successful attack.",
+				"POW +5 / SKL +2 / SPD +1 when classed as an Archer.",
+				"Become more accurate with the Sureshot active.",
+				"DEF +2 / SKL +2 / SPD +1 when classed as an Archer.",
+				"Defeat enemies with the Headshot active."
 		]
 	}
 }
