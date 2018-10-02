@@ -238,7 +238,7 @@ exports.preresults.observation = function(character, battleState, eventId, activ
 	if(battleState.win && battleState.state == statefunc.BATTLE){
 
 		var random = Math.random() * 100;
-		if(random < 10){
+		if(random < 7.5){
 
 			battleState.expMod += Math.ceil(character.level/1.5);
 			battleState.preResMessages.push("Your observations proved useful!");
@@ -422,7 +422,7 @@ exports.postresults.miracle = function(character, battleState, eventId, actives,
 exports.postresults.grab_bag = function(character, battleState, eventId, actives, grumbo){
 
 	var random = Math.random() * 100;
-	if(random < 66 && battleState.state == statefunc.BATTLE){
+	if(random < 66 && battleState.state == statefunc.BATTLE && battleState.win){
 
 		if(random < 33){
 

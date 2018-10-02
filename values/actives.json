@@ -140,7 +140,7 @@
 		"battleStates": [
 			"preresults"
 		],
-		"description": "Adventurer only. 10% chance to erase the level experience penalty.",
+		"description": "Adventurer only. 7.5% chance to erase the level experience penalty.",
 		"duration": null
 	},
 	"safety_hat": {

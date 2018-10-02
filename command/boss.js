@@ -30,6 +30,7 @@ exports.commandBoss = function(message, args, character){
   character.hp = character.maxHP;
   character.battlesLeft = 5;
   //TODO this
+  //TODO this but in raid.js
   //TODO boss wait time
   //TODO boss level
   //TODO class change time

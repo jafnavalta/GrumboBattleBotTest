@@ -32,6 +32,10 @@ let raids = {}
 */
 exports.commandRaid = function(message, args, character){
 
+  //For testing
+  character.hp = character.maxHP;
+  character.battlesLeft = 5;
+
   //Determine how many battles they should have left
   var date = new Date();
   var currentTime = date.getTime();
@@ -282,19 +286,19 @@ exports.commandRaid = function(message, args, character){
         message.channel.send("You are currently locked " + message.member.displayName + "!");
       }
       //Character is not in a raid group
-      else if(raids[character.id] == null){
+      else if(raids[character._id] == null){
 
         message.channel.send("You are not in a raid group " + message.member.displayName + "!");
       }
       //Character is not the raid host
-  		else if(!raids[character.id].includes(character.id)){
+  		else if(!raids[character._id].includes(character._id)){
 
   			message.channel.send("You are not the raid host " + message.member.displayName + "!");
   		}
       //RAID
   		else{
 
-        var characterIds = raids[character.id];
+        var characterIds = raids[character._id];
         var characters = [];
         for(var x = 0; x < characterIds.length; x++){
 
@@ -305,7 +309,7 @@ exports.commandRaid = function(message, args, character){
 
               checkRaidReqs(message, args, characters, raid);
             }
-          }
+          });
         }
   		}
     }
@@ -327,7 +331,7 @@ exports.commandRaid = function(message, args, character){
 */
 function checkRaidReqs(message, args, characters, raidBoss){
 
-  boolean canRaid = true;
+  var canRaid = true;
   for(var x = 0; x < characters.length; x++){
 
     var character = characters[x];
@@ -368,11 +372,11 @@ function checkRaidReqs(message, args, characters, raidBoss){
 */
 function raidLockCharacters(message, args, characters, activesMap, raidBoss){
 
-	character.raidLock = true;
   var charCount = 0;
   for(var x = 0; x < characters.length; x++){
 
     var character = characters[x];
+    character.raidLock = true;
 	  dbfunc.getDB().collection("characters").updateOne({"_id": character._id}, {$set: {"raidLock": character.raidLock}}, function(error, result){
 
       charCount++;
@@ -410,23 +414,26 @@ function doRaid(message, args, characters, activesMap, boss){
   battleState.turn = 0; //Increments when either a character or boss acts
 
   var turnValueMap = {};
-  var turnIds[];
+  var turnIds = [];
   var turnIndex = 0;
   var beginRaidString = "";
   for(var x = 0; x < characters.length; x++){
 
     var character = characters[x];
-    turnValueMap[character.id] = 0;
-    turnIds.push(character.id);
-    beginRaidString += message.guild.members.get(character.id).displayName;
+    turnValueMap[character._id] = 0;
+    turnIds.push(character._id);
+    beginRaidString += message.guild.members.get(character._id).displayName;
     if(x != characters.length - 1) beginRaidString += ",";
     beginRaidString += " ";
   }
   //Init boss turn values
   turnValueMap[statefunc.RAID] = 0;
   turnIds.push(statefunc.RAID);
-  beginRaidString += " have begun a raid against " + boss.name + "!";
+  var hashave = "has ";
+  if(turnIds.length > 2) hashave = "have ";
+  beginRaidString += hashave + "begun a raid against " + boss.name + "!";
 
+  message.channel.send(beginRaidString);
   recursiveRaidTurn(battleState, message, args, characters, activesMap, boss, turnValueMap, turnIds, turnIndex);
 }
 
@@ -435,82 +442,85 @@ function doRaid(message, args, characters, activesMap, boss){
 */
 function recursiveRaidTurn(battleState, message, args, characters, activesMap, boss, turnValueMap, turnIds, turnIndex){
 
-  var alive = false;
-  for(var x = 0; x < characters.length; x++){
+  setTimeout(function(){
 
-    var character = characters[x];
-    if(character.hp > 0){
+    var alive = false;
+    for(var x = 0; x < characters.length; x++){
 
-      alive = true;
-      break;
+      var character = characters[x];
+      if(character.hp > 0){
+
+        alive = true;
+        break;
+      }
     }
-  }
-  if(alive){
+    if(alive){
 
-    if(boss.hp > 0){
+      if(boss.hp > 0){
 
-      var grumbo;
-      var turnId;
-      while(true){
+        var grumbo;
+        var turnId;
+        while(true){
 
-        turnId = turnIds[turnIndex]];
-        //Get character or boss to get their SPD
-        if(turnId != statefunc.RAID){
+          turnId = turnIds[turnIndex];
+          //Get character or boss to get their SPD
+          if(turnId != statefunc.RAID){
 
-          for(var x = 0; x < characters.length; x++){
+            for(var x = 0; x < characters.length; x++){
 
-            grumbo = characters[x];
-            if(turnIds[turnIndex] == grumbo.id) break;
+              grumbo = characters[x];
+              if(turnIds[turnIndex] == grumbo._id) break;
+            }
+          }
+          else{
+
+            grumbo = boss;
+          }
+
+          turnValueMap[turnId] += RAID_BASE_PER_TURN + grumbo.spd;
+          if(turnValueMap[turnId] < RAID_TURN_VALUE){
+
+            turnIndex += 1;
+            if(turnIndex >= turnIds.length) turnIndex = 0;
+          }
+          else{
+
+            turnValueMap[turnId] -= RAID_TURN_VALUE;
+            turnIndex += 1;
+            if(turnIndex >= turnIds.length) turnIndex = 0;
+            break;
           }
         }
-        else{
 
-          grumbo = boss;
-        }
+        battleState.turn += 1;
+        if(turnId != statefunc.RAID){
 
-        turnValueMap[turnId] += RAID_BASE_PER_TURN + grumbo.spd;
-        if(turnValueMap[turnId] < RAID_TURN_VALUE){
-
-          turnIndex += 1;
-          if(turnIndex >= turnIds.length) turnIndex = 0;
+          //TODO grumbo is a character, do a character turn
+          message.channel.send("This is a character turn!");
+          battleState.raidWin = true;
+          finishRaid(battleState, message, args, characters, activesMap, boss);
         }
         else{
 
-          turnValueMap[turnId] -= RAID_TURN_VALUE;
-          turnIndex += 1;
-          if(turnIndex >= turnIds.length) turnIndex = 0;
-          break;
+          battleState.phase += 1;
+          //TODO grumbo is a raid boss, do a raid boss turn
+          message.channel.send("This is a boss turn!");
+          battleState.raidWin = false;
+          finishRaid(battleState, message, args, characters, activesMap, boss);
         }
-      }
-
-      battleState.turn += 1;
-      if(turnId != statefunc.RAID){
-
-        //TODO grumbo is a character, do a character turn
-        message.channel.send("This is a character turn!");
-        battleState.raidWin = true;
-        finishRaid(battleState, message, args, characters, activesMap, boss);
       }
       else{
 
-        battleState.phase += 1;
-        //TODO grumbo is a raid boss, do a raid boss turn
-        message.channel.send("This is a boss turn!");
-        battleState.raidWin = false;
+        battleState.raidWin = true;
         finishRaid(battleState, message, args, characters, activesMap, boss);
       }
     }
     else{
 
-      battleState.raidWin = true;
+      battleState.raidWin = false;
       finishRaid(battleState, message, args, characters, activesMap, boss);
     }
-  }
-  else{
-
-    battleState.raidWin = false;
-    finishRaid(battleState, message, args, characters, activesMap, boss);
-  }
+  }, 1500);
 }
 
 /**
@@ -531,9 +541,10 @@ function finishRaid(battleState, message, args, characters, activesMap, boss){
   }
   for(var i = 0; i < characters.length; i++){
 
+    var character = characters[i];
     character.battleLock = false;
     character.raidLock = false;
-    raids[character.id] = null;
+    raids[character._id] = null;
 
     //TODO FIGURE OUT HOW TO AND WHETHER TO GIVE REWARDS
     if(battleState.raidWin){
