@@ -431,7 +431,7 @@ exports.postresults.grab_bag = function(character, battleState, eventId, actives
 		}
 		else{
 
-			battleState.gold += 25;
+			character.gold += 25;
 			battleState.endMessages.push("You pulled 25 gold out of the Grab Bag!");
 		}
 	}
