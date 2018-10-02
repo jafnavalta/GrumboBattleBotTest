@@ -14,10 +14,12 @@ let activesList = JSON.parse(fs.readFileSync("./values/actives.json", "utf8"));
 //ALL classes should have these.
 exports.className = "Archer";
 
-exports.CLASS_LEVEL_MAX = 1;
+exports.CLASS_LEVEL_MAX = 5;
 
 //Actives
 const LEVEL_1_ACTIVE = 'roll';
+const LEVEL_3_ACTIVE = 'sureshot';
+const LEVEL_5_ACTIVE = 'headshot';
 
 const BASE_HP_EQ = -1;
 const BASE_POW_EQ = 2;
@@ -62,7 +64,7 @@ exports.levelUp.archer1 = function(character){
 exports.levelUp.archer2 = function(character){
 
   exports.setClassLevelFunc.archer2(character);
-  character.sklMod += 1;
+  character.sklMod += 2;
 }
 
 exports.levelUp.archer3 = function(character){
@@ -74,7 +76,7 @@ exports.levelUp.archer3 = function(character){
 exports.levelUp.archer4 = function(character){
 
   exports.setClassLevelFunc.archer4(character);
-  character.sklMod += 1;
+  character.sklMod += 2;
 }
 
 exports.levelUp.archer5 = function(character){
@@ -86,7 +88,7 @@ exports.levelUp.archer5 = function(character){
 exports.levelUp.archer6 = function(character){
 
   exports.setClassLevelFunc.archer6(character);
-  character.sklMod += 1;
+  character.sklMod += 2;
 }
 
 exports.levelUp.archer7 = function(character){
@@ -98,7 +100,7 @@ exports.levelUp.archer7 = function(character){
 exports.levelUp.archer8 = function(character){
 
   exports.setClassLevelFunc.archer8(character);
-  character.sklMod += 1;
+  character.sklMod += 2;
 }
 
 exports.levelUp.archer9 = function(character){
@@ -110,7 +112,7 @@ exports.levelUp.archer9 = function(character){
 exports.levelUp.archer10 = function(character){
 
   exports.setClassLevelFunc.archer10(character);
-  character.sklMod += 1;
+  character.sklMod += 2;
 }
 
 /////////////////////////////// //TODO Set class level mods
@@ -124,18 +126,28 @@ exports.setClassLevelFunc.archer1 = function(character){
 
 exports.setClassLevelFunc.archer2 = function(character){
 
+  character.powEq += 5;
+  character.sklEq += 2;
+  character.spdEq += 1;
 }
 
 exports.setClassLevelFunc.archer3 = function(character){
 
+  var active = classactivefunc.getActive(character, LEVEL_3_ACTIVE);
+  dbfunc.pushToState(character, active.id, active, active.battleStates, 1);
 }
 
 exports.setClassLevelFunc.archer4 = function(character){
 
+  character.defEq += 2;
+  character.sklEq += 2;
+  character.spdEq += 1;
 }
 
 exports.setClassLevelFunc.archer5 = function(character){
 
+  var active = classactivefunc.getActive(character, LEVEL_5_ACTIVE);
+  dbfunc.pushToState(character, active.id, active, active.battleStates, 1);
 }
 
 exports.setClassLevelFunc.archer6 = function(character){
@@ -169,18 +181,28 @@ exports.removeClassLevelFunc.archer1 = function(character){
 
 exports.removeClassLevelFunc.archer2 = function(character){
 
+  character.powEq -= 5;
+  character.sklEq -= 2;
+  character.spdEq -= 1;
 }
 
 exports.removeClassLevelFunc.archer3 = function(character){
 
+  var active = classactivefunc.getActive(character, LEVEL_3_ACTIVE);
+  dbfunc.spliceFromState(character, active.id, active, active.battleStates, active);
 }
 
 exports.removeClassLevelFunc.archer4 = function(character){
 
+  character.defEq -= 2;
+  character.sklEq -= 2;
+  character.spdEq -= 1;
 }
 
 exports.removeClassLevelFunc.archer5 = function(character){
 
+  var active = classactivefunc.getActive(character, LEVEL_5_ACTIVE);
+  dbfunc.spliceFromState(character, active.id, active, active.battleStates, active);
 }
 
 exports.removeClassLevelFunc.archer6 = function(character){
