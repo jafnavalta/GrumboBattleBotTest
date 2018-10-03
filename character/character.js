@@ -2,7 +2,7 @@
 let classes = require('./classes.js').classes;
 
 exports.BASE_WAIT_TIME = 4200000 //70 minutes
-exports.BASE_HP = 80;
+exports.BASE_HP = 70;
 exports.BASE_POW = 40;
 exports.BASE_WIS = 40;
 exports.BASE_SKL = 35;

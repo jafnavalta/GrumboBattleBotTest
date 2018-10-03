@@ -573,7 +573,7 @@ exports.postresults.headshot = function(character, battleState, eventId, actives
 
 				if(battleState.dmgMod > 0){
 
-					battleState.dmgMod += Math.ceil(battleState.dmgMod * 1.5);
+					battleState.dmgMod += Math.ceil(battleState.dmgMod * 0.5);
 					battleState.endMessages.push("You headshot the enemy!");
 				}
 			}
