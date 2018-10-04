@@ -777,6 +777,10 @@ function runMigrations(version, callback){
 
 							character.defEq -= 4;
 						}
+						if(equip.id == 'academy_jacket'){
+
+							character.lukEq -= 25;
+						}
 						if(equip.id == 'knights_shield'){
 
 							character.defEq -= 1;

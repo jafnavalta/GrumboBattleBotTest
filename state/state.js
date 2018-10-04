@@ -36,6 +36,15 @@ const BATTLE = "battle";
 const BOSS = "boss";
 const RAID = "raid";
 
+//Turn types
+const CHARACTER = "character";
+const BOTH = "both";
+//Other turn type would be BOSS above
+
+//Target types
+const MULTIPLE = "multiple";
+const SINGLE = "single";
+
 //Battle functions
 let battlefunc = require('../command/battle.js');
 
@@ -65,6 +74,12 @@ exports.POSTRESULTS = POSTRESULTS;
 exports.BATTLE = BATTLE;
 exports.BOSS = BOSS;
 exports.RAID = RAID;
+
+exports.CHARACTER = CHARACTER;
+exports.BOTH = BOTH;
+
+exports.MULTIPLE = MULTIPLE;
+exports.SINGLE = SINGLE;
 
 ///////////
 // ITEMS //

@@ -5,7 +5,7 @@ let dbfunc = require('../data/db.js');
 const fs = require("fs");
 
 //Initialize functions
-//TODO let state = require('../state/state_raid.js');
+let state = require('../state/state_raid.js');
 let statefunc = require('../state/state.js');
 let charfunc = require('../character/character.js');
 let classfunc = require('../character/class.js');
@@ -16,6 +16,9 @@ let classList = JSON.parse(fs.readFileSync("./values/classes.json", "utf8"));
 let activeList = JSON.parse(fs.readFileSync("./values/actives.json", "utf8"));
 let itemList = JSON.parse(fs.readFileSync("./values/items.json", "utf8"));
 let equipList = JSON.parse(fs.readFileSync("./values/equips.json", "utf8"));
+
+//Raid funcs
+let activeraidfunc = require('../actives/active_raid.js');
 
 const RAID_WAIT_TIME = 1; //6 hours
 const RAID_MAX_MEMBERS = 4;
@@ -478,7 +481,7 @@ function recursiveRaidTurn(battleState, message, args, characters, activesMap, b
           }
 
           turnValueMap[turnId] += RAID_BASE_PER_TURN + grumbo.spd;
-          if(turnValueMap[turnId] < RAID_TURN_VALUE){
+          if(turnValueMap[turnId] < RAID_TURN_VALUE || grumbo.hp <= 0){
 
             turnIndex += 1;
             if(turnIndex >= turnIds.length) turnIndex = 0;
@@ -495,18 +498,23 @@ function recursiveRaidTurn(battleState, message, args, characters, activesMap, b
         battleState.turn += 1;
         if(turnId != statefunc.RAID){
 
-          //TODO grumbo is a character, do a character turn
-          message.channel.send("This is a character turn!");
-          battleState.raidWin = true;
-          finishRaid(battleState, message, args, characters, activesMap, boss);
+          doCharacterTurn(battleState, message, args, characters, activesMap, boss, turnValueMap, turnIds, turnIndex, grumbo);
         }
         else{
 
           battleState.phase += 1;
-          //TODO grumbo is a raid boss, do a raid boss turn
-          message.channel.send("This is a boss turn!");
-          battleState.raidWin = false;
-          finishRaid(battleState, message, args, characters, activesMap, boss);
+          var raidActiveId = activeraidfunc[boss.id](battleState, message, args, characters, activesMap, boss, turnValueMap, turnIds, turnIndex);
+          var raidActive = activeList[raidActiveId];
+          if(raidActive.target != statefunc.MULTIPLE){
+
+            //Do single target boss turn
+            var target = activeraidfunc[boss.id][raidActiveId](battleState, message, args, characters, activesMap, boss, turnValueMap, turnIds, turnIndex);
+            doBossTurnSingle(battleState, message, args, characters, activesMap, boss, turnValueMap, turnIds, turnIndex, target, raidActive);
+          }
+          else{
+
+            //TODO Do multiple target boss turn
+          }
         }
       }
       else{
@@ -521,6 +529,213 @@ function recursiveRaidTurn(battleState, message, args, characters, activesMap, b
       finishRaid(battleState, message, args, characters, activesMap, boss);
     }
   }, 1500);
+}
+
+/**
+* Do a character's turn.
+*/
+function doCharacterTurn(battleState, message, args, characters, activesMap, boss, turnValueMap, turnIds, turnIndex, character){
+
+  setTimeout(function(){
+
+    dbfunc.getDB().collection("actives").find({"character": character._id}).toArray(function(err, actives){
+
+      activesMap[character._id] = actives;
+      battleState.turn_state = statefunc.CHARACTER;
+
+      state.character_prebattle(message, args, character, battleState, actives, boss, characters);
+
+      var username = message.guild.members.get(character._id).displayName;
+      var preMessageString = "########## TURN " + battleState.turn + ": " + username + " ##########\n#\n" +
+        "# " + username + "  HP  " + character.hp + "  |  " + boss.name + "  HP  " + boss.hp + "\n";
+      battleState.preMessages.forEach(function(preMessage){
+
+        preMessageString += "# " + preMessage + "\n";
+      });
+      preMessageString += "# Turn victory chance: " + battleState.chance + "%\n# ...";
+      message.channel.send(preMessageString);
+
+      doCharacterTurnResults(battleState, message, args, characters, activesMap, boss, turnValueMap, turnIds, turnIndex, character);
+    });
+  }, 1750);
+}
+
+/**
+* Do a character's turn results.
+*/
+function doCharacterTurnResults(battleState, message, args, characters, activesMap, boss, turnValueMap, turnIds, turnIndex, character){
+
+  setTimeout(function(){
+
+    dbfunc.getDB().collection("actives").find({"character": character._id}).toArray(function(err, actives){
+
+      activesMap[character._id] = actives;
+
+      var username = message.guild.members.get(character._id).displayName;
+
+      //Determine phase results
+      battleState.result = Math.floor(Math.random() * (101));
+
+      //Preresults determinations
+      state.character_preresults(message, args, character, battleState, actives, boss, characters);
+
+      var endMessageString = "";
+      if(battleState.win) endMessageString += "# " + username + "'s attack was successful this turn!\n"; //Victory
+      else endMessageString += "# " + username + " missed this turn! Your damage was massively reduced!\n"; //Loss
+
+      //Postresults determinations
+      state.character_postresults(message, args, character, battleState, actives, boss, characters);
+      battleState.preResMessages.forEach(function(preResMessage){
+
+        endMessageString += "# " + preResMessage + "\n";
+      });
+      battleState.endMessages.forEach(function(endMessage){
+
+        endMessageString += "# " + endMessage + "\n";
+      });
+      if(battleState.hpLoss > 0){
+
+        endMessageString += "# " + username + " took " + battleState.hpLoss + " damage!\n";
+      }
+      else if(battleState.hpLoss < 0){
+
+        endMessageString += "# " + username + " recovered " + Math.abs(battleState.hpLoss) + " HP!\n";
+      }
+      endMessageString += "# " + username + " dealt " + battleState.dmgMod + " damage to " + boss.name + "!\n";
+      endMessageString += "#\n";
+
+      character.hp -= battleState.hpLoss;
+      if(character.hp <= 0){
+
+        character.hp = 0;
+        endMessageString += "# " + username + " has been defeated!\n#\n";
+      }
+      else if(character.hp > character.maxHP) character.hp = character.maxHP;
+      boss.hp -= battleState.dmgMod;
+      if(boss.hp < 0) boss.hp = 0;
+      else if(boss.hp > boss.max_hp) boss.hp = boss.max_hp;
+
+      endMessageString += "# " + username + "  HP  " + character.hp + "  |  " + boss.name + "  HP  " + boss.hp + "\n#\n"
+        + "############ END TURN " + battleState.turn + " ###########";
+
+      message.channel.send(endMessageString);
+
+      //Update character in list
+      for(var x = 0; x < characters.length; x++){
+
+        var listCharacter = characters[x];
+        if(character._id == listCharacter._id){
+
+          characters[x] = character;
+          break;
+        }
+      }
+
+      recursiveRaidTurn(battleState, message, args, characters, activesMap, boss, turnValueMap, turnIds, turnIndex);
+    });
+  }, 5000);
+}
+
+/**
+* Do single target boss turn.
+*/
+function doBossTurnSingle(battleState, message, args, characters, activesMap, boss, turnValueMap, turnIds, turnIndex, character, raidActive){
+
+  setTimeout(function(){
+
+    dbfunc.getDB().collection("actives").find({"character": character._id}).toArray(function(err, actives){
+
+      activesMap[character._id] = actives;
+      battleState.turn_state = statefunc.BOSS;
+
+      state.boss_prebattle(message, args, character, battleState, actives, boss, characters, raidActive);
+
+      var username = message.guild.members.get(character._id).displayName;
+      var preMessageString = "########## TURN " + battleState.turn + ": " + boss.name + " ##########\n#\n" +
+        "# " + boss.name + " has targeted " + username + " with " + raidActive.name + "!" + "\n" +
+        "# " + username + "  HP  " + character.hp + "  |  " + boss.name + "  HP  " + boss.hp + "\n";
+      battleState.preMessages.forEach(function(preMessage){
+
+        preMessageString += "# " + preMessage + "\n";
+      });
+      preMessageString += "# ...";
+      message.channel.send(preMessageString);
+
+      doBossTurnSingleResults(battleState, message, args, characters, activesMap, boss, turnValueMap, turnIds, turnIndex, character, raidActive);
+    });
+  }, 1750);
+}
+
+/**
+* Do single target boss turn.
+*/
+function doBossTurnSingleResults(battleState, message, args, characters, activesMap, boss, turnValueMap, turnIds, turnIndex, character, raidActive){
+
+  setTimeout(function(){
+
+    dbfunc.getDB().collection("actives").find({"character": character._id}).toArray(function(err, actives){
+
+      activesMap[character._id] = actives;
+
+      var username = message.guild.members.get(character._id).displayName;
+
+      //Preresults determinations
+      state.boss_preresults(message, args, character, battleState, actives, boss, characters, raidActive);
+      //Postresults determinations
+      state.boss_postresults(message, args, character, battleState, actives, boss, characters, raidActive);
+      var endMessageString = "";
+      battleState.preResMessages.forEach(function(preResMessage){
+
+        endMessageString += "# " + preResMessage + "\n";
+      });
+      battleState.endMessages.forEach(function(endMessage){
+
+        endMessageString += "# " + endMessage + "\n";
+      });
+      if(battleState.hpLoss > 0){
+
+        endMessageString += "# " + username + " took " + battleState.hpLoss + " damage!\n";
+      }
+      else if(battleState.hpLoss < 0){
+
+        endMessageString += "# " + username + " recovered " + Math.abs(battleState.hpLoss) + " HP!\n";
+      }
+      if(battleState.dmgMod > 0){
+
+        endMessageString += "# " + username + " dealt " + battleState.dmgMod + " damage to " + boss.name + "!\n";
+      }
+      endMessageString += "#\n";
+
+      character.hp -= battleState.hpLoss;
+      if(character.hp <= 0){
+
+        character.hp = 0;
+        endMessageString += "# " + username + " has been defeated!\n#\n";
+      }
+      else if(character.hp > character.maxHP) character.hp = character.maxHP;
+      boss.hp -= battleState.dmgMod;
+      if(boss.hp < 0) boss.hp = 0;
+      else if(boss.hp > boss.max_hp) boss.hp = boss.max_hp;
+
+      endMessageString += "# " + username + "  HP  " + character.hp + "  |  " + boss.name + "  HP  " + boss.hp + "\n#\n"
+        + "############ END TURN " + battleState.turn + " ###########";
+
+      message.channel.send(endMessageString);
+
+      //Update character in list
+      for(var x = 0; x < characters.length; x++){
+
+        var listCharacter = characters[x];
+        if(character._id == listCharacter._id){
+
+          characters[x] = character;
+          break;
+        }
+      }
+
+      recursiveRaidTurn(battleState, message, args, characters, activesMap, boss, turnValueMap, turnIds, turnIndex);
+    });
+  }, 5000);
 }
 
 /**
@@ -587,4 +802,69 @@ exports.restockBattles = function(currentTime, character){
 	}
 
 	dbfunc.updateCharacter(character);
+}
+
+/**
+* Calculates the prebattle character mods.
+*/
+exports.calculateCharacterMods = function(message, args, character, battleState, actives, grumbo){
+
+	exports.calculateHPMod(character, battleState);
+	exports.calculatePOWMod(character, grumbo, battleState);
+	exports.calculateWISMod(character, grumbo, battleState);
+  exports.calculateSKLMod(character, grumbo, battleState);
+}
+
+/**
+* Calculates the hp chance mod.
+*/
+exports.calculateHPMod = function(character, battleState){
+
+  if(character.hp >= character.maxHP * 0.95){
+
+		battleState.hpMod += 5;
+	}
+	else if(character.hp <= 0){
+
+		battleState.hpMod -= 50;
+	}
+	else if(character.hp <= character.maxHP * 0.05){
+
+		battleState.hpMod -= 25;
+	}
+	else if(character.hp <= character.maxHP * 0.20){
+
+		battleState.hpMod -= 10;
+	}
+	else if(character.hp <= character.maxHP * 0.45){
+
+		battleState.hpMod -= 5;
+	}
+}
+
+/**
+* Calculates the pow chance mod. Max 10 before actives.
+*/
+exports.calculatePOWMod = function(character, grumbo, battleState){
+
+	battleState.powMod += Math.ceil((character.pow - grumbo.pow)/8);
+	if(battleState.powMod > 25)	battleState.powMod = 25;
+}
+
+/**
+* Calculates the wis chance mod. Max 10 before actives.
+*/
+exports.calculateWISMod = function(character, grumbo, battleState){
+
+	battleState.wisMod += Math.ceil((character.wis - grumbo.wis)/12);
+	if(battleState.wisMod > 25) battleState.wisMod = 25;
+}
+
+/**
+* Calculates the skl chance mod. Max 50 before actives.
+*/
+exports.calculateSKLMod = function(character, grumbo, battleState){
+
+	battleState.sklMod += Math.ceil(character.skl - grumbo.skl);
+	if(battleState.sklMod > 75) battleState.sklMod = 75;
 }

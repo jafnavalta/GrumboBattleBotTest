@@ -5,6 +5,9 @@ let dbfunc = require('../data/db.js');
 const fs = require("fs");
 let activesList = JSON.parse(fs.readFileSync("./values/actives.json", "utf8"));
 
+//State constants
+let statefunc = require('../state/state.js');
+
 //Character functions
 let charfunc = require('../character/character.js');
 
@@ -16,13 +19,13 @@ exports.postresults = {};
 ////////////////////////////////
 // GRUMBO PREBATTLE FUNCTIONS //
 ////////////////////////////////
-exports.prebattle.wumbo = function(character, battleState, eventId, actives, grumbo){
+exports.prebattle.wumbo = function(character, battleState, eventId, actives, grumbo, characters){
 
 	battleState.maxMod -= 25;
 }
 
 //BOSS Venom Grumbo
-exports.prebattle.venom = function(character, battleState, eventId, actives, grumbo){
+exports.prebattle.venom = function(character, battleState, eventId, actives, grumbo, characters){
 
 	if(!character.postresults.includes('poison_charm')){
 
@@ -64,7 +67,7 @@ exports.prebattle.venom = function(character, battleState, eventId, actives, gru
 }
 
 //BOSS Crimson Grumbo
-exports.prebattle.red_eye = function(character, battleState, eventId, actives, grumbo){
+exports.prebattle.red_eye = function(character, battleState, eventId, actives, grumbo, characters){
 
 	if(battleState.phase == 1){
 
@@ -103,7 +106,7 @@ exports.prebattle.red_eye = function(character, battleState, eventId, actives, g
 }
 
 //BOSS Mixtape Grumbo
-exports.prebattle.show_me_your_mixtape = function(character, battleState, eventId, actives, grumbo){
+exports.prebattle.show_me_your_mixtape = function(character, battleState, eventId, actives, grumbo, characters){
 
 		if(actives.length < 11 - battleState.phase){
 
@@ -117,7 +120,7 @@ exports.prebattle.show_me_your_mixtape = function(character, battleState, eventI
 // GRUMBO PRERESULTS FUNCTIONS //
 /////////////////////////////////
 //BOSS Venom Grumbo regular attack
-exports.preresults.venom_bite = function(character, battleState, eventId, actives, grumbo){
+exports.preresults.venom_bite = function(character, battleState, eventId, actives, grumbo, characters){
 
 	var dmg = Math.floor((grumbo.pow - character.def)/2.2) + 3;
 	if(dmg < 3) dmg = 3;
@@ -125,7 +128,7 @@ exports.preresults.venom_bite = function(character, battleState, eventId, active
 }
 
 //BOSS Mixtape Grumbo regular attack
-exports.preresults.disco_inferno = function(character, battleState, eventId, actives, grumbo){
+exports.preresults.disco_inferno = function(character, battleState, eventId, actives, grumbo, characters){
 
 	var dmg = Math.floor((grumbo.pow - character.def)/2.2) + 3;
 	if(dmg < 3) dmg = 3;
@@ -133,7 +136,7 @@ exports.preresults.disco_inferno = function(character, battleState, eventId, act
 }
 
 //BOSS Crimson Grumbo regular attack
-exports.preresults.rock_smash = function(character, battleState, eventId, actives, grumbo){
+exports.preresults.rock_smash = function(character, battleState, eventId, actives, grumbo, characters){
 
 	var dmg = Math.floor((grumbo.pow - character.def)/2.2) + 3;
 	if(dmg < 3) dmg = 3;
@@ -141,17 +144,37 @@ exports.preresults.rock_smash = function(character, battleState, eventId, active
 }
 
 //BOSS Master Grumbo regular attack
-exports.preresults.teaching = function(character, battleState, eventId, actives, grumbo){
+exports.preresults.teaching = function(character, battleState, eventId, actives, grumbo, characters){
 
 	var dmg = Math.floor((grumbo.pow - character.def)/2.2) + 3;
 	if(dmg < 3) dmg = 3;
 	battleState.hpLoss = dmg;
 }
 
+//RAID Dumbo
+exports.preresults.wallop = function(character, battleState, eventId, actives, grumbo, characters){
+
+	if(battleState.turn_state == statefunc.BOSS){
+
+		var random = Math.random() * 100;
+		if(random > character.spd){
+
+			var dmg = Math.floor(grumbo.pow - character.def) + Math.floor((Math.random() * 4) - 2) + 10;
+			if(dmg < 10) dmg = 10;
+			battleState.hpLoss = dmg;
+			battleState.preResMessages.push("You were walloped!");
+		}
+		else{
+
+			battleState.preResMessages.push("Dumbo missed!");
+		}
+	}
+}
+
 //////////////////////////////////
 // GRUMBO POSTRESULTS FUNCTIONS //
 //////////////////////////////////
-exports.postresults.poison = function(character, battleState, eventId, actives, grumbo){
+exports.postresults.poison = function(character, battleState, eventId, actives, grumbo, characters){
 
 	if(!battleState.win && !character.postresults.includes('poison_charm')){
 
@@ -179,7 +202,7 @@ exports.postresults.poison = function(character, battleState, eventId, actives, 
 	}
 }
 
-exports.postresults.pilfer = function(character, battleState, eventId, actives, grumbo){
+exports.postresults.pilfer = function(character, battleState, eventId, actives, grumbo, characters){
 
 	if(!battleState.win){
 
@@ -198,7 +221,7 @@ exports.postresults.pilfer = function(character, battleState, eventId, actives, 
 	}
 }
 
-exports.postresults.gold_boost_1 = function(character, battleState, eventId, actives, grumbo){
+exports.postresults.gold_boost_1 = function(character, battleState, eventId, actives, grumbo, characters){
 
 	if(battleState.win){
 
@@ -208,7 +231,7 @@ exports.postresults.gold_boost_1 = function(character, battleState, eventId, act
 	}
 }
 
-exports.postresults.assassinate = function(character, battleState, eventId, actives, grumbo){
+exports.postresults.assassinate = function(character, battleState, eventId, actives, grumbo, characters){
 
 	if(!battleState.win){
 
@@ -218,7 +241,7 @@ exports.postresults.assassinate = function(character, battleState, eventId, acti
 	}
 }
 
-exports.postresults.fear = function(character, battleState, eventId, actives, grumbo){
+exports.postresults.fear = function(character, battleState, eventId, actives, grumbo, characters){
 
 	if(!battleState.win){
 
@@ -246,7 +269,7 @@ exports.postresults.fear = function(character, battleState, eventId, actives, gr
 	}
 }
 
-exports.postresults.permaboost = function(character, battleState, eventId, actives, grumbo){
+exports.postresults.permaboost = function(character, battleState, eventId, actives, grumbo, characters){
 
 	if(battleState.win){
 
@@ -260,14 +283,14 @@ exports.postresults.permaboost = function(character, battleState, eventId, activ
 	}
 }
 
-exports.postresults.brojob = function(character, battleState, eventId, actives, grumbo){
+exports.postresults.brojob = function(character, battleState, eventId, actives, grumbo, characters){
 
 		character.gold += 20;
 		battleState.hpLoss = -20;
 		battleState.endMessages.push("Bro gave you pocket change of 20 gold!");
 }
 
-exports.postresults.bleed = function(character, battleState, eventId, actives, grumbo){
+exports.postresults.bleed = function(character, battleState, eventId, actives, grumbo, characters){
 
 	if(!battleState.win && !character.postresults.includes('iron_pendant')){
 
@@ -298,7 +321,7 @@ exports.postresults.bleed = function(character, battleState, eventId, actives, g
 	}
 }
 
-exports.postresults.petrify = function(character, battleState, eventId, actives, grumbo){
+exports.postresults.petrify = function(character, battleState, eventId, actives, grumbo, characters){
 
 	if(!battleState.win && !character.postresults.includes('iron_pendant')){
 
@@ -329,7 +352,7 @@ exports.postresults.petrify = function(character, battleState, eventId, actives,
 	}
 }
 
-exports.postresults.root = function(character, battleState, eventId, actives, grumbo){
+exports.postresults.root = function(character, battleState, eventId, actives, grumbo, characters){
 
 	if(!battleState.win && character.classId != "rogue"){
 
@@ -360,7 +383,7 @@ exports.postresults.root = function(character, battleState, eventId, actives, gr
 }
 
 //BOSS Venom Grumbo
-exports.postresults.venom_bite = function(character, battleState, eventId, actives, grumbo){
+exports.postresults.venom_bite = function(character, battleState, eventId, actives, grumbo, characters){
 
 	battleState.hpLoss += 6 + Math.floor((Math.random() * 4) - 2);
 	if(character.prebattle.includes('poison')){
@@ -372,7 +395,7 @@ exports.postresults.venom_bite = function(character, battleState, eventId, activ
 }
 
 //BOSS Venom Grumbo
-exports.postresults.equalizer = function(character, battleState, eventId, actives, grumbo){
+exports.postresults.equalizer = function(character, battleState, eventId, actives, grumbo, characters){
 
 	if(grumbo.hp < 120 && battleState.equalized == null){
 
@@ -390,7 +413,7 @@ exports.postresults.equalizer = function(character, battleState, eventId, active
 }
 
 //BOSS Crimson Grumbo
-exports.postresults.rock_smash = function(character, battleState, eventId, actives, grumbo){
+exports.postresults.rock_smash = function(character, battleState, eventId, actives, grumbo, characters){
 
 	var damage = 10 + Math.floor((Math.random() * 6) - 3);
 	if(battleState.phase == 1){
@@ -407,7 +430,7 @@ exports.postresults.rock_smash = function(character, battleState, eventId, activ
 }
 
 //BOSS Crimson Grumbo
-exports.postresults.crimson_blood = function(character, battleState, eventId, actives, grumbo){
+exports.postresults.crimson_blood = function(character, battleState, eventId, actives, grumbo, characters){
 
 	if((battleState.phase - 2) % 4 == 0){
 
@@ -436,7 +459,7 @@ exports.postresults.crimson_blood = function(character, battleState, eventId, ac
 }
 
 //BOSS Mixtape Grumbo
-exports.postresults.disco_inferno = function(character, battleState, eventId, actives, grumbo){
+exports.postresults.disco_inferno = function(character, battleState, eventId, actives, grumbo, characters){
 
 	battleState.hpLoss += 7;
 	if(battleState.phase >= 4){
@@ -458,7 +481,7 @@ exports.postresults.disco_inferno = function(character, battleState, eventId, ac
 }
 
 //BOSS Mixtape Grumbo
-exports.postresults.final_track = function(character, battleState, eventId, actives, grumbo){
+exports.postresults.final_track = function(character, battleState, eventId, actives, grumbo, characters){
 
 	if(battleState.phase >= 8){
 
@@ -468,7 +491,7 @@ exports.postresults.final_track = function(character, battleState, eventId, acti
 }
 
 //BOSS Master Grumbo
-exports.postresults.strategize = function(character, battleState, eventId, actives, grumbo){
+exports.postresults.strategize = function(character, battleState, eventId, actives, grumbo, characters){
 
 	if(battleState.chanceMod < 6){
 
@@ -478,7 +501,7 @@ exports.postresults.strategize = function(character, battleState, eventId, activ
 }
 
 //BOSS Master Grumbo
-exports.postresults.gate_of_grumbo = function(character, battleState, eventId, actives, grumbo){
+exports.postresults.gate_of_grumbo = function(character, battleState, eventId, actives, grumbo, characters){
 
 	if(battleState.phase % 5 == 0 && battleState.phase != 0){
 
@@ -497,7 +520,7 @@ exports.postresults.gate_of_grumbo = function(character, battleState, eventId, a
 }
 
 //BOSS Master Grumbo
-exports.postresults.evaluation = function(character, battleState, eventId, actives, grumbo){
+exports.postresults.evaluation = function(character, battleState, eventId, actives, grumbo, characters){
 
 	if(battleState.phase % 4 == 0 && battleState.phase != 0){
 
@@ -520,7 +543,7 @@ exports.postresults.evaluation = function(character, battleState, eventId, activ
 }
 
 //BOSS Master Grumbo
-exports.postresults.teaching = function(character, battleState, eventId, actives, grumbo){
+exports.postresults.teaching = function(character, battleState, eventId, actives, grumbo, characters){
 
 	battleState.hpLoss += 22 - Math.floor(Math.random() * character.spd);
 }

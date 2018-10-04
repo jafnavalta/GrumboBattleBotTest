@@ -20,12 +20,12 @@ exports.final = {};
 ///////////////////////////////////
 // CHARACTER PREBATTLE FUNCTIONS //
 ///////////////////////////////////
-exports.prebattle.poison = function(character, battleState, eventId, actives, grumbo){
+exports.prebattle.poison = function(character, battleState, eventId, actives, grumbo, characters){
 
 	battleState.chanceMod -= 5;
 }
 
-exports.prebattle.fear = function(character, battleState, eventId, actives, grumbo){
+exports.prebattle.fear = function(character, battleState, eventId, actives, grumbo, characters){
 
 	var fearResults = Math.random() * 100;
 	if(fearResults < 10){
@@ -36,7 +36,7 @@ exports.prebattle.fear = function(character, battleState, eventId, actives, grum
 	dbfunc.reduceDuration(character, [character.prebattle], eventId, actives);
 }
 
-exports.prebattle.battle_potion = function(character, battleState, eventId, actives, grumbo){
+exports.prebattle.battle_potion = function(character, battleState, eventId, actives, grumbo, characters){
 
 	if(battleState.levelDiffActual >= 0) battleState.chanceMod += 5;
 	else if(battleState.levelDiffActual >= -5) battleState.chanceMod += 4;
@@ -47,7 +47,7 @@ exports.prebattle.battle_potion = function(character, battleState, eventId, acti
 	dbfunc.reduceDuration(character, [character.prebattle], eventId, actives);
 }
 
-exports.prebattle.charm_of_wumbo = function(character, battleState, eventId, actives, grumbo){
+exports.prebattle.charm_of_wumbo = function(character, battleState, eventId, actives, grumbo, characters){
 
 	if(battleState.state == statefunc.BATTLE){
 
@@ -56,7 +56,7 @@ exports.prebattle.charm_of_wumbo = function(character, battleState, eventId, act
 	}
 }
 
-exports.prebattle.berserk_potion = function(character, battleState, eventId, actives, grumbo){
+exports.prebattle.berserk_potion = function(character, battleState, eventId, actives, grumbo, characters){
 
 	for(var i = 0; i < actives.length; i++){
 
@@ -72,7 +72,7 @@ exports.prebattle.berserk_potion = function(character, battleState, eventId, act
 	dbfunc.reduceDuration(character, [character.prebattle], eventId, actives);
 }
 
-exports.prebattle.wild_swing = function(character, battleState, eventId, actives, grumbo){
+exports.prebattle.wild_swing = function(character, battleState, eventId, actives, grumbo, characters){
 
 	var random = Math.random() * 100;
 	if(random < character.pow/8){
@@ -83,7 +83,7 @@ exports.prebattle.wild_swing = function(character, battleState, eventId, actives
 	}
 }
 
-exports.prebattle.outsmart = function(character, battleState, eventId, actives, grumbo){
+exports.prebattle.outsmart = function(character, battleState, eventId, actives, grumbo, characters){
 
 	var random = Math.random() * 100;
 	if(random < 18 && battleState.wisMod > 0){
@@ -94,7 +94,7 @@ exports.prebattle.outsmart = function(character, battleState, eventId, actives, 
 	}
 }
 
-exports.prebattle.throwing_shield = function(character, battleState, eventId, actives, grumbo){
+exports.prebattle.throwing_shield = function(character, battleState, eventId, actives, grumbo, characters){
 
 	battleState.chanceMod += Math.floor(character.def/3);
 	battleState.dmgMod += 6;
@@ -102,7 +102,7 @@ exports.prebattle.throwing_shield = function(character, battleState, eventId, ac
 	dbfunc.reduceDuration(character, [character.prebattle], eventId, actives);
 }
 
-exports.prebattle.crimson = function(character, battleState, eventId, actives, grumbo){
+exports.prebattle.crimson = function(character, battleState, eventId, actives, grumbo, characters){
 
 	battleState.maxMod += 3;
 	var random = Math.random() * 100;
@@ -114,13 +114,13 @@ exports.prebattle.crimson = function(character, battleState, eventId, actives, g
 	}
 }
 
-exports.prebattle.blood_potion = function(character, battleState, eventId, actives, grumbo){
+exports.prebattle.blood_potion = function(character, battleState, eventId, actives, grumbo, characters){
 
 	battleState.chanceMod += Math.floor((Math.random() * 5) + 5);
 	dbfunc.reduceDuration(character, [character.prebattle], eventId, actives);
 }
 
-exports.prebattle.holy = function(character, battleState, eventId, actives, grumbo){
+exports.prebattle.holy = function(character, battleState, eventId, actives, grumbo, characters){
 
 	var random = Math.random() * 100;
 	if(random < character.res/2.2){
@@ -131,7 +131,7 @@ exports.prebattle.holy = function(character, battleState, eventId, actives, grum
 	}
 }
 
-exports.prebattle.armory = function(character, battleState, eventId, actives, grumbo){
+exports.prebattle.armory = function(character, battleState, eventId, actives, grumbo, characters){
 
 	var random = Math.random() * 100;
 	if(random < character.def/7){
@@ -144,7 +144,7 @@ exports.prebattle.armory = function(character, battleState, eventId, actives, gr
 	}
 }
 
-exports.prebattle.recoil = function(character, battleState, eventId, actives, grumbo){
+exports.prebattle.recoil = function(character, battleState, eventId, actives, grumbo, characters){
 
 	var random = Math.random() * 100;
 	if(random < character.pow/10){
@@ -156,7 +156,7 @@ exports.prebattle.recoil = function(character, battleState, eventId, actives, gr
 	}
 }
 
-exports.prebattle.revenge = function(character, battleState, eventId, actives, grumbo){
+exports.prebattle.revenge = function(character, battleState, eventId, actives, grumbo, characters){
 
 	var random = Math.random() * 100;
 	if(random < (character.maxHP - character.hp)/2.25){
@@ -167,7 +167,7 @@ exports.prebattle.revenge = function(character, battleState, eventId, actives, g
 	}
 }
 
-exports.prebattle.explosion = function(character, battleState, eventId, actives, grumbo){
+exports.prebattle.explosion = function(character, battleState, eventId, actives, grumbo, characters){
 
 	if(battleState.state == statefunc.BOSS){
 
@@ -180,7 +180,7 @@ exports.prebattle.explosion = function(character, battleState, eventId, actives,
 	}
 }
 
-exports.prebattle.power_of_wealth = function(character, battleState, eventId, actives, grumbo){
+exports.prebattle.power_of_wealth = function(character, battleState, eventId, actives, grumbo, characters){
 
 	var random = Math.random() * 100;
 	if(random < character.luk*0.0){ //TODO Should be 0.8
@@ -191,7 +191,7 @@ exports.prebattle.power_of_wealth = function(character, battleState, eventId, ac
 	}
 }
 
-exports.prebattle.quick_step = function(character, battleState, eventId, actives, grumbo){
+exports.prebattle.quick_step = function(character, battleState, eventId, actives, grumbo, characters){
 
 	var random = Math.random() * 100;
 	if(random < character.spd){
@@ -201,7 +201,7 @@ exports.prebattle.quick_step = function(character, battleState, eventId, actives
 	}
 }
 
-exports.prebattle.shield_bash = function(character, battleState, eventId, actives, grumbo){
+exports.prebattle.shield_bash = function(character, battleState, eventId, actives, grumbo, characters){
 
 	var random = Math.random() * 100;
 	if(random < 5){
@@ -211,14 +211,14 @@ exports.prebattle.shield_bash = function(character, battleState, eventId, active
 	}
 }
 
-exports.prebattle.trip_mine = function(character, battleState, eventId, actives, grumbo){
+exports.prebattle.trip_mine = function(character, battleState, eventId, actives, grumbo, characters){
 
 	battleState.dmgMod += 10;
 	battleState.preMessages.push("A trip mine exploded!");
 	dbfunc.reduceDuration(character, [character.prebattle], eventId, actives);
 }
 
-exports.prebattle.double_attack = function(character, battleState, eventId, actives, grumbo){
+exports.prebattle.double_attack = function(character, battleState, eventId, actives, grumbo, characters){
 
 	battleState.double_attack = false;
 	var random = Math.random() * 100;
@@ -230,7 +230,7 @@ exports.prebattle.double_attack = function(character, battleState, eventId, acti
 	}
 }
 
-exports.prebattle.sureshot = function(character, battleState, eventId, actives, grumbo){
+exports.prebattle.sureshot = function(character, battleState, eventId, actives, grumbo, characters){
 
 	var random = Math.random() * 100;
 	if(random < character.skl/7.5 && battleState.state != statefunc.BATTLE){
@@ -243,7 +243,7 @@ exports.prebattle.sureshot = function(character, battleState, eventId, actives, 
 ////////////////////////////////////
 // CHARACTER PRERESULTS FUNCTIONS //
 ////////////////////////////////////
-exports.preresults.observation = function(character, battleState, eventId, actives, grumbo){
+exports.preresults.observation = function(character, battleState, eventId, actives, grumbo, characters){
 
 	if(battleState.win && battleState.state == statefunc.BATTLE){
 
@@ -256,7 +256,7 @@ exports.preresults.observation = function(character, battleState, eventId, activ
 	}
 }
 
-exports.preresults.second_chance = function(character, battleState, eventId, actives, grumbo){
+exports.preresults.second_chance = function(character, battleState, eventId, actives, grumbo, characters){
 
 	if(!battleState.win){
 
@@ -269,7 +269,7 @@ exports.preresults.second_chance = function(character, battleState, eventId, act
 	}
 }
 
-exports.preresults.stand_your_ground = function(character, battleState, eventId, actives, grumbo){
+exports.preresults.stand_your_ground = function(character, battleState, eventId, actives, grumbo, characters){
 
 	if(!battleState.win && battleState.state == statefunc.BATTLE && battleState.levelDiffActual > 0){
 
@@ -282,7 +282,7 @@ exports.preresults.stand_your_ground = function(character, battleState, eventId,
 	}
 }
 
-exports.preresults.double_attack = function(character, battleState, eventId, actives, grumbo){
+exports.preresults.double_attack = function(character, battleState, eventId, actives, grumbo, characters){
 
 	if(battleState.double_attack){
 
@@ -293,13 +293,13 @@ exports.preresults.double_attack = function(character, battleState, eventId, act
 /////////////////////////////////////
 // CHARACTER POSTRESULTS FUNCTIONS //
 /////////////////////////////////////
-exports.postresults.poison = function(character, battleState, eventId, actives, grumbo){
+exports.postresults.poison = function(character, battleState, eventId, actives, grumbo, characters){
 
 	battleState.hpLoss += Math.floor(character.maxHP * 0.05);
 	dbfunc.reduceDuration(character, [character.prebattle, character.postresults], eventId, actives);
 }
 
-exports.postresults.flimsy_rope = function(character, battleState, eventId, actives, grumbo){
+exports.postresults.flimsy_rope = function(character, battleState, eventId, actives, grumbo, characters){
 
 	battleState.avoidPostResults = false;
 	var random = Math.random() * 100;
@@ -311,7 +311,7 @@ exports.postresults.flimsy_rope = function(character, battleState, eventId, acti
 	dbfunc.reduceDuration(character, [character.postresults], eventId, actives);
 }
 
-exports.postresults.bleed = function(character, battleState, eventId, actives, grumbo){
+exports.postresults.bleed = function(character, battleState, eventId, actives, grumbo, characters){
 
 	for(var i = 0; i < actives.length; i++){
 
@@ -330,7 +330,7 @@ exports.postresults.bleed = function(character, battleState, eventId, actives, g
 	dbfunc.reduceDuration(character, [character.postresults], eventId, actives);
 }
 
-exports.postresults.petrify = function(character, battleState, eventId, actives, grumbo){
+exports.postresults.petrify = function(character, battleState, eventId, actives, grumbo, characters){
 
 	for(var i = 0; i < actives.length; i++){
 
@@ -348,7 +348,7 @@ exports.postresults.petrify = function(character, battleState, eventId, actives,
 	dbfunc.reduceDuration(character, [character.postresults], eventId, actives);
 }
 
-exports.postresults.root = function(character, battleState, eventId, actives, grumbo){
+exports.postresults.root = function(character, battleState, eventId, actives, grumbo, characters){
 
 	for(var i = 0; i < actives.length; i++){
 
@@ -365,7 +365,7 @@ exports.postresults.root = function(character, battleState, eventId, actives, gr
 	dbfunc.reduceDuration(character, [character.postresults], eventId, actives);
 }
 
-exports.postresults.grumbot_miner = function(character, battleState, eventId, actives, grumbo){
+exports.postresults.grumbot_miner = function(character, battleState, eventId, actives, grumbo, characters){
 
 	var gainGold = Math.floor(Math.random() * 60) + 90;
 	character.gold += gainGold;
@@ -373,14 +373,14 @@ exports.postresults.grumbot_miner = function(character, battleState, eventId, ac
 	dbfunc.reduceDuration(character, [character.postresults], eventId, actives);
 }
 
-exports.postresults.mini_magnet = function(character, battleState, eventId, actives, grumbo){
+exports.postresults.mini_magnet = function(character, battleState, eventId, actives, grumbo, characters){
 
 	character.gold += 20;
 	battleState.endMessages.push("Mini Magnet collected 20 gold!");
 }
 
 //BOSS Crimson Grumbo
-exports.postresults.crimson_blood = function(character, battleState, eventId, actives, grumbo){
+exports.postresults.crimson_blood = function(character, battleState, eventId, actives, grumbo, characters){
 
 	var active;
 	for(var i = 0; i < actives.length; i++){
@@ -414,12 +414,12 @@ exports.postresults.crimson_blood = function(character, battleState, eventId, ac
 	}
 }
 
-exports.postresults.regen = function(character, battleState, eventId, actives, grumbo){
+exports.postresults.regen = function(character, battleState, eventId, actives, grumbo, characters){
 
 	battleState.hpLoss -= Math.ceil(character.maxHP * 0.025);
 }
 
-exports.postresults.miracle = function(character, battleState, eventId, actives, grumbo){
+exports.postresults.miracle = function(character, battleState, eventId, actives, grumbo, characters){
 
 	var random = Math.random() * 100;
 	if(random < character.res * 1.5){
@@ -429,7 +429,7 @@ exports.postresults.miracle = function(character, battleState, eventId, actives,
 	}
 }
 
-exports.postresults.grab_bag = function(character, battleState, eventId, actives, grumbo){
+exports.postresults.grab_bag = function(character, battleState, eventId, actives, grumbo, characters){
 
 	var random = Math.random() * 100;
 	if(random < 66 && battleState.state == statefunc.BATTLE && battleState.win){
@@ -447,7 +447,7 @@ exports.postresults.grab_bag = function(character, battleState, eventId, actives
 	}
 }
 
-exports.postresults.lifesteal = function(character, battleState, eventId, actives, grumbo){
+exports.postresults.lifesteal = function(character, battleState, eventId, actives, grumbo, characters){
 
 	var random = Math.random() * 100;
 	if(random < 75){
@@ -458,7 +458,7 @@ exports.postresults.lifesteal = function(character, battleState, eventId, active
 	}
 }
 
-exports.postresults.barrier = function(character, battleState, eventId, actives, grumbo){
+exports.postresults.barrier = function(character, battleState, eventId, actives, grumbo, characters){
 
 	var random = Math.random() * 100;
 	if(random < character.res){
@@ -468,7 +468,7 @@ exports.postresults.barrier = function(character, battleState, eventId, actives,
 	}
 }
 
-exports.postresults.study = function(character, battleState, eventId, actives, grumbo){
+exports.postresults.study = function(character, battleState, eventId, actives, grumbo, characters){
 
 	if(battleState.state == statefunc.BATTLE){
 
@@ -481,7 +481,7 @@ exports.postresults.study = function(character, battleState, eventId, actives, g
 	}
 }
 
-exports.postresults.grumbo_whistle = function(character, battleState, eventId, actives, grumbo){
+exports.postresults.grumbo_whistle = function(character, battleState, eventId, actives, grumbo, characters){
 
 	if(character.gold >= 94){
 
@@ -503,7 +503,7 @@ exports.postresults.grumbo_whistle = function(character, battleState, eventId, a
 	}
 }
 
-exports.postresults.safety_boots = function(character, battleState, eventId, actives, grumbo){
+exports.postresults.safety_boots = function(character, battleState, eventId, actives, grumbo, characters){
 
 	if(character.hp < character.maxHP/2){
 
@@ -512,7 +512,7 @@ exports.postresults.safety_boots = function(character, battleState, eventId, act
 	}
 }
 
-exports.postresults.adrenaline = function(character, battleState, eventId, actives, grumbo){
+exports.postresults.adrenaline = function(character, battleState, eventId, actives, grumbo, characters){
 
 	if(battleState.adrenaline == null && character.hp <= character.maxHP * 0.1){
 
@@ -523,7 +523,7 @@ exports.postresults.adrenaline = function(character, battleState, eventId, activ
 	}
 }
 
-exports.postresults.stimulus = function(character, battleState, eventId, actives, grumbo){
+exports.postresults.stimulus = function(character, battleState, eventId, actives, grumbo, characters){
 
 	if(battleState.stimulus == null && character.hp <= character.maxHP * 0.2){
 
@@ -534,7 +534,7 @@ exports.postresults.stimulus = function(character, battleState, eventId, actives
 	}
 }
 
-exports.postresults.conceal = function(character, battleState, eventId, actives, grumbo){
+exports.postresults.conceal = function(character, battleState, eventId, actives, grumbo, characters){
 
 	var random = Math.random() * 100;
 	if(random < character.spd){
@@ -545,7 +545,7 @@ exports.postresults.conceal = function(character, battleState, eventId, actives,
 	}
 }
 
-exports.postresults.roll = function(character, battleState, eventId, actives, grumbo){
+exports.postresults.roll = function(character, battleState, eventId, actives, grumbo, characters){
 
 	if(battleState.win){
 
@@ -554,7 +554,7 @@ exports.postresults.roll = function(character, battleState, eventId, actives, gr
 	}
 }
 
-exports.postresults.headshot = function(character, battleState, eventId, actives, grumbo){
+exports.postresults.headshot = function(character, battleState, eventId, actives, grumbo, characters){
 
 	if(battleState.win){
 
@@ -584,7 +584,7 @@ exports.postresults.headshot = function(character, battleState, eventId, actives
 ///////////////////////////////
 // CHARACTER FINAL FUNCTIONS //
 ///////////////////////////////
-exports.final.vision = function(character, battleState, eventId, actives, grumbo){
+exports.final.vision = function(character, battleState, eventId, actives, grumbo, characters){
 
 	var random = Math.random() * 100;
 	if(random < 12){
@@ -595,7 +595,7 @@ exports.final.vision = function(character, battleState, eventId, actives, grumbo
 	}
 }
 
-exports.final.stand_your_ground = function(character, battleState, eventId, actives, grumbo){
+exports.final.stand_your_ground = function(character, battleState, eventId, actives, grumbo, characters){
 
 	var random = Math.random() * 100;
 	if(random < character.def/8 && battleState.hpLoss >= character.maxHP * 0.25 && character.hp > 2){
@@ -605,7 +605,7 @@ exports.final.stand_your_ground = function(character, battleState, eventId, acti
 	}
 }
 
-exports.final.safety_hat = function(character, battleState, eventId, actives, grumbo){
+exports.final.safety_hat = function(character, battleState, eventId, actives, grumbo, characters){
 
 	if(character.hp < 50){
 
@@ -614,7 +614,7 @@ exports.final.safety_hat = function(character, battleState, eventId, actives, gr
 	}
 }
 
-exports.final.dodge = function(character, battleState, eventId, actives, grumbo){
+exports.final.dodge = function(character, battleState, eventId, actives, grumbo, characters){
 
 	var random = Math.random() * 100;
 	if(random < 8){
@@ -624,7 +624,7 @@ exports.final.dodge = function(character, battleState, eventId, actives, grumbo)
 	}
 }
 
-exports.final.miracle = function(character, battleState, eventId, actives, grumbo){
+exports.final.miracle = function(character, battleState, eventId, actives, grumbo, characters){
 
 	if(battleState.miracle == null){
 
@@ -641,7 +641,7 @@ exports.final.miracle = function(character, battleState, eventId, actives, grumb
 	}
 }
 
-exports.final.guardian_angel = function(character, battleState, eventId, actives, grumbo){
+exports.final.guardian_angel = function(character, battleState, eventId, actives, grumbo, characters){
 
 	var random = Math.random() * 100;
 	if(random < 10){
@@ -655,7 +655,7 @@ exports.final.guardian_angel = function(character, battleState, eventId, actives
 	}
 }
 
-exports.final.master_grumbos_protection = function(character, battleState, eventId, actives, grumbo){
+exports.final.master_grumbos_protection = function(character, battleState, eventId, actives, grumbo, characters){
 
 	if(battleState.hpLoss >= character.hp){
 
@@ -669,7 +669,7 @@ exports.final.master_grumbos_protection = function(character, battleState, event
 	}
 }
 
-exports.final.blessed = function(character, battleState, eventId, actives, grumbo){
+exports.final.blessed = function(character, battleState, eventId, actives, grumbo, characters){
 
 	if(battleState.state == statefunc.BATTLE){
 
@@ -687,7 +687,7 @@ exports.final.blessed = function(character, battleState, eventId, actives, grumb
 	}
 }
 
-exports.final.for_honor = function(character, battleState, eventId, actives, grumbo){
+exports.final.for_honor = function(character, battleState, eventId, actives, grumbo, characters){
 
 	if(character.hp <= 2){
 

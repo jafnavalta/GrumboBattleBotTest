@@ -9,7 +9,7 @@
 		"description": "Replenishes 1 battle stock. Consumed after use.",
 		"effect": "good",
 		"duration": null,
-		"price": 500,
+		"price": 700,
 		"value": 80,
 		"max": 5,
 		"stock": null,

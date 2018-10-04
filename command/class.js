@@ -78,7 +78,15 @@ exports.commandClass = function(character, message, args){
   //Class change
   else if(args[2] == 'change' && args.length == 4){
 
-    classfunc.classChange(message, args, character);
+
+		if(character.battleLock){
+
+			message.channel.send("You are currently locked " + message.member.displayName + "!");
+		}
+		else{
+
+	    classfunc.classChange(message, args, character);
+		}
   }
 
 	//Check class info
