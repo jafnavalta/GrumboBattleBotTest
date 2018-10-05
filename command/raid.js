@@ -21,11 +21,13 @@ let equipList = JSON.parse(fs.readFileSync("./values/equips.json", "utf8"));
 let activeraidfunc = require('../actives/active_raid.js');
 
 const RAID_WAIT_TIME = 1; //6 hours
+const RAID_MIN_MEMBERS = 2;
 const RAID_MAX_MEMBERS = 4;
 const RAID_BASE_PER_TURN = 90;
 const RAID_TURN_VALUE = 500;
 
 exports.RAID_WAIT_TIME = RAID_WAIT_TIME;
+exports.RAID_MIN_MEMBERS = RAID_MIN_MEMBERS;
 exports.RAID_MAX_MEMBERS = RAID_MAX_MEMBERS;
 
 let raids = {}
@@ -301,6 +303,10 @@ exports.commandRaid = function(message, args, character){
 
   			message.channel.send("You are not the raid host " + message.member.displayName + "!");
   		}
+      else if(raids[character._id].length < RAID_MIN_MEMBERS){
+
+        message.channel.send("You need at least " + RAID_MIN_MEMBERS + " members to start a raid " + message.member.displayName + "!");
+      }
       //RAID
   		else{
 
