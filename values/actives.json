@@ -1087,5 +1087,21 @@
     "turn_final": "",
 		"description": "Gain 20 gold after every battle/phase regardless of outcome. Use to activate indefinitely. Use again to deactivate.",
 		"duration": null
+	},
+	"dumb_down": {
+		"gameId": 70055,
+		"id": "dumb_down",
+		"name": "Dumb Down",
+		"effect": "neutral",
+		"target": "multiple",
+		"battleStates": [
+			"postresults"
+		],
+    "turn_prebattle": "",
+    "turn_preresults": "",
+    "turn_postresults": "character",
+    "turn_final": "",
+		"description": "Deals 12 damage to all raid members. Reduces all raid members WIS by 100 for 2 turns. Can be resisted.",
+		"duration": 2
 	}
 }

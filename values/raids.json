@@ -16,13 +16,14 @@
     "sklX": 1.00,
     "spdX": 1.00,
     "description": "It's Dumbo. He's dumb. Very dumb. Dumbo.",
-    "actives": ["wallop"],
-    "activeWeights": [1],
+    "actives": ["wallop", "dumb_down"],
     "prebattle": [],
 		"preresults": [
       "wallop"
     ],
-		"postresults": [],
+		"postresults": [
+      "dumb_down"
+    ],
     "victory": "Dumbo has finally been taught that he is in fact, incredibly dumb!",
 		"loss": "Your raid group was no match for Dumbo's absolutely insane intellect!",
     "gold": 225,

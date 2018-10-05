@@ -352,6 +352,46 @@ exports.postresults.petrify = function(character, battleState, eventId, actives,
 	}
 }
 
+//RAID Dumbo
+exports.postresults.dumb_down = function(character, battleState, eventId, actives, grumbo, characters){
+
+	if(battleState.turn_state == statefunc.BOSS){
+
+		var active;
+		battleState.hpLoss += 12;
+		var random = Math.random() * 100;
+		if(random > character.res){
+
+			if(character.postresults.includes(eventId)){
+
+				for(var i = 0; i < actives.length; i++){
+
+					if(actives[i].id == eventId){
+
+						active = actives[i];
+						active.duration += activesList[eventId].duration;
+						if(active.duration > 10) active.duration = 10;
+						dbfunc.updateActive(active);
+						break;
+					}
+				}
+			}
+			else{
+
+				character.wisEq -= 100;
+				active = activesList[eventId];
+				dbfunc.pushToState(character, eventId, active, active.battleStates, 1);
+			}
+			charfunc.calculateStats(character);
+			battleState.endMessages.push("Uh oh! You're dumb!");
+		}
+		else{
+
+			battleState.endMessages.push("You were too smart to be dumbed down!");
+		}
+	}
+}
+
 exports.postresults.root = function(character, battleState, eventId, actives, grumbo, characters){
 
 	if(!battleState.win && character.classId != "rogue"){

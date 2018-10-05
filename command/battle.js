@@ -255,7 +255,7 @@ function doBattle(message, args, character, currentTime, actives){
 */
 exports.calculateBattleExp = function(character, levelDiff, battleState){
 
-	var exp = 88;
+	var exp = 90;
 	//Low level Grumbo
 	if(levelDiff > 0){
 
@@ -266,7 +266,7 @@ exports.calculateBattleExp = function(character, levelDiff, battleState){
 
 		exp = calculateHighLevelExp(exp, levelDiff);
 	}
-	exp = exp + Math.floor(Math.random() * 10) - 5 - Math.ceil(character.level/1.5) + 1 + battleState.expMod;
+	exp = exp + Math.floor(Math.random() * 10) - 5 - Math.ceil(character.level/1.33) + 1 + battleState.expMod;
 	if(exp < 3){
 
 		exp = 3;
@@ -279,22 +279,22 @@ exports.calculateBattleExp = function(character, levelDiff, battleState){
 */
 function calculateLowLevelExp(exp, levelDiff){
 
-	exp = exp - Math.floor(levelDiff * Math.pow(1.052, levelDiff)) - (Math.floor(Math.random() * 6) + 3);
+	exp = exp - Math.floor(levelDiff * Math.pow(1.051, levelDiff)) - (Math.floor(Math.random() * 6) + 3);
 	if(levelDiff > 3){
 
-		exp = exp - (Math.floor(Math.random() * 10) + 3);
+		exp = exp - (Math.floor(Math.random() * 9) + 3);
 	}
 	if(levelDiff > 7){
 
-		exp = exp - (Math.floor(Math.random() * 10) + 3);
+		exp = exp - (Math.floor(Math.random() * 9) + 3);
 	}
 	if(levelDiff > 12){
 
-		exp = exp - (Math.floor(Math.random() * 10) + 3);
+		exp = exp - (Math.floor(Math.random() * 9) + 3);
 	}
 	if(levelDiff > 17){
 
-		exp = exp - (Math.floor(Math.random() * 10) + 3);
+		exp = exp - (Math.floor(Math.random() * 9) + 3);
 	}
 	return exp;
 }
@@ -304,7 +304,7 @@ function calculateLowLevelExp(exp, levelDiff){
 */
 function calculateHighLevelExp(exp, levelDiff){
 
-	exp = exp - Math.ceil(levelDiff * Math.pow(1.123, Math.abs(levelDiff))) + Math.floor(Math.random() * 15) + 5;
+	exp = exp - Math.ceil(levelDiff * Math.pow(1.110, Math.abs(levelDiff))) + Math.floor(Math.random() * 15) + 5;
 	if(levelDiff < -3){
 
 		exp = exp - Math.floor(Math.random() * 10);
@@ -315,15 +315,15 @@ function calculateHighLevelExp(exp, levelDiff){
 	}
 	if(levelDiff < -12){
 
-		exp = exp + Math.floor(Math.random() * 10) + 10;
+		exp = exp + Math.floor(Math.random() * 10) + 5;
 	}
 	if(levelDiff < -16){
 
-		exp = exp + Math.floor(Math.random() * 10) + 15;
+		exp = exp + Math.floor(Math.random() * 10) + 5;
 	}
 	if(levelDiff == -20){
 
-		exp = exp + Math.floor(Math.random() * 10) + 20;
+		exp = exp + Math.floor(Math.random() * 10) + 5;
 	}
 	return exp;
 }

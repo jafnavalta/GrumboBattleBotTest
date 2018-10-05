@@ -581,6 +581,24 @@ exports.postresults.headshot = function(character, battleState, eventId, actives
 	}
 }
 
+//RAID Dumbo
+exports.postresults.dumb_down = function(character, battleState, eventId, actives, grumbo, characters){
+
+	for(var i = 0; i < actives.length; i++){
+
+		if(actives[i].id == eventId){
+
+			if(actives[i].duration <= 1){
+
+				character.wisEq += 100;
+				charfunc.calculateStats(character);
+			}
+			break;
+		}
+	}
+	dbfunc.reduceDuration(character, [character.postresults], eventId, actives);
+}
+
 ///////////////////////////////
 // CHARACTER FINAL FUNCTIONS //
 ///////////////////////////////

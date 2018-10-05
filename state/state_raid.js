@@ -232,7 +232,7 @@ exports.boss_prebattle = function(message, args, character, battleState, actives
   }
   else if(grumbofunc.prebattle[raidActive.id] != null){
 
-    grumbofunc.prebattle[raidActive.id](character, battleState, eventId, actives, grumbo, characters);
+    grumbofunc.prebattle[raidActive.id](character, battleState, raidActive.id, actives, grumbo, characters);
   }
 }
 
@@ -264,7 +264,7 @@ exports.boss_preresults = function(message, args, character, battleState, active
   }
   else if(grumbofunc.preresults[raidActive.id] != null){
 
-    grumbofunc.preresults[raidActive.id](character, battleState, eventId, actives, grumbo, characters);
+    grumbofunc.preresults[raidActive.id](character, battleState, raidActive.id, actives, grumbo, characters);
   }
 }
 
@@ -296,7 +296,7 @@ exports.boss_postresults = function(message, args, character, battleState, activ
   }
   else if(grumbofunc.postresults[raidActive.id] != null){
 
-    grumbofunc.postresults[raidActive.id](character, battleState, eventId, actives, grumbo, characters);
+    grumbofunc.postresults[raidActive.id](character, battleState, raidActive.id, actives, grumbo, characters);
   }
 
 	//FINAL character active functions after all other actives

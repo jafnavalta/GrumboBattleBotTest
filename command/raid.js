@@ -39,6 +39,9 @@ exports.commandRaid = function(message, args, character){
   character.hp = character.maxHP;
   character.battlesLeft = 5;
 
+  //character.wisEq -= 100;
+  //charfunc.calculateStats(character);
+
   //Determine how many battles they should have left
   var date = new Date();
   var currentTime = date.getTime();
@@ -513,7 +516,22 @@ function recursiveRaidTurn(battleState, message, args, characters, activesMap, b
           }
           else{
 
-            //TODO Do multiple target boss turn
+            //Do multiple target boss turn
+            for(var y = 0; y < characters.length; y++){
+
+              //Get all character active effects
+              var character = characters[y];
+              var activeCount = 0;
+              dbfunc.getDB().collection("actives").find({"character": character._id}).toArray(function(err, actives){
+
+                activesMap[character._id] = actives;
+                activeCount++;
+                if(activeCount == characters.length){
+
+                  doBossTurnMultiple(battleState, message, args, characters, activesMap, boss, turnValueMap, turnIds, turnIndex, raidActive);
+                }
+              });
+            }
           }
         }
       }
@@ -528,7 +546,7 @@ function recursiveRaidTurn(battleState, message, args, characters, activesMap, b
       battleState.raidWin = false;
       finishRaid(battleState, message, args, characters, activesMap, boss);
     }
-  }, 1500);
+  }, 2500);
 }
 
 /**
@@ -557,7 +575,7 @@ function doCharacterTurn(battleState, message, args, characters, activesMap, bos
 
       doCharacterTurnResults(battleState, message, args, characters, activesMap, boss, turnValueMap, turnIds, turnIndex, character);
     });
-  }, 1750);
+  }, 1250);
 }
 
 /**
@@ -633,7 +651,7 @@ function doCharacterTurnResults(battleState, message, args, characters, activesM
 
       recursiveRaidTurn(battleState, message, args, characters, activesMap, boss, turnValueMap, turnIds, turnIndex);
     });
-  }, 5000);
+  }, 4000);
 }
 
 /**
@@ -663,7 +681,7 @@ function doBossTurnSingle(battleState, message, args, characters, activesMap, bo
 
       doBossTurnSingleResults(battleState, message, args, characters, activesMap, boss, turnValueMap, turnIds, turnIndex, character, raidActive);
     });
-  }, 1750);
+  }, 1250);
 }
 
 /**
@@ -735,6 +753,95 @@ function doBossTurnSingleResults(battleState, message, args, characters, actives
 
       recursiveRaidTurn(battleState, message, args, characters, activesMap, boss, turnValueMap, turnIds, turnIndex);
     });
+  }, 4000);
+}
+
+/**
+* Do multiple target boss turn.
+*/
+function doBossTurnMultiple(battleState, message, args, characters, activesMap, boss, turnValueMap, turnIds, turnIndex, raidActive){
+
+  setTimeout(function(){
+
+    battleState.turn_state = statefunc.BOSS;
+    var preMessageString = "########## TURN " + battleState.turn + ": " + boss.name + " ##########\n#\n" +
+      "# " + boss.name + " has targeted multiple raid members with " + raidActive.name + "!" + "\n" +
+      "# " + boss.name + "  HP  " + boss.hp + "\n#\n";
+    message.channel.send(preMessageString);
+
+    doBossTurnMultipleResults(battleState, message, args, characters, activesMap, boss, turnValueMap, turnIds, turnIndex, raidActive);
+
+  }, 1750);
+}
+
+/**
+* Do multiple target boss turn.
+*/
+function doBossTurnMultipleResults(battleState, message, args, characters, activesMap, boss, turnValueMap, turnIds, turnIndex, raidActive){
+
+  setTimeout(function(){
+
+    var endMessageString = "";
+    for(var x = 0; x < characters.length; x++){
+
+      var character = characters[x];
+      if(character.hp > 0){
+
+        var actives = activesMap[character._id];
+        var username = message.guild.members.get(character._id).displayName;
+
+        state.boss_prebattle(message, args, character, battleState, actives, boss, characters, raidActive);
+        battleState.preMessages.forEach(function(preMessage){
+
+          endMessageString += "# " + preMessage + "\n";
+        });
+
+        //Preresults determinations
+        state.boss_preresults(message, args, character, battleState, actives, boss, characters, raidActive);
+        //Postresults determinations
+        state.boss_postresults(message, args, character, battleState, actives, boss, characters, raidActive);
+        battleState.preResMessages.forEach(function(preResMessage){
+
+          endMessageString += "# " + preResMessage + "\n";
+        });
+        battleState.endMessages.forEach(function(endMessage){
+
+          endMessageString += "# " + endMessage + "\n";
+        });
+        if(battleState.hpLoss > 0){
+
+          endMessageString += "# " + username + " took " + battleState.hpLoss + " damage!\n";
+        }
+        else if(battleState.hpLoss < 0){
+
+          endMessageString += "# " + username + " recovered " + Math.abs(battleState.hpLoss) + " HP!\n";
+        }
+        if(battleState.dmgMod > 0){
+
+          endMessageString += "# " + username + " dealt " + battleState.dmgMod + " damage to " + boss.name + "!\n";
+        }
+
+        character.hp -= battleState.hpLoss;
+        if(character.hp <= 0){
+
+          character.hp = 0;
+          endMessageString += "# " + username + " has been defeated!\n";
+        }
+        else if(character.hp > character.maxHP) character.hp = character.maxHP;
+        boss.hp -= battleState.dmgMod;
+        if(boss.hp < 0) boss.hp = 0;
+        else if(boss.hp > boss.max_hp) boss.hp = boss.max_hp;
+
+        endMessageString += "# " + username + "  HP  " + character.hp + "\n#\n";
+
+        //Update character in list
+        characters[x] = character;
+      }
+    }
+    endMessageString += "############ END TURN " + battleState.turn + " ###########";
+    message.channel.send(endMessageString);
+
+    recursiveRaidTurn(battleState, message, args, characters, activesMap, boss, turnValueMap, turnIds, turnIndex);
   }, 5000);
 }
 
