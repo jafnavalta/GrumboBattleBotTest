@@ -77,7 +77,7 @@
 		"className": "Rogue",
     "description": "The quick and slippery rogue. Gain a permanent +1 boost to SPD every class level.",
 		"perks": [
-		    "The Rogue very rarely gets a Second Chance when losing.",
+		    "The Rogue very rarely gets a Second Chance when losing. When classed as Rogue, will often go first in raids.",
 				"SPD +2 / LUK +2 when classed as a Rogue.",
 				"Quick Step your way to victory.",
 				"The Rogue can show enemies the Power of Wealth.",
@@ -104,7 +104,7 @@
 				"RES +3 when classed as a Cleric.",
 				"The Cleric can further reduce damage received with the Miracle active.",
 				"Increase your battle strength with Holy.",
-				"RES +1 / WIS +8 when classed as a Cleric."
+				"Heal allies in need. RES +1 / WIS +8 when classed as a Cleric."
 		]
 	},
   "knight": {
@@ -121,10 +121,10 @@
 		"className": "Knight",
     "description": "The Knight is a sturdy fellow. Gain a permanent +2 boost to DEF every class level.",
 		"perks": [
-		    "The Knight can make full use of their Armory.",
+		    "The Knight can make full use of their Armory. When classed as Knight, your Aggro is about double that of any other class.",
 				"DEF +4 when classed as a Knight.",
 				"Recoil can activate against enemies.",
-				"SPD +5 / RES +4 / POW +4 when classed as a Knight.",
+				"Bolster your allies' defense with Guardian. SPD +5 / RES +4 / POW +4 when classed as a Knight.",
 				"Stand Your Ground against weaker enemies and hard hitting attacks.",
 				"SPD +5 / RES +4 / POW +4 / SKL +1 / DEF +1 when classed as a Knight. Knight gains the For Honor active."
 		]

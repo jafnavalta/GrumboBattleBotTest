@@ -35,6 +35,7 @@ exports.commandBoss = function(message, args, character){
   //TODO boss level
   //TODO class change time
   //TODO class exp needed to level
+  //TODO raid min members
   //TODO raid wait time
   //TODO fix power of wealth
 

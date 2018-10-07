@@ -47,7 +47,7 @@ exports.prebattle = function(message, args, character, battleState, actives, gru
 		var eventId = character.prebattle[i];
 		if(characterfunc.prebattle[eventId] != null){
 
-			characterfunc.prebattle[eventId](character, battleState, eventId, actives, grumbo);
+			characterfunc.prebattle[eventId](message, character, battleState, eventId, actives, grumbo);
 		}
 	};
 
@@ -65,7 +65,7 @@ exports.prebattle = function(message, args, character, battleState, actives, gru
 			}
 			else{
 
-				grumbofunc.prebattle[eventId](character, battleState, eventId, actives, grumbo);
+				grumbofunc.prebattle[eventId](message, character, battleState, eventId, actives, grumbo);
 			}
 		}
 	};
@@ -111,7 +111,7 @@ exports.preresults = function(message, character, battleState, actives, grumbo){
 		var eventId = character.preresults[i];
 		if(characterfunc.preresults[eventId] != null){
 
-			characterfunc.preresults[eventId](character, battleState, eventId, actives, grumbo);
+			characterfunc.preresults[eventId](message, character, battleState, eventId, actives, grumbo);
 		}
 	};
 
@@ -130,7 +130,7 @@ exports.preresults = function(message, character, battleState, actives, grumbo){
 			}
 			else{
 
-				grumbofunc.preresults[eventId](character, battleState, eventId, actives, grumbo);
+				grumbofunc.preresults[eventId](message, character, battleState, eventId, actives, grumbo);
 			}
 		}
 	};
@@ -162,7 +162,7 @@ exports.postresults = function(message, character, battleState, actives, grumbo)
 		var eventId = character.postresults[i];
 		if(characterfunc.postresults[eventId] != null){
 
-			characterfunc.postresults[eventId](character, battleState, eventId, actives, grumbo);
+			characterfunc.postresults[eventId](message, character, battleState, eventId, actives, grumbo);
 		}
 	}
 
@@ -180,7 +180,7 @@ exports.postresults = function(message, character, battleState, actives, grumbo)
 			}
 			else{
 
-				grumbofunc.postresults[eventId](character, battleState, eventId, actives, grumbo);
+				grumbofunc.postresults[eventId](message, character, battleState, eventId, actives, grumbo);
 			}
 		}
 	}
@@ -191,7 +191,7 @@ exports.postresults = function(message, character, battleState, actives, grumbo)
 		var eventId = character.final[i];
 		if(characterfunc.final[eventId] != null){
 
-			characterfunc.final[eventId](character, battleState, eventId, actives, grumbo);
+			characterfunc.final[eventId](message, character, battleState, eventId, actives, grumbo);
 		}
 	}
 }

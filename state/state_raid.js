@@ -50,7 +50,7 @@ exports.character_prebattle = function(message, args, character, battleState, ac
     var eventActive = activesList[eventId];
 		if(characterfunc.prebattle[eventId] != null && (eventActive.turn_prebattle == statefunc.CHARACTER || eventActive.turn_prebattle == statefunc.BOTH)){
 
-			characterfunc.prebattle[eventId](character, battleState, eventId, actives, grumbo, characters);
+			characterfunc.prebattle[eventId](message, character, battleState, eventId, actives, grumbo, characters);
 		}
 	};
 
@@ -68,7 +68,7 @@ exports.character_prebattle = function(message, args, character, battleState, ac
 			}
 			else{
 
-				grumbofunc.prebattle[eventId](character, battleState, eventId, actives, grumbo, characters);
+				grumbofunc.prebattle[eventId](message, character, battleState, eventId, actives, grumbo, characters);
 			}
 		}
 	};
@@ -116,7 +116,7 @@ exports.character_preresults = function(message, args, character, battleState, a
     var eventActive = activesList[eventId];
 		if(characterfunc.preresults[eventId] != null && (eventActive.turn_preresults == statefunc.CHARACTER || eventActive.turn_preresults == statefunc.BOTH)){
 
-			characterfunc.preresults[eventId](character, battleState, eventId, actives, grumbo, characters);
+			characterfunc.preresults[eventId](message, character, battleState, eventId, actives, grumbo, characters);
 		}
 	};
 
@@ -135,7 +135,7 @@ exports.character_preresults = function(message, args, character, battleState, a
 			}
 			else{
 
-				grumbofunc.preresults[eventId](character, battleState, eventId, actives, grumbo, characters);
+				grumbofunc.preresults[eventId](message, character, battleState, eventId, actives, grumbo, characters);
 			}
 		}
 	};
@@ -157,7 +157,7 @@ exports.character_postresults = function(message, args, character, battleState, 
     var eventActive = activesList[eventId];
 		if(characterfunc.postresults[eventId] != null && (eventActive.turn_postresults == statefunc.CHARACTER || eventActive.turn_postresults == statefunc.BOTH)){
 
-			characterfunc.postresults[eventId](character, battleState, eventId, actives, grumbo, characters);
+			characterfunc.postresults[eventId](message, character, battleState, eventId, actives, grumbo, characters);
 		}
 	}
 
@@ -175,7 +175,7 @@ exports.character_postresults = function(message, args, character, battleState, 
 			}
 			else{
 
-				grumbofunc.postresults[eventId](character, battleState, eventId, actives, grumbo, characters);
+				grumbofunc.postresults[eventId](message, character, battleState, eventId, actives, grumbo, characters);
 			}
 		}
 	}
@@ -185,9 +185,9 @@ exports.character_postresults = function(message, args, character, battleState, 
 
 		var eventId = character.final[i];
     var eventActive = activesList[eventId];
-		if(characterfunc.final[eventId] != null && (eventActive.turn_postresults == statefunc.CHARACTER || eventActive.turn_postresults == statefunc.BOTH)){
+		if(characterfunc.final[eventId] != null && (eventActive.turn_final == statefunc.CHARACTER || eventActive.turn_final == statefunc.BOTH)){
 
-			characterfunc.final[eventId](character, battleState, eventId, actives, grumbo, characters);
+			characterfunc.final[eventId](message, character, battleState, eventId, actives, grumbo, characters);
 		}
 	}
 }
@@ -220,7 +220,7 @@ exports.boss_prebattle = function(message, args, character, battleState, actives
     var eventActive = activesList[eventId];
 		if(characterfunc.prebattle[eventId] != null && (eventActive.turn_prebattle == statefunc.BOSS || eventActive.turn_prebattle == statefunc.BOTH)){
 
-			characterfunc.prebattle[eventId](character, battleState, eventId, actives, grumbo, characters);
+			characterfunc.prebattle[eventId](message, character, battleState, eventId, actives, grumbo, characters);
 		}
 	};
 
@@ -232,7 +232,7 @@ exports.boss_prebattle = function(message, args, character, battleState, actives
   }
   else if(grumbofunc.prebattle[raidActive.id] != null){
 
-    grumbofunc.prebattle[raidActive.id](character, battleState, raidActive.id, actives, grumbo, characters);
+    grumbofunc.prebattle[raidActive.id](message, character, battleState, raidActive.id, actives, grumbo, characters);
   }
 }
 
@@ -251,7 +251,7 @@ exports.boss_preresults = function(message, args, character, battleState, active
     var eventActive = activesList[eventId];
 		if(characterfunc.preresults[eventId] != null && (eventActive.turn_preresults == statefunc.BOSS || eventActive.turn_preresults == statefunc.BOTH)){
 
-			characterfunc.preresults[eventId](character, battleState, eventId, actives, grumbo, characters);
+			characterfunc.preresults[eventId](message, character, battleState, eventId, actives, grumbo, characters);
 		}
 	};
 
@@ -264,7 +264,7 @@ exports.boss_preresults = function(message, args, character, battleState, active
   }
   else if(grumbofunc.preresults[raidActive.id] != null){
 
-    grumbofunc.preresults[raidActive.id](character, battleState, raidActive.id, actives, grumbo, characters);
+    grumbofunc.preresults[raidActive.id](message, character, battleState, raidActive.id, actives, grumbo, characters);
   }
 }
 
@@ -284,7 +284,7 @@ exports.boss_postresults = function(message, args, character, battleState, activ
     var eventActive = activesList[eventId];
 		if(characterfunc.postresults[eventId] != null && (eventActive.turn_postresults == statefunc.BOSS || eventActive.turn_postresults == statefunc.BOTH)){
 
-			characterfunc.postresults[eventId](character, battleState, eventId, actives, grumbo, characters);
+			characterfunc.postresults[eventId](message, character, battleState, eventId, actives, grumbo, characters);
 		}
 	}
 
@@ -296,7 +296,7 @@ exports.boss_postresults = function(message, args, character, battleState, activ
   }
   else if(grumbofunc.postresults[raidActive.id] != null){
 
-    grumbofunc.postresults[raidActive.id](character, battleState, raidActive.id, actives, grumbo, characters);
+    grumbofunc.postresults[raidActive.id](message, character, battleState, raidActive.id, actives, grumbo, characters);
   }
 
 	//FINAL character active functions after all other actives
@@ -304,9 +304,9 @@ exports.boss_postresults = function(message, args, character, battleState, activ
 
 		var eventId = character.final[i];
     var eventActive = activesList[eventId];
-		if(characterfunc.final[eventId] != null && (eventActive.turn_postresults == statefunc.BOSS || eventActive.turn_postresults == statefunc.BOTH)){
+		if(characterfunc.final[eventId] != null && (eventActive.turn_final == statefunc.BOSS || eventActive.turn_final == statefunc.BOTH)){
 
-			characterfunc.final[eventId](character, battleState, eventId, actives, grumbo, characters);
+			characterfunc.final[eventId](message, character, battleState, eventId, actives, grumbo, characters);
 		}
 	}
 }

@@ -1,5 +1,6 @@
 //Classes
 let classes = require('./classes.js').classes;
+let raidfunc = require('../command/raid.js');
 
 exports.BASE_WAIT_TIME = 4200000 //70 minutes
 exports.BASE_HP = 70;
@@ -100,6 +101,10 @@ exports.calculateStats = function(character){
 	character.spd = Math.ceil(exports.calculateBaseSPD(character) * classStats.spdX) + character.spdMod + character.spdEq;
 	if(character.spd > 50) character.spd = 50; //CAP SPEED
 	character.luk = Math.ceil(exports.calculateBaseLUK(character) * classStats.lukX) + character.lukMod + character.lukEq;
+	character.turn = 0 + character.turnMod + character.turnEq;
+	if(character.turn > raidfunc.RAID_TURN_VALUE) character.turn = raidfunc.RAID_TURN_VALUE;
+	character.aggro = 10 + character.aggroMod + character.aggroEq;
+	if(character.aggro < 5) character.aggro = 5;
 }
 
 //Resist active effect message

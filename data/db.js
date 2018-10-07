@@ -8,6 +8,10 @@ let config = require('../config.js');
 //Character.js for new characters and migrations
 let charfunc = require('../character/character.js');
 
+//For class migrations
+let classes = require('../character/classes.js').classes;
+let classactivefunc = require('../character/class_active.js');
+
 //For old character file
 const fs = require("fs");
 let equipList = JSON.parse(fs.readFileSync("./values/equips.json", "utf8"));
@@ -75,6 +79,8 @@ exports.createNewCharacter = function(message, callback){
 		resMod: 0,
 		spdMod: 0,
 		lukMod: 0,
+		turnMod:0,
+		aggroMod: 0,
 		hpEq: 0, //Equip/Temp mods to stats. When switching classes/leveling up these factor in second last in calculations
 		powEq: 0,
 		wisEq: 0,
@@ -83,6 +89,8 @@ exports.createNewCharacter = function(message, callback){
 		resEq: 0,
 		spdEq: 0,
 		lukEq: 0,
+		turnEq: 0,
+		aggroEq: 0,
 		wins: 0,
 		losses: 0,
 		winrate: 0,
@@ -227,6 +235,7 @@ exports.pushToState = function(character, eventId, event, eventStates, amount){
 		id: eventId,
 		battleStates: event.battleStates,
 		name: event.name,
+		value: event.value,
 		duration: totalDuration
 	}
 
@@ -876,6 +885,93 @@ function runMigrations(version, callback){
 						function(){
 
 							version.version = 14;
+							runMigrations(version, callback);
+					});
+				}
+				else{
+
+					module.exports.updateCharacter(character);
+				}
+			};
+		});
+	}
+
+	//Migration 14 to 15: Turn Speed and Aggro
+	if(version.version <= 14){
+
+		db.collection("characters").find().toArray(function(error, characters){
+
+			for(var i = 0; i < characters.length; i++){
+
+				var character = characters[i];
+				character.turnMod = 0;
+				character.turnEq = classes[character.classId].BASE_TURN_EQ;
+				character.aggroMod = 0;
+				character.aggroEq = classes[character.classId].BASE_AGGRO_EQ;;
+
+				for(var key in equipList){
+
+					var equip = equipList[key];
+					if(character[equip.type] == key){
+
+						character.turnEq += equip.turn;
+						character.aggroEq += equip.aggro;
+					}
+				}
+
+				charfunc.calculateStats(character);
+
+				if(i == characters.length - 1){
+
+					//final character to update, finish this migration
+					db.collection("characters").updateOne(
+						{"_id": character._id},
+						{$set: character},
+						{upsert: true},
+						function(){
+
+							version.version = 15;
+							runMigrations(version, callback);
+					});
+				}
+				else{
+
+					module.exports.updateCharacter(character);
+				}
+			};
+		});
+	}
+
+	//Migration 15 to 16: Class Raid actives
+	if(version.version <= 16){
+
+		db.collection("characters").find().toArray(function(error, characters){
+
+			for(var i = 0; i < characters.length; i++){
+
+				var character = characters[i];
+
+				if(character.classId == 'cleric' && character.classLevel >= 5){
+
+					var active = classactivefunc.getActive(character, 'heal');
+				  exports.pushToState(character, active.id, active, active.battleStates, 1);
+				}
+				if(character.classId == 'knight' && character.classLevel >= 4){
+
+					var active = classactivefunc.getActive(character, 'guardian');
+				  exports.pushToState(character, active.id, active, active.battleStates, 1);
+				}
+
+				if(i == characters.length - 1){
+
+					//final character to update, finish this migration
+					db.collection("characters").updateOne(
+						{"_id": character._id},
+						{$set: character},
+						{upsert: true},
+						function(){
+
+							version.version = 17; //TODO change this to 16 when done testing
 							runMigrations(version, callback);
 					});
 				}

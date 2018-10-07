@@ -279,7 +279,7 @@ exports.calculateBattleExp = function(character, levelDiff, battleState){
 */
 function calculateLowLevelExp(exp, levelDiff){
 
-	exp = exp - Math.floor(levelDiff * Math.pow(1.051, levelDiff)) - (Math.floor(Math.random() * 6) + 3);
+	exp = exp - Math.floor(levelDiff * Math.pow(1.035, levelDiff)) - (Math.floor(Math.random() * 4) + 2);
 	if(levelDiff > 3){
 
 		exp = exp - (Math.floor(Math.random() * 9) + 3);
@@ -304,7 +304,7 @@ function calculateLowLevelExp(exp, levelDiff){
 */
 function calculateHighLevelExp(exp, levelDiff){
 
-	exp = exp - Math.ceil(levelDiff * Math.pow(1.110, Math.abs(levelDiff))) + Math.floor(Math.random() * 15) + 5;
+	exp = exp - Math.ceil(levelDiff * Math.pow(1.090, Math.abs(levelDiff))) + Math.floor(Math.random() * 15) + 5;
 	if(levelDiff < -3){
 
 		exp = exp - Math.floor(Math.random() * 10);

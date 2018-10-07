@@ -21,14 +21,15 @@ let equipList = JSON.parse(fs.readFileSync("./values/equips.json", "utf8"));
 let activeraidfunc = require('../actives/active_raid.js');
 
 const RAID_WAIT_TIME = 1; //6 hours
-const RAID_MIN_MEMBERS = 2;
+const RAID_MIN_MEMBERS = 1;
 const RAID_MAX_MEMBERS = 4;
-const RAID_BASE_PER_TURN = 90;
+const RAID_BASE_PER_TURN = 60;
 const RAID_TURN_VALUE = 500;
 
 exports.RAID_WAIT_TIME = RAID_WAIT_TIME;
 exports.RAID_MIN_MEMBERS = RAID_MIN_MEMBERS;
 exports.RAID_MAX_MEMBERS = RAID_MAX_MEMBERS;
+exports.RAID_TURN_VALUE = RAID_TURN_VALUE;
 
 let raids = {}
 
@@ -41,7 +42,10 @@ exports.commandRaid = function(message, args, character){
   character.hp = character.maxHP;
   character.battlesLeft = 5;
 
-  //character.wisEq -= 100;
+  //character.wisEq += 100;
+  //character.defEq -= 10;
+  //character.final.push('defense_up');
+  //character.postresults.splice(character.postresults.indexOf("dumb_down"), 1);
   //charfunc.calculateStats(character);
 
   //Determine how many battles they should have left
@@ -364,10 +368,22 @@ function checkRaidReqs(message, args, characters, raidBoss){
       var character = characters[y];
       dbfunc.getDB().collection("actives").find({"character": character._id}).toArray(function(err, actives){
 
-        activesMap[character._id] = actives;
+        var active = actives[0];
+        if(active != null){
+
+          activesMap[active.character] = actives;
+        }
         mapCount++;
         if(mapCount == characters.length){
 
+          for(var z = 0; z < characters.length; z++){
+
+            var character2 = characters[z];
+            if(activesMap[character2._id] == null){
+
+              activesMap[character2._id] = [];
+            }
+          }
           raidLockCharacters(message, args, characters, activesMap, raidBoss);
         }
       });
@@ -389,17 +405,17 @@ function raidLockCharacters(message, args, characters, activesMap, raidBoss){
 
     var character = characters[x];
     character.raidLock = true;
+    var date = new Date();
+    var currentTime = date.getTime();
+    character.raidtime = currentTime;
+    if(character.battlesLeft == 5){
+
+      character.battletime = currentTime;
+    }
+    character.battlesLeft -= 1;
 	  dbfunc.getDB().collection("characters").updateOne({"_id": character._id}, {$set: {"raidLock": character.raidLock}}, function(error, result){
 
       charCount++;
-      var date = new Date();
-      var currentTime = date.getTime();
-      character.raidtime = currentTime;
-      if(character.battlesLeft == 5){
-
-        character.battletime = currentTime;
-      }
-      character.battlesLeft -= 1;
       if(charCount == characters.length){
 
         doRaid(message, args, characters, activesMap, raidBoss);
@@ -432,14 +448,15 @@ function doRaid(message, args, characters, activesMap, boss){
   for(var x = 0; x < characters.length; x++){
 
     var character = characters[x];
-    turnValueMap[character._id] = 0;
+    turnValueMap[character._id] = character.turn + boss.char_turn;
+    battleState[character._id] = 0;
     turnIds.push(character._id);
     beginRaidString += message.guild.members.get(character._id).displayName;
     if(x != characters.length - 1) beginRaidString += ",";
     beginRaidString += " ";
   }
   //Init boss turn values
-  turnValueMap[statefunc.RAID] = 0;
+  turnValueMap[statefunc.RAID] = boss.turn;
   turnIds.push(statefunc.RAID);
   var hashave = "has ";
   if(turnIds.length > 2) hashave = "have ";
@@ -507,6 +524,7 @@ function recursiveRaidTurn(battleState, message, args, characters, activesMap, b
         battleState.turn += 1;
         if(turnId != statefunc.RAID){
 
+          battleState[grumbo._id] += 1;
           doCharacterTurn(battleState, message, args, characters, activesMap, boss, turnValueMap, turnIds, turnIndex, grumbo);
         }
         else{
@@ -530,7 +548,11 @@ function recursiveRaidTurn(battleState, message, args, characters, activesMap, b
               var activeCount = 0;
               dbfunc.getDB().collection("actives").find({"character": character._id}).toArray(function(err, actives){
 
-                activesMap[character._id] = actives;
+                var active = actives[0];
+                if(active != null){
+
+                  activesMap[active.character] = actives;
+                }
                 activeCount++;
                 if(activeCount == characters.length){
 
@@ -651,6 +673,7 @@ function doCharacterTurnResults(battleState, message, args, characters, activesM
         if(character._id == listCharacter._id){
 
           characters[x] = character;
+          dbfunc.updateCharacter(character);
           break;
         }
       }
@@ -753,6 +776,7 @@ function doBossTurnSingleResults(battleState, message, args, characters, actives
         if(character._id == listCharacter._id){
 
           characters[x] = character;
+          dbfunc.updateCharacter(character);
           break;
         }
       }
@@ -842,6 +866,7 @@ function doBossTurnMultipleResults(battleState, message, args, characters, activ
 
         //Update character in list
         characters[x] = character;
+        dbfunc.updateCharacter(character);
       }
     }
     endMessageString += "############ END TURN " + battleState.turn + " ###########";
@@ -860,28 +885,116 @@ function finishRaid(battleState, message, args, characters, activesMap, boss){
   //WIN
   if(battleState.raidWin){
 
-    finishString += boss.victory;
+    finishString += boss.victory + "\n\n";
   }
   //LOSE
   else{
 
     finishString += boss.loss;
   }
+  var totalLevel = 0;
   for(var i = 0; i < characters.length; i++){
 
-    var character = characters[i];
+    totalLevel += characters.level;
+  }
+  var avgLevel = totalLevel/characters.length;
+  for(var x = 0; x < characters.length; x++){
+
+    var character = characters[x];
     character.battleLock = false;
     character.raidLock = false;
     raids[character._id] = null;
 
-    //TODO FIGURE OUT HOW TO AND WHETHER TO GIVE REWARDS
     if(battleState.raidWin){
 
+      var username = message.guild.members.get(character._id).displayName;
+      var gain = boss.gold;
+      var lootcut = 0;
+      if(avgLevel > boss.level + 15 && Math.abs(character.level - avgLevel) > 10 && character.level < boss.level + 15){
 
-    }
-    else{
+        gain = Math.ceil(boss.gold/4);
+        lootcut = 25;
+      }
+      character.gold += gain;
+      finishString += username + " gained " + gain + " gold!\n";
 
+      //Create weighed array of loot
+      var weighedLoot = [];
+      for(var i = 0; i < boss.loot.length; i++){
 
+        var id = boss.loot[i];
+        var weight = boss.weights[i];
+        for(var j = 0; j < weight; j++){
+
+          weighedLoot.push(id);
+        }
+      }
+
+      for(var l = 0; l < boss.lootchance.length; l++){
+
+        var lootchance = boss.lootchance[l];
+        var random = Math.random() * 100;
+        if(random < lootchance + character.luk - lootcut){
+
+          var lootrandom = Math.floor(Math.random() * (weighedLoot.length - 1));
+          var lootedId = weighedLoot[lootrandom];
+          //Receive loot
+          if(lootedId != ""){
+
+            var lootedItem = itemList[lootedId];
+            if(lootedItem == null){
+
+              //Equip
+              lootedItem = equipList[lootedId];
+              if(character.equips.includes(lootedItem.id)){
+
+                character.gold += lootedItem.value;
+                finishString += lootedItem.name + " yielded " + lootedItem.value + " gold!\n";
+              }
+              else{
+
+                character.equips.push(lootedItem.id);
+                finishString += username + " looted " + lootedItem.name + "!\n";
+              }
+            }
+            else{
+
+              //Item
+              if(character.items.includes(lootedItem.id)){
+
+                var hasCount = 0;
+                for(var n = 0; n < character.items.length; n++){
+
+                  var itemId = character.items[n];
+                  if(itemId == lootedId) hasCount++;
+                }
+                if(hasCount >= lootedItem.max){
+
+                  character.gold += lootedItem.value;
+                  finishString += lootedItem.name + " yielded " + lootedItem.value + " gold!\n";
+                }
+                else{
+
+                  character.items.push(lootedItem.id);
+                  finishString += username + " looted " + lootedItem.name + "!\n";
+                }
+              }
+              else{
+
+                character.items.push(lootedItem.id);
+                finishString += username + " looted " + lootedItem.name + "!\n";
+              }
+            }
+          }
+          //No loot
+          else{
+
+            finishString += "A loot attempt came up empty handed!\n";
+          }
+        }
+      }
+
+      finishString += "\n";
     }
 
     character.items.sort();

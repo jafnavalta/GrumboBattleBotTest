@@ -42,6 +42,31 @@ exports.immediate.medicine = function(message, character, state, eventId, event,
 	}
 }
 
+exports.immediate.medicine_ex = function(message, character, state, eventId, event, amount){
+
+	if(character.hp < character.maxHP){
+
+		var used = 0;
+		for(var i = 0; i < amount; i++){
+
+			var index = character.items.indexOf(eventId);
+			character.items.splice(index, 1);
+			character.hp += 100;
+			used++;
+			if(character.hp >= character.maxHP){
+
+				character.hp = character.maxHP;
+				break;
+			}
+		}
+		state.result = message.member.displayName + " has used " + event.name + " x" + used;
+	}
+	else{
+
+		state.result = "You are already at max HP.";
+	}
+}
+
 exports.immediate.battle_ticket = function(message, character, state, eventId, event, amount){
 
 	if((character.battlesLeft + amount) <= 5){
@@ -251,6 +276,14 @@ exports.immediate.class_ticket = function(message, character, state, eventId, ev
 		character.items.splice(index, 1);
 		character.classTime = 0;
 		state.result = message.member.displayName + " has used a class ticket!";
+}
+
+exports.immediate.boss_ticket = function(message, character, state, eventId, event, amount){
+
+		var index = character.items.indexOf(eventId);
+		character.items.splice(index, 1);
+		character.bosstime = 0;
+		state.result = message.member.displayName + " has used a boss ticket!";
 }
 
 //////////////////////////

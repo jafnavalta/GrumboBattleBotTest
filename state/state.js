@@ -227,6 +227,8 @@ exports.equip = function(message, character, equip){
 	character.resEq += equip.res;
 	character.spdEq += equip.spd;
 	character.lukEq += equip.luk;
+	character.turnEq += equip.turn;
+	character.aggroEq += equip.aggro;
 
 	if(equip.active != null){
 
@@ -256,6 +258,8 @@ exports.unequip = function(message, character, equip){
 	character.resEq -= equip.res;
 	character.spdEq -= equip.spd;
 	character.lukEq -= equip.luk;
+	character.turnEq -= equip.turn;
+	character.aggroEq -= equip.aggro;
 
 	if(equip.active != null){
 

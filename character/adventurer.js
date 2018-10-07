@@ -28,6 +28,8 @@ const BASE_DEF_EQ = -1;
 const BASE_RES_EQ = 0;
 const BASE_SPD_EQ = 0;
 const BASE_LUK_EQ = 0;
+const BASE_TURN_EQ = 0;
+const BASE_AGGRO_EQ = 0;
 
 exports.BASE_HP_EQ = BASE_HP_EQ;
 exports.BASE_POW_EQ = BASE_POW_EQ;
@@ -37,6 +39,8 @@ exports.BASE_DEF_EQ = BASE_DEF_EQ;
 exports.BASE_RES_EQ = BASE_RES_EQ;
 exports.BASE_SPD_EQ = BASE_SPD_EQ;
 exports.BASE_LUK_EQ = BASE_LUK_EQ;
+exports.BASE_TURN_EQ = BASE_TURN_EQ;
+exports.BASE_AGGRO_EQ = BASE_AGGRO_EQ;
 
 exports.hpX = 1;
 exports.powX = 0.97;

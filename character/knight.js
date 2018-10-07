@@ -19,6 +19,7 @@ exports.CLASS_LEVEL_MAX = 6;
 //Actives
 const LEVEL_1_ACTIVE = 'armory';
 const LEVEL_3_ACTIVE = 'recoil';
+const LEVEL_4_ACTIVE = 'guardian';
 const LEVEL_5_ACTIVE = 'stand_your_ground';
 const LEVEL_6_ACTIVE = 'for_honor';
 
@@ -30,6 +31,8 @@ const BASE_DEF_EQ = 6;
 const BASE_RES_EQ = -12;
 const BASE_SPD_EQ = -15;
 const BASE_LUK_EQ = 0;
+const BASE_TURN_EQ = 0;
+const BASE_AGGRO_EQ = 10;
 
 exports.BASE_HP_EQ = BASE_HP_EQ;
 exports.BASE_POW_EQ = BASE_POW_EQ;
@@ -39,11 +42,13 @@ exports.BASE_DEF_EQ = BASE_DEF_EQ;
 exports.BASE_RES_EQ = BASE_RES_EQ;
 exports.BASE_SPD_EQ = BASE_SPD_EQ;
 exports.BASE_LUK_EQ = BASE_LUK_EQ;
+exports.BASE_TURN_EQ = BASE_TURN_EQ;
+exports.BASE_AGGRO_EQ = BASE_AGGRO_EQ;
 
 exports.hpX = 1.12;
-exports.powX = 0.92;
+exports.powX = 0.90;
 exports.wisX = 0.73;
-exports.sklX = 1.17;
+exports.sklX = 1.16;
 exports.defX = 1.15;
 exports.resX = 1;
 exports.spdX = 1;
@@ -138,6 +143,8 @@ exports.setClassLevelFunc.knight3 = function(character){
 
 exports.setClassLevelFunc.knight4 = function(character){
 
+  var active = classactivefunc.getActive(character, LEVEL_4_ACTIVE);
+  dbfunc.pushToState(character, active.id, active, active.battleStates, 1);
   character.spdEq += 5;
   character.resEq += 4;
   character.powEq += 4;
@@ -198,6 +205,8 @@ exports.removeClassLevelFunc.knight3 = function(character){
 
 exports.removeClassLevelFunc.knight4 = function(character){
 
+  var active = classactivefunc.getActive(character, LEVEL_4_ACTIVE);
+  dbfunc.spliceFromState(character, active.id, active, active.battleStates, active);
   character.spdEq -= 5;
   character.resEq -= 4;
   character.powEq -= 4;

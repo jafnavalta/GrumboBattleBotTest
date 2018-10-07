@@ -140,6 +140,8 @@ function setClass(character, classFromDB, newClass){
   character.resEq += classfunc.BASE_RES_EQ;
   character.spdEq += classfunc.BASE_SPD_EQ;
   character.lukEq += classfunc.BASE_LUK_EQ;
+  character.turnEq += classfunc.BASE_TURN_EQ;
+  character.aggroEq += classfunc.BASE_AGGRO_EQ;
 
   //If classLevel is 0, level up to 1
   if(character.classLevel <= 0){
@@ -187,6 +189,8 @@ function removeClass(message, character){
   character.resEq -= classfunc.BASE_RES_EQ;
   character.spdEq -= classfunc.BASE_SPD_EQ;
   character.lukEq -= classfunc.BASE_LUK_EQ;
+  character.turnEq -= classfunc.BASE_TURN_EQ;
+  character.aggroEq -= classfunc.BASE_AGGRO_EQ;
   removeClassEquips(message, character);
 
   //Start at level 1
