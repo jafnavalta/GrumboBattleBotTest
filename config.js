@@ -1,6 +1,6 @@
 exports.COMMAND = '!grumtest';
 exports.DBURI = 'mongodb://127.0.0.1:27017/grumbobattlebottest';
-exports.VERSION = 20;
+exports.VERSION = 21;
 
 //Version 1 was first DB
 //Version 2 was RPG stats

@@ -942,8 +942,8 @@ function runMigrations(version, callback){
 		});
 	}
 
-	//Migration 15 to 19: Class Raid actives
-	if(version.version <= 19){
+	//Migration 15 to 20: Class Raid actives
+	if(version.version <= 20){
 
 		db.collection("characters").find().toArray(function(error, characters){
 
@@ -991,7 +991,7 @@ function runMigrations(version, callback){
 						{upsert: true},
 						function(){
 
-							version.version = 20;
+							version.version = 21;
 							runMigrations(version, callback);
 					});
 				}
