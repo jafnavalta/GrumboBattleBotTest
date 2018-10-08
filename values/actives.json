@@ -1200,7 +1200,7 @@
     "turn_preresults": "",
     "turn_postresults": "",
     "turn_final": "boss",
-		"description": "For 2 turns, increase your DEF by 7% of the caster's DEF. If you already have this active, it will not reapply.",
+		"description": "For 2 turns, increase your DEF by 8% of the caster's DEF. If you already have this active, it will not reapply.",
 		"duration": 2
 	},
 	"haste": {
@@ -1217,5 +1217,35 @@
     "turn_final": "",
 		"description": "Raid only. SPD/3 % chance to increase a random ally's (or your) turn speed, making them likely to act soon.",
 		"duration": null
+	},
+	"warcry": {
+		"gameId": 70062,
+		"id": "warcry",
+		"name": "Warcry",
+		"effect": "good",
+		"battleStates": [
+			"postresults"
+		],
+    "turn_prebattle": "",
+    "turn_preresults": "",
+    "turn_postresults": "character",
+    "turn_final": "",
+		"description": "Raid only. Every 5th user turn, apply the Strength Up active on all your allies.",
+		"duration": null
+	},
+	"strength_up": {
+		"gameId": 70063,
+		"id": "strength_up",
+		"name": "Strength Up",
+		"effect": "good",
+		"battleStates": [
+			"final"
+		],
+    "turn_prebattle": "",
+    "turn_preresults": "",
+    "turn_postresults": "",
+    "turn_final": "boss",
+		"description": "For 2 turns, increase your POW and WIS by 7% of the caster's POW. If you already have this active, it will not reapply.",
+		"duration": 2
 	}
 }

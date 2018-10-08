@@ -647,7 +647,7 @@ exports.postresults.guardian = function(message, character, battleState, eventId
 				if(!ally.final.includes('defense_up')){
 
 					active = activesList['defense_up'];
-					active.value = Math.ceil(character.def * 0.07);
+					active.value = Math.ceil(character.def * 0.08);
 					ally.defEq += active.value;
 					dbfunc.pushToState(ally, 'defense_up', active, active.battleStates, 1);
 				}
@@ -671,6 +671,31 @@ exports.postresults.haste = function(message, character, battleState, eventId, a
 			battleState.turnValueMap[randomChar._id] += raidfunc.RAID_TURN_VALUE;
 			battleState.endMessages.push("You hasted " + message.guild.members.get(randomChar._id).displayName + "!");
 		}
+	}
+}
+
+exports.postresults.warcry = function(message, character, battleState, eventId, actives, grumbo, characters){
+
+	if(battleState.state == statefunc.RAID && (battleState[character._id] - 1) % 5 == 0){
+
+		for(var i = 0; i < characters.length; i++){
+
+			var ally = characters[i];
+			if(ally.hp > 0 && ally._id != character._id){
+
+				if(!ally.final.includes('strength_up')){
+
+					active = activesList['strength_up'];
+					active.value = Math.ceil(character.pow * 0.07);
+					ally.powEq += active.value;
+					ally.wisEq += active.value;
+					dbfunc.pushToState(ally, 'strength_up', active, active.battleStates, 1);
+				}
+				charfunc.calculateStats(ally);
+				characters[i] = ally;
+			}
+		}
+		battleState.endMessages.push("You shouted a Warcry!");
 	}
 }
 
@@ -804,6 +829,24 @@ exports.final.defense_up = function(message, character, battleState, eventId, ac
 			if(actives[i].duration <= 1){
 
 				character.defEq -= actives[i].value;
+				charfunc.calculateStats(character);
+			}
+			break;
+		}
+	}
+	dbfunc.reduceDuration(character, [character.final], eventId, actives);
+}
+
+exports.final.strength_up = function(message, character, battleState, eventId, actives, grumbo, characters){
+
+	for(var i = 0; i < actives.length; i++){
+
+		if(actives[i].id == eventId){
+
+			if(actives[i].duration <= 1){
+
+				character.powEq -= actives[i].value;
+				character.wisEq -= actives[i].value;
 				charfunc.calculateStats(character);
 			}
 			break;

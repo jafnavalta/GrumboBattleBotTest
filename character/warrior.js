@@ -18,6 +18,7 @@ exports.CLASS_LEVEL_MAX = 5;
 
 //Actives
 const LEVEL_1_ACTIVE = 'wild_swing';
+const LEVEL_3_ACTIVE = 'warcry';
 const LEVEL_4_ACTIVE = 'lifesteal';
 const LEVEL_5_ACTIVE = 'revenge';
 
@@ -135,6 +136,8 @@ exports.setClassLevelFunc.warrior2 = function(character){
 
 exports.setClassLevelFunc.warrior3 = function(character){
 
+  var active = classactivefunc.getActive(character, LEVEL_3_ACTIVE);
+  dbfunc.pushToState(character, active.id, active, active.battleStates, 1);
   character.spdEq += 2;
   character.powEq += 4;
   character.defEq += 2;
@@ -188,6 +191,8 @@ exports.removeClassLevelFunc.warrior2 = function(character){
 
 exports.removeClassLevelFunc.warrior3 = function(character){
 
+  var active = classactivefunc.getActive(character, LEVEL_3_ACTIVE);
+  dbfunc.spliceFromState(character, active.id, active, active.battleStates, active);
   character.spdEq -= 2;
   character.powEq -= 4;
   character.defEq -= 2;
