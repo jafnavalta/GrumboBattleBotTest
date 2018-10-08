@@ -1322,5 +1322,35 @@
     "turn_final": "",
 		"description": "Raid only. If you win a raid, increase all raid members gold reward by 40%. Does not stack.",
 		"duration": null
+	},
+	"reflection": {
+		"gameId": 70069,
+		"id": "reflection",
+		"name": "Reflection",
+		"effect": "good",
+		"battleStates": [
+			"postresults"
+		],
+    "turn_prebattle": "",
+    "turn_preresults": "",
+    "turn_postresults": "character",
+    "turn_final": "",
+		"description": "Raid only. Every other turn, RES/6 % chance to apply the Reflect active on all your allies. If you already have this active, it will not reapply. Cannot be applied to Clerics.",
+		"duration": null
+	},
+	"reflect": {
+		"gameId": 70070,
+		"id": "reflect",
+		"name": "Reflect",
+		"effect": "good",
+		"battleStates": [
+			"final"
+		],
+    "turn_prebattle": "",
+    "turn_preresults": "",
+    "turn_postresults": "",
+    "turn_final": "boss",
+		"description": "Reduce damage received to 0 and return the damage to the enemy.",
+		"duration": 1
 	}
 }

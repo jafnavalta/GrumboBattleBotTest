@@ -792,6 +792,31 @@ exports.postresults.profit = function(message, character, battleState, eventId, 
 	}
 }
 
+exports.postresults.reflection = function(message, character, battleState, eventId, actives, grumbo, characters){
+
+	if(battleState.state == statefunc.RAID && battleState[character._id] % 2 == 0){
+
+		var random = Math.random() * 100;
+		if(random < character.res/6){
+
+			for(var i = 0; i < characters.length; i++){
+
+				var ally = characters[i];
+				if(ally.hp > 0 && ally._id != character._id && ally.classId != 'cleric'){
+
+					if(!ally.final.includes('reflect')){
+
+						active = activesList['reflect'];
+						dbfunc.pushToState(ally, 'reflect', active, active.battleStates, 1);
+					}
+					characters[i] = ally;
+				}
+			}
+			battleState.endMessages.push("You casted Reflection!");
+		}
+	}
+}
+
 ///////////////////////////////
 // CHARACTER FINAL FUNCTIONS //
 ///////////////////////////////
@@ -945,5 +970,16 @@ exports.final.strength_up = function(message, character, battleState, eventId, a
 			break;
 		}
 	}
+	dbfunc.reduceDuration(character, [character.final], eventId, actives);
+}
+
+exports.final.reflect = function(message, character, battleState, eventId, actives, grumbo, characters){
+
+	if(battleState.hpLoss > 0){
+
+		battleState.dmgMod += battleState.hpLoss;
+		battleState.hpLoss = 0;
+	}
+	battleState.endMessages.push("You reflected the damage!");
 	dbfunc.reduceDuration(character, [character.final], eventId, actives);
 }

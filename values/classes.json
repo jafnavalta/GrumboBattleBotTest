@@ -105,7 +105,9 @@
 				"RES +3 when classed as a Cleric.",
 				"The Cleric can further reduce damage received with the Miracle active.",
 				"Increase your battle strength with Holy.",
-				"Heal allies in need. RES +1 / WIS +8 when classed as a Cleric."
+				"Heal allies in need. RES +1 / WIS +8 when classed as a Cleric.",
+				"RES +1 / WIS +6 / SKL +2 when classed as a Cleric.",
+				"Protect your allies and counter attack with Reflect."
 		]
 	},
   "knight": {

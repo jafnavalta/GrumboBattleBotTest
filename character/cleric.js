@@ -14,13 +14,14 @@ let activesList = JSON.parse(fs.readFileSync("./values/actives.json", "utf8"));
 //ALL classes should have these.
 exports.className = "Cleric";
 
-exports.CLASS_LEVEL_MAX = 5;
+exports.CLASS_LEVEL_MAX = 7;
 
 //Actives
 const LEVEL_1_ACTIVE = 'regen';
 const LEVEL_3_ACTIVE = 'miracle';
 const LEVEL_4_ACTIVE = 'holy';
 const LEVEL_5_ACTIVE = 'heal';
+const LEVEL_7_ACTIVE = 'reflection';
 
 const BASE_HP_EQ = 0;
 const BASE_POW_EQ = -6;
@@ -156,10 +157,15 @@ exports.setClassLevelFunc.cleric5 = function(character){
 
 exports.setClassLevelFunc.cleric6 = function(character){
 
+  character.resEq += 1;
+  character.wisEq += 6;
+  character.sklEq += 2;
 }
 
 exports.setClassLevelFunc.cleric7 = function(character){
 
+  var active = classactivefunc.getActive(character, LEVEL_7_ACTIVE);
+  dbfunc.pushToState(character, active.id, active, active.battleStates, 1);
 }
 
 exports.setClassLevelFunc.cleric8 = function(character){
@@ -210,10 +216,15 @@ exports.removeClassLevelFunc.cleric5 = function(character){
 
 exports.removeClassLevelFunc.cleric6 = function(character){
 
+  character.resEq -= 1;
+  character.wisEq -= 6;
+  character.sklEq -= 2;
 }
 
 exports.removeClassLevelFunc.cleric7 = function(character){
 
+  var active = classactivefunc.getActive(character, LEVEL_7_ACTIVE);
+  dbfunc.spliceFromState(character, active.id, active, active.battleStates, active);
 }
 
 exports.removeClassLevelFunc.cleric8 = function(character){
