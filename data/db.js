@@ -976,6 +976,11 @@ function runMigrations(version, callback){
 					var active = classactivefunc.getActive(character, 'mark');
 				  exports.pushToState(character, active.id, active, active.battleStates, 1);
 				}
+				if(character.classId == 'magician' && character.classLevel >= 3){
+
+					var active = classactivefunc.getActive(character, 'rune_cast');
+				  exports.pushToState(character, active.id, active, active.battleStates, 1);
+				}
 
 				if(i == characters.length - 1){
 

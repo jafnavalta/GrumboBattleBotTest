@@ -673,10 +673,21 @@ exports.postresults.haste = function(message, character, battleState, eventId, a
 		var random = Math.random() * 100;
 		if(random < character.spd/3){
 
+			//Choose a non dead character
 			var randomTurn = Math.floor((Math.random() * characters.length) - 0.0001);
 			var randomChar = characters[randomTurn];
-			battleState.turnValueMap[randomChar._id] += raidfunc.RAID_TURN_VALUE;
-			battleState.endMessages.push("You hasted " + message.guild.members.get(randomChar._id).displayName + "!");
+			var dead = [];
+			while(randomChar.hp <= 0 && dead < characters.length){
+
+				if(!dead.includes(randomChar._id)) dead.push(randomChar._id);
+				randomTurn = Math.floor((Math.random() * characters.length) - 0.0001);
+				randomChar = characters[randomTurn];
+			}
+			if(dead < characters.length){
+
+				battleState.turnValueMap[randomChar._id] += raidfunc.RAID_TURN_VALUE;
+				battleState.endMessages.push("You hasted " + message.guild.members.get(randomChar._id).displayName + "!");
+			}
 		}
 	}
 }
@@ -711,14 +722,14 @@ exports.postresults.mark = function(message, character, battleState, eventId, ac
 	if(battleState.state == statefunc.RAID){
 
 		var random = Math.random() * 100;
-		if(random < character.skl/11){
+		if(random < character.skl/9){
 
 			for(var i = 0; i < characters.length; i++){
 
 				var ally = characters[i];
 				if(ally.hp > 0 && ally._id != character._id){
 
-					if(!ally.final.includes('chance_up')){
+					if(!ally.prebattle.includes('chance_up')){
 
 						active = activesList['chance_up'];
 						dbfunc.pushToState(ally, 'chance_up', active, active.battleStates, 1);
@@ -729,6 +740,47 @@ exports.postresults.mark = function(message, character, battleState, eventId, ac
 			battleState.endMessages.push("You marked the enemy!");
 		}
 	}
+}
+
+exports.postresults.rune_cast = function(message, character, battleState, eventId, actives, grumbo, characters){
+
+	if(battleState.state == statefunc.RAID && characters.length > 1){
+
+		var random = Math.random() * 100;
+		if(random < character.wis/11){
+
+			//Choose a non dead ally
+			var randomChoice = Math.floor((Math.random() * characters.length) - 0.0001);
+			var ally = characters[randomChoice];
+			var dead = [];
+			while((randomChar.hp <= 0 && dead < characters.length) || ally._id == character._id){
+
+				if(!dead.includes(ally._id)) dead.push(ally._id);
+				randomChoice = Math.floor((Math.random() * characters.length) - 0.0001);
+				ally = characters[randomChoice];
+			}
+			if(dead < characters.length){
+
+				if(!ally.postresults.includes('blast_rune')){
+
+					active = activesList['blast_rune'];
+					dbfunc.pushToState(ally, 'blast_rune', active, active.battleStates, 1);
+				}
+				characters[randomChoice] = ally;
+				battleState.endMessages.push("You cast a blast rune on " + message.guild.members.get(ally._id).displayName + "!");
+			}
+		}
+	}
+}
+
+exports.postresults.blast_rune = function(message, character, battleState, eventId, actives, grumbo, characters){
+
+	if(battleState.dmgMod > 0){
+
+		battleState.dmgMod = Math.ceil(battleState.dmgMod * 1.25);
+	}
+	battleState.endMessages.push("The blast rune exploded!");
+	dbfunc.reduceDuration(character, [character.postresults], eventId, actives);
 }
 
 ///////////////////////////////

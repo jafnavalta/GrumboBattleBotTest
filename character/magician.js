@@ -18,6 +18,7 @@ exports.CLASS_LEVEL_MAX = 5;
 
 //Actives
 const LEVEL_1_ACTIVE = 'outsmart';
+const LEVEL_3_ACTIVE = 'rune_cast';
 const LEVEL_4_ACTIVE = 'explosion';
 const LEVEL_5_ACTIVE = 'barrier';
 
@@ -135,6 +136,8 @@ exports.setClassLevelFunc.magician2 = function(character){
 
 exports.setClassLevelFunc.magician3 = function(character){
 
+  var active = classactivefunc.getActive(character, LEVEL_3_ACTIVE);
+  dbfunc.pushToState(character, active.id, active, active.battleStates, 1);
   character.wisEq += 6;
   character.resEq += 2;
 }
@@ -187,6 +190,8 @@ exports.removeClassLevelFunc.magician2 = function(character){
 
 exports.removeClassLevelFunc.magician3 = function(character){
 
+  var active = classactivefunc.getActive(character, LEVEL_3_ACTIVE);
+  dbfunc.spliceFromState(character, active.id, active, active.battleStates, active);
   character.wisEq -= 6;
   character.resEq -= 2;
 }

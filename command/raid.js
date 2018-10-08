@@ -45,7 +45,7 @@ exports.commandRaid = function(message, args, character){
   //character.wisEq += 100;
   //character.defEq -= 10;
   //character.final.push('defense_up');
-  //character.postresults.splice(character.postresults.indexOf("dumb_down"), 1);
+  //character.postresults.splice(character.postresults.indexOf("haste"), 1);
   //charfunc.calculateStats(character);
 
   //Determine how many battles they should have left
@@ -869,6 +869,7 @@ function doBossTurnMultipleResults(battleState, message, args, characters, activ
         dbfunc.updateCharacter(character);
       }
     }
+    endMessageString += "# " + boss.name + "  HP  " + boss.hp + "\n#\n";
     endMessageString += "############ END TURN " + battleState.turn + " ###########";
     message.channel.send(endMessageString);
 

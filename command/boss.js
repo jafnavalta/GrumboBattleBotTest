@@ -39,6 +39,7 @@ exports.commandBoss = function(message, args, character){
   //TODO raid wait time
   //TODO fix power of wealth
   //TODO test rogue/warrior/archer/magician raid actives
+  //TODO test double_attack
 
   if(args[2] == 'info' && (args.length == 4 || (args.length == 5 && args[4] == '-d'))){
 

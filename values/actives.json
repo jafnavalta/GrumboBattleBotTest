@@ -1260,7 +1260,7 @@
     "turn_preresults": "",
     "turn_postresults": "character",
     "turn_final": "",
-		"description": "Raid only. SKL/11 % chance to apply the Chance Up active on all your allies.",
+		"description": "Raid only. SKL/9 % chance to apply the Chance Up active on all your allies.",
 		"duration": null
 	},
 	"chance_up": {
@@ -1276,6 +1276,36 @@
     "turn_postresults": "",
     "turn_final": "",
 		"description": "Increase your chance of victory by 10% in the next battle/phase/turn. If you already have this active, it will not reapply.",
+		"duration": 1
+	},
+	"rune_cast": {
+		"gameId": 70066,
+		"id": "rune_cast",
+		"name": "Rune Cast",
+		"effect": "good",
+		"battleStates": [
+			"postresults"
+		],
+    "turn_prebattle": "",
+    "turn_preresults": "",
+    "turn_postresults": "character",
+    "turn_final": "",
+		"description": "Raid only. WIS/11 % chance to apply the Blast Rune active on a random ally. Cannot be applied to yourself.",
+		"duration": null
+	},
+	"blast_rune": {
+		"gameId": 70067,
+		"id": "blast_rune",
+		"name": "Blast Rune",
+		"effect": "good",
+		"battleStates": [
+			"postresults"
+		],
+    "turn_prebattle": "",
+    "turn_preresults": "",
+    "turn_postresults": "character",
+    "turn_final": "",
+		"description": "Increase damage dealt by 25% in the next battle/phase/turn if your damage is above 0. If you already have this active, it will not reapply.",
 		"duration": 1
 	}
 }
