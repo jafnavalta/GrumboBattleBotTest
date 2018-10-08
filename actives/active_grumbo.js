@@ -116,6 +116,18 @@ exports.prebattle.show_me_your_mixtape = function(message, character, battleStat
 		}
 }
 
+//BOSS Demonblade Grumbo
+exports.prebattle.unleash = function(message, character, battleState, eventId, actives, grumbo, characters){
+
+		if(battleState.unleash == null && grumbo.hp < 420){
+
+			battleState.unleash = true;
+			grumbo.skl += 40;
+			grumbo.name = "Unleashed Demonblade";
+			battleState.preMessages.push("The Demonblade is Unleashed!");
+		}
+}
+
 /////////////////////////////////
 // GRUMBO PRERESULTS FUNCTIONS //
 /////////////////////////////////
@@ -148,6 +160,14 @@ exports.preresults.teaching = function(message, character, battleState, eventId,
 
 	var dmg = Math.floor((grumbo.pow - character.def)/2.2) + 3;
 	if(dmg < 3) dmg = 3;
+	battleState.hpLoss = dmg;
+}
+
+//BOSS Demonblade Grumbo regular attack
+exports.preresults.slice = function(message, character, battleState, eventId, actives, grumbo, characters){
+
+	var dmg = Math.floor((grumbo.pow - character.def)/2.75) + 5 + Math.floor((Math.random() * 4) - 2);
+	if(dmg < 10) dmg = 10;
 	battleState.hpLoss = dmg;
 }
 
@@ -543,7 +563,7 @@ exports.postresults.final_track = function(message, character, battleState, even
 //BOSS Master Grumbo
 exports.postresults.strategize = function(message, character, battleState, eventId, actives, grumbo, characters){
 
-	if(battleState.chanceMod < 6){
+	if(battleState.chanceMod < 7){
 
 		battleState.dmgMod -= 100;
 		battleState.endMessages.push("You were out strategized!");
@@ -596,4 +616,42 @@ exports.postresults.evaluation = function(message, character, battleState, event
 exports.postresults.teaching = function(message, character, battleState, eventId, actives, grumbo, characters){
 
 	battleState.hpLoss += 22 - Math.floor(Math.random() * character.spd);
+}
+
+//BOSS Master Grumbo
+exports.postresults.mastercraft = function(message, character, battleState, eventId, actives, grumbo, characters){
+
+	if(character.classLevel < 6 && battleState.hpLoss > 0){
+
+		battleState.hpLoss += battleState.hpLoss;
+		battleState.endMessages.push("You need to hone your craft more!");
+	}
+}
+
+//BOSS Demonblade Grumbo
+exports.postresults.one_with_the_blade = function(message, character, battleState, eventId, actives, grumbo, characters){
+
+	if(character.skl < grumbo.skl){
+
+		var diff = grumbo.skl - character.skl;
+		var random = Math.random() * 100;
+		if(random < diff/1.5 && battleState.dmgMod > 0){
+
+			battleState.dmgMod = 0;
+			battleState.endMessages.push("One with the Demonblade!");
+		}
+	}
+}
+
+//BOSS Demonblade Grumbo
+exports.postresults.siphon = function(message, character, battleState, eventId, actives, grumbo, characters){
+
+	var diff = 100 - character.res;
+	var random = Math.random() * 100;
+	if(random < diff/1.5 && battleState.hpLoss > 0){
+
+		battleState.dmgMod -= battleState.hpLoss;
+		grumbo.pow += Math.ceil(battleState.hpLoss/8);
+		battleState.endMessages.push("The Demonblade siphons power!");
+	}
 }

@@ -155,7 +155,9 @@
 				"POW +5 / SKL +2 / SPD +1 when classed as an Archer.",
 				"Become more accurate with the Sureshot active.",
 				"Help your allies land successful hits with Mark. DEF +2 / SKL +2 / SPD +1 when classed as an Archer.",
-				"Defeat enemies with the Headshot active."
+				"Defeat enemies with the Headshot active.",
+				"POW +5 / SKL +1 / RES +1 / LUK +1 when classed as an Archer.",
+				"Pierce enemies for extra damage. SKL +2 / SPD +1"
 		]
 	}
 }

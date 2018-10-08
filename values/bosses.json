@@ -102,7 +102,7 @@
     "gameId": 903,
     "id": "master_grumbo",
     "name": "Master Grumbo",
-    "level": 60,
+    "level": 100,
     "hp": 1337,
     "max_hp": 1337,
     "base_chance": 46,
@@ -113,7 +113,7 @@
 		"wisX": 1.00,
     "sklX": 1.00,
     "description": "The Master of many Grumbos. Only those who are acknowledged by the Master Grumbo have a chance at beating him!",
-    "actives": ["teaching", "strategize", "evaluation", "gate_of_grumbo"],
+    "actives": ["teaching", "strategize", "evaluation", "gate_of_grumbo", "mastercraft"],
     "prebattle": [],
 		"preresults": [
       "teaching"
@@ -122,7 +122,8 @@
       "teaching",
       "strategize",
       "evaluation",
-      "gate_of_grumbo"
+      "gate_of_grumbo",
+      "mastercraft"
     ],
     "victory": "$name taught Master Grumbo the true way of the Grumbo!",
 		"loss": "It's 100 years too early for $name to take on Master Grumbo.",
@@ -130,5 +131,38 @@
     "lootchance": [65, 35, 10],
     "loot": ["", "medicine", "battle_potion", "class_ticket", "adventurers_spellbook", "grumbot_miner", "grumbo_whistle", "master_grumbos_blessing"],
     "weights": [15, 45, 50, 16, 16, 6, 4, 1]
+  },
+  "demonblade_grumbo": {
+    "gameId": 904,
+    "id": "demonblade_grumbo",
+    "name": "Demonblade Grumbo",
+    "level": 135,
+    "hp": 1950,
+    "max_hp": 3000,
+    "base_chance": 66,
+    "powBase": 200,
+    "wisBase": 180,
+    "sklBase": 180,
+    "powX": 1.00,
+		"wisX": 1.00,
+    "sklX": 1.00,
+    "description": "An expert in the blade and he also happens to be a demon. His blade is also a demon. Can you match the skill of the Demonblade Grumbo?",
+    "actives": ["slice", "one_with_the_blade", "siphon", "unleash"],
+    "prebattle": [
+      "unleash"
+    ],
+		"preresults": [
+      "slice"
+    ],
+		"postresults": [
+      "one_with_the_blade",
+      "siphon"
+    ],
+    "victory": "$name is more demon and more blade than the Demonblade Grumbo!",
+		"loss": "$name was sliced up by the Demonblade!",
+    "firstTime": "medicine",
+    "lootchance": [65, 35, 10],
+    "loot": ["", "medicine"],
+    "weights": [15, 45]
   }
 }

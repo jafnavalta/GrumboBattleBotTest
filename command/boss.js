@@ -27,6 +27,8 @@ exports.BOSS_WAIT_TIME = BOSS_WAIT_TIME;
 exports.commandBoss = function(message, args, character){
 
   //For testing
+  //character.level = 135;
+  //charfunc.calculateStats(character);
   character.hp = character.maxHP;
   character.battlesLeft = 5;
   //TODO this
@@ -646,7 +648,7 @@ exports.calculateHPMod = function(character, battleState){
 */
 exports.calculatePOWMod = function(character, grumbo, battleState){
 
-	battleState.powMod += Math.ceil((character.pow - grumbo.pow)/6);
+	battleState.powMod += Math.ceil((character.pow - grumbo.pow)/5);
 	if(battleState.powMod > 15)	battleState.powMod = 15;
 }
 
@@ -655,7 +657,7 @@ exports.calculatePOWMod = function(character, grumbo, battleState){
 */
 exports.calculateWISMod = function(character, grumbo, battleState){
 
-	battleState.wisMod += Math.ceil((character.wis - grumbo.wis)/9);
+	battleState.wisMod += Math.ceil((character.wis - grumbo.wis)/7.5);
 	if(battleState.wisMod > 15) battleState.wisMod = 15;
 }
 
@@ -664,7 +666,7 @@ exports.calculateWISMod = function(character, grumbo, battleState){
 */
 exports.calculateSKLMod = function(character, grumbo, battleState){
 
-	battleState.sklMod += Math.ceil(character.skl - grumbo.skl);
+	battleState.sklMod += Math.ceil((character.skl - grumbo.skl)/1.25);
 	if(battleState.sklMod > 35) battleState.sklMod = 35;
 }
 

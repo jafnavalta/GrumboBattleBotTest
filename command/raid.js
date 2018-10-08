@@ -1092,6 +1092,6 @@ exports.calculateWISMod = function(character, grumbo, battleState){
 */
 exports.calculateSKLMod = function(character, grumbo, battleState){
 
-	battleState.sklMod += Math.ceil(character.skl - grumbo.skl);
+	battleState.sklMod += Math.ceil((character.skl - grumbo.skl)/1.25);
 	if(battleState.sklMod > 75) battleState.sklMod = 75;
 }

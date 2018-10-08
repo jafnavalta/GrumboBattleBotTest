@@ -581,7 +581,7 @@
     "turn_preresults": "",
     "turn_postresults": "",
     "turn_final": "boss",
-		"description": "DEF/8 % chance to outright win against Grumbos who are lower level than you. If you were to receive damage equal to or more than 20% your max HP, DEF/8 % chance to negate the damage completely.",
+		"description": "DEF/8 % chance to outright win against Grumbos who are lower level than you. If you were to receive damage equal to or more than 16% your max HP, DEF/8 % chance to negate the damage completely.",
 		"duration": null
 	},
 	"grab_bag": {
@@ -892,7 +892,7 @@
 		"description": "When taking lethal damage, 10% chance to revive with HP equal to your RES. Can activate multiple times.",
 		"duration": null
 	},
-	"strategize": {
+	"egize": {
 		"gameId": 70042,
 		"id": "strategize",
 		"name": "Strategize",
@@ -904,7 +904,7 @@
     "turn_preresults": "",
     "turn_postresults": "",
     "turn_final": "",
-		"description": "If the total bonus increases to your battle chance is less than 6%, reduce damage dealt by 100. Can heal the boss.",
+		"description": "If the total bonus increases to your battle chance is less than 7%, reduce damage dealt by 100. Can heal the boss.",
 		"duration": null
 	},
 	"gate_of_grumbo": {
@@ -1350,7 +1350,7 @@
     "turn_preresults": "",
     "turn_postresults": "",
     "turn_final": "boss",
-		"description": "Reduce damage received to 0 and return the damage to the enemy.",
+		"description": "Reduce damage received to 0 and return the damage to the enemy. Will activate and consume even if damage is less than or equal to 0.",
 		"duration": 1
 	},
 	"multi_cast": {
@@ -1383,6 +1383,96 @@
     "turn_postresults": "",
     "turn_final": "character",
 		"description": "At the beginning of your turn, add 2 rampage stacks. Increase chance of victory by amount of rampage stacks divided by 2. If you dealt over 0 damage at the end of your turn, increase your damage dealt by 1% for every rampage stack you have. Max rampage stacks is 30.",
+		"duration": null
+	},
+	"pierce": {
+		"gameId": 70073,
+		"id": "pierce",
+		"name": "Pierce",
+		"effect": "good",
+		"battleStates": [
+			"final"
+		],
+    "turn_prebattle": "",
+    "turn_preresults": "",
+    "turn_postresults": "",
+    "turn_final": "character",
+		"description": "SKL/10 % chance to deal an extra POW/5 damage. This damage cannot be mitigated.",
+		"duration": null
+	},
+	"mastercraft": {
+		"gameId": 70074,
+		"id": "mastercraft",
+		"name": "Mastercraft",
+		"effect": "good",
+		"battleStates": [
+			"postresults"
+		],
+    "turn_prebattle": "",
+    "turn_preresults": "",
+    "turn_postresults": "",
+    "turn_final": "",
+		"description": "If your current class level is below 6, Master Grumbo deals x2 damage.",
+		"duration": null
+	},
+	"one_with_the_blade": {
+		"gameId": 70075,
+		"id": "one_with_the_blade",
+		"name": "One with the Blade",
+		"effect": "neutral",
+		"battleStates": [
+			"postresults"
+		],
+    "turn_prebattle": "",
+    "turn_preresults": "",
+    "turn_postresults": "",
+    "turn_final": "",
+		"description": "If your SKL is less than Demonblade Grumbo's SKL, that difference/1.5 % chance to negate your damage.",
+		"duration": null
+	},
+	"slice": {
+		"gameId": 70076,
+		"id": "slice",
+		"name": "Slice",
+		"effect": "neutral",
+		"battleStates": [
+			"preresults"
+		],
+    "turn_prebattle": "",
+    "turn_preresults": "",
+    "turn_postresults": "",
+    "turn_final": "",
+		"description": "Demonblade Grumbo's regular attack every phase. Deal about 5 damage plus extra damage equal to the difference between Demonblade Grumbo's POW and your DEF divided by 2.75. Does a minimum of 10 damage.",
+		"duration": null
+	},
+	"siphon": {
+		"gameId": 70077,
+		"id": "siphon",
+		"name": "Siphon",
+		"effect": "neutral",
+		"battleStates": [
+			"postresults"
+		],
+    "turn_prebattle": "",
+    "turn_preresults": "",
+    "turn_postresults": "",
+    "turn_final": "",
+		"description": "(100 - RES)/1.5 % chance for Demonblade Grumbo to reduce your damage dealt by the amount of damage you received. Demonblade Grumbo's POW increases by that same amount divided by 8.",
+		"duration": null
+	},
+	"unleash": {
+		"gameId": 70078,
+		"id": "unleash",
+		"name": "Unleash",
+		"effect": "neutral",
+		"battleStates": [
+			"prebattle"
+		],
+    "turn_prebattle": "",
+    "turn_preresults": "",
+    "turn_postresults": "",
+    "turn_final": "",
+		"description": "When Demonblade Grumbo reaches below 420 HP, the Demonblade unleashes and increases his SKL by 40.",
 		"duration": null
 	}
 }

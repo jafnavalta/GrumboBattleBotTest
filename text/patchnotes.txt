@@ -1,12 +1,16 @@
 GRUMBO PATCH NOTES
 Most recent from the top
 
-- Oct XX: Equip class reassignment + Rework of Equip stats
+|||| GAME IS LIKELY INCREDIBLY UNBALANCED ||||
+
+- Oct XX: Equip class reassignment + Rework of most equip stats
 - Oct XX: Updated all Classes to Lv 7.
-- Oct XX: New Archer class up to Lv 5.
+- Oct XX: New Archer class.
 - Oct XX: New class actives for Raids within first 5 class levels except for Adventurer.
 - Oct XX: Added Initial Turn Speed and Aggro stats for raids. These are hidden values.
 - Oct XX: Added Raid command and 1 Raid.
+- Oct XX: Added another active to Master Grumbo.
+- Oct XX: Minor change to current Boss stats.
 - Oct XX: Damage reduction on boss phase loss now scales off SKL.
 - Oct XX: Added SKL stat.
 - Oct XX: Added Max HP stat.

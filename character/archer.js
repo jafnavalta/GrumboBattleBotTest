@@ -14,13 +14,14 @@ let activesList = JSON.parse(fs.readFileSync("./values/actives.json", "utf8"));
 //ALL classes should have these.
 exports.className = "Archer";
 
-exports.CLASS_LEVEL_MAX = 5;
+exports.CLASS_LEVEL_MAX = 7;
 
 //Actives
 const LEVEL_1_ACTIVE = 'roll';
 const LEVEL_3_ACTIVE = 'sureshot';
 const LEVEL_4_ACTIVE = 'mark';
 const LEVEL_5_ACTIVE = 'headshot';
+const LEVEL_7_ACTIVE = 'pierce';
 
 const BASE_HP_EQ = -1;
 const BASE_POW_EQ = 2;
@@ -159,10 +160,18 @@ exports.setClassLevelFunc.archer5 = function(character){
 
 exports.setClassLevelFunc.archer6 = function(character){
 
+  character.powEq += 5;
+  character.sklEq += 1;
+  character.lukEq += 1;
+  character.resEq += 1;
 }
 
 exports.setClassLevelFunc.archer7 = function(character){
 
+  var active = classactivefunc.getActive(character, LEVEL_7_ACTIVE);
+  dbfunc.pushToState(character, active.id, active, active.battleStates, 1);
+  character.sklEq += 2;
+  character.spdEq += 1;
 }
 
 exports.setClassLevelFunc.archer8 = function(character){
@@ -216,10 +225,18 @@ exports.removeClassLevelFunc.archer5 = function(character){
 
 exports.removeClassLevelFunc.archer6 = function(character){
 
+  character.powEq -= 5;
+  character.sklEq -= 1;
+  character.lukEq -= 1;
+  character.resEq -= 1;
 }
 
 exports.removeClassLevelFunc.archer7 = function(character){
 
+  var active = classactivefunc.getActive(character, LEVEL_7_ACTIVE);
+  dbfunc.spliceFromState(character, active.id, active, active.battleStates, active);
+  character.sklEq -= 2;
+  character.spdEq -= 1;
 }
 
 exports.removeClassLevelFunc.archer8 = function(character){

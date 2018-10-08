@@ -526,7 +526,7 @@ exports.postresults.grumbo_whistle = function(message, character, battleState, e
 		else{
 
 			battleState.dmgMod += 20;
-			if(battleState.state == statefunc.BOSS){
+			if(battleState.state != statefunc.BATTLE){
 
 				battleState.endMessages.push("Grumbo came by and dealt an additional 20 damage!");
 			}
@@ -855,7 +855,7 @@ exports.final.vision = function(message, character, battleState, eventId, active
 exports.final.stand_your_ground = function(message, character, battleState, eventId, actives, grumbo, characters){
 
 	var random = Math.random() * 100;
-	if(random < character.def/8 && battleState.hpLoss >= character.maxHP * 0.20 && character.hp > 2){
+	if(random < character.def/8 && battleState.hpLoss >= character.maxHP * 0.16 && character.hp > 2){
 
 		battleState.hpLoss = 0;
 		battleState.endMessages.push("You stood your ground!");
@@ -1023,4 +1023,17 @@ exports.final.rampage = function(message, character, battleState, eventId, activ
 		battleState.dmgMod += Math.ceil(battleState.dmgMod * (battleState.rampage / 100));
 	}
 	battleState.endMessages.push("You're rampaging with " + battleState.rampage + " stacks!");
+}
+
+exports.final.pierce = function(message, character, battleState, eventId, actives, grumbo, characters){
+
+	if(battleState.state != statefunc.BATTLE){
+
+		var random = Math.random() * 100;
+		if(random < character.skl/10){
+
+			battleState.dmgMod += Math.ceil(character.pow/5);
+			battleState.endMessages.push("You pierced the enemy!");
+		}
+	}
 }
