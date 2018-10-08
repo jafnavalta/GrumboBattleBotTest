@@ -3,10 +3,11 @@ Most recent from the top
 
 |||| GAME IS LIKELY INCREDIBLY UNBALANCED ||||
 
+- Oct XX: Content: 1 Boss
 - Oct XX: Equip class reassignment + Rework of most equip stats
 - Oct XX: Updated all Classes to Lv 7.
 - Oct XX: New Archer class.
-- Oct XX: New class actives for Raids within first 5 class levels except for Adventurer.
+- Oct XX: New 1 new class active for Raids within the first 5 levels of a class.
 - Oct XX: Added Initial Turn Speed and Aggro stats for raids. These are hidden values.
 - Oct XX: Added Raid command and 1 Raid.
 - Oct XX: Added another active to Master Grumbo.
