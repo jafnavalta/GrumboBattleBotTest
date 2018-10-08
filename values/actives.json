@@ -1247,5 +1247,35 @@
     "turn_final": "boss",
 		"description": "For 2 turns, increase your POW and WIS by 7% of the caster's POW. If you already have this active, it will not reapply.",
 		"duration": 2
+	},
+	"mark": {
+		"gameId": 70064,
+		"id": "mark",
+		"name": "Mark",
+		"effect": "good",
+		"battleStates": [
+			"postresults"
+		],
+    "turn_prebattle": "",
+    "turn_preresults": "",
+    "turn_postresults": "character",
+    "turn_final": "",
+		"description": "Raid only. SKL/11 % chance to apply the Chance Up active on all your allies.",
+		"duration": null
+	},
+	"chance_up": {
+		"gameId": 70065,
+		"id": "chance_up",
+		"name": "Chance Up",
+		"effect": "good",
+		"battleStates": [
+			"prebattle"
+		],
+    "turn_prebattle": "character",
+    "turn_preresults": "",
+    "turn_postresults": "",
+    "turn_final": "",
+		"description": "Increase your chance of victory by 10% in the next battle/phase/turn. If you already have this active, it will not reapply.",
+		"duration": 1
 	}
 }

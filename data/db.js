@@ -942,8 +942,8 @@ function runMigrations(version, callback){
 		});
 	}
 
-	//Migration 15 to 18: Class Raid actives
-	if(version.version <= 18){
+	//Migration 15 to 19: Class Raid actives
+	if(version.version <= 19){
 
 		db.collection("characters").find().toArray(function(error, characters){
 
@@ -971,6 +971,11 @@ function runMigrations(version, callback){
 					var active = classactivefunc.getActive(character, 'warcry');
 				  exports.pushToState(character, active.id, active, active.battleStates, 1);
 				}
+				if(character.classId == 'archer' && character.classLevel >= 4){
+
+					var active = classactivefunc.getActive(character, 'mark');
+				  exports.pushToState(character, active.id, active, active.battleStates, 1);
+				}
 
 				if(i == characters.length - 1){
 
@@ -981,7 +986,7 @@ function runMigrations(version, callback){
 						{upsert: true},
 						function(){
 
-							version.version = 19;
+							version.version = 20;
 							runMigrations(version, callback);
 					});
 				}

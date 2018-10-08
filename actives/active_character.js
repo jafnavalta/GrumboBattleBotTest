@@ -243,6 +243,13 @@ exports.prebattle.sureshot = function(message, character, battleState, eventId, 
 	}
 }
 
+exports.prebattle.chance_up = function(message, character, battleState, eventId, actives, grumbo, characters){
+
+	battleState.chanceMod += 10;
+	battleState.preMessages.push("The enemy is marked!");
+	dbfunc.reduceDuration(character, [character.prebattle], eventId, actives);
+}
+
 ////////////////////////////////////
 // CHARACTER PRERESULTS FUNCTIONS //
 ////////////////////////////////////
@@ -695,7 +702,32 @@ exports.postresults.warcry = function(message, character, battleState, eventId, 
 				characters[i] = ally;
 			}
 		}
-		battleState.endMessages.push("You shouted a Warcry!");
+		battleState.endMessages.push("You shouted a warcry!");
+	}
+}
+
+exports.postresults.mark = function(message, character, battleState, eventId, actives, grumbo, characters){
+
+	if(battleState.state == statefunc.RAID){
+
+		var random = Math.random() * 100;
+		if(random < character.skl/11){
+
+			for(var i = 0; i < characters.length; i++){
+
+				var ally = characters[i];
+				if(ally.hp > 0 && ally._id != character._id){
+
+					if(!ally.final.includes('chance_up')){
+
+						active = activesList['chance_up'];
+						dbfunc.pushToState(ally, 'chance_up', active, active.battleStates, 1);
+					}
+					characters[i] = ally;
+				}
+			}
+			battleState.endMessages.push("You marked the enemy!");
+		}
 	}
 }
 

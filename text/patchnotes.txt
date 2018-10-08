@@ -12,6 +12,7 @@ Most recent from the top
 - Oct XX: Added Max HP stat.
 - Oct XX: Capped SPD at 50.
 - Oct XX: Duplicated loot is now converted into gold.
+- Oct XX: Increase class exp required to level to 30 from 25.
 
 - Oct XX: Scaled Miracle and Regen.
 - Oct XX: Buffed/Reworked Knight skills and a little bit of stats.

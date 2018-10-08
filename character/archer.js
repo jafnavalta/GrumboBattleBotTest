@@ -19,6 +19,7 @@ exports.CLASS_LEVEL_MAX = 5;
 //Actives
 const LEVEL_1_ACTIVE = 'roll';
 const LEVEL_3_ACTIVE = 'sureshot';
+const LEVEL_4_ACTIVE = 'mark';
 const LEVEL_5_ACTIVE = 'headshot';
 
 const BASE_HP_EQ = -1;
@@ -47,7 +48,7 @@ exports.hpX = 0.97;
 exports.powX = 0.92;
 exports.wisX = 0.88;
 exports.sklX = 1.30;
-exports.defX = 0.84;
+exports.defX = 0.81;
 exports.resX = 1;
 exports.spdX = 1;
 exports.lukX = 1;
@@ -143,6 +144,8 @@ exports.setClassLevelFunc.archer3 = function(character){
 
 exports.setClassLevelFunc.archer4 = function(character){
 
+  var active = classactivefunc.getActive(character, LEVEL_4_ACTIVE);
+  dbfunc.pushToState(character, active.id, active, active.battleStates, 1);
   character.defEq += 2;
   character.sklEq += 2;
   character.spdEq += 1;
@@ -198,6 +201,8 @@ exports.removeClassLevelFunc.archer3 = function(character){
 
 exports.removeClassLevelFunc.archer4 = function(character){
 
+  var active = classactivefunc.getActive(character, LEVEL_4_ACTIVE);
+  dbfunc.spliceFromState(character, active.id, active, active.battleStates, active);
   character.defEq -= 2;
   character.sklEq -= 2;
   character.spdEq -= 1;
