@@ -166,6 +166,7 @@ exports.setClassLevelFunc.cleric7 = function(character){
 
   var active = classactivefunc.getActive(character, LEVEL_7_ACTIVE);
   dbfunc.pushToState(character, active.id, active, active.battleStates, 1);
+  character.defEq += 2;
 }
 
 exports.setClassLevelFunc.cleric8 = function(character){
@@ -225,6 +226,7 @@ exports.removeClassLevelFunc.cleric7 = function(character){
 
   var active = classactivefunc.getActive(character, LEVEL_7_ACTIVE);
   dbfunc.spliceFromState(character, active.id, active, active.battleStates, active);
+  character.defEq -= 2;
 }
 
 exports.removeClassLevelFunc.cleric8 = function(character){

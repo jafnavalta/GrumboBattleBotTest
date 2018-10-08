@@ -1352,5 +1352,37 @@
     "turn_final": "boss",
 		"description": "Reduce damage received to 0 and return the damage to the enemy.",
 		"duration": 1
+	},
+	"multi_cast": {
+		"gameId": 70071,
+		"id": "multi_cast",
+		"name": "Multi Cast",
+		"effect": "good",
+		"battleStates": [
+			"prebattle",
+			"final"
+		],
+    "turn_prebattle": "character",
+    "turn_preresults": "",
+    "turn_postresults": "",
+    "turn_final": "character",
+		"description": "Increase chance of victory by amount of actives divided by 3 (rounded down). Every time a natural Magician class active (Outsmart, Explosion, etc. ) activates, add a multi cast stack. If you dealt over 0 damage at the end of your turn, consume all multi cast stacks and increase your damage dealt by 10% for every multi cast stack that is consumed.",
+		"duration": null
+	},
+	"rampage": {
+		"gameId": 70072,
+		"id": "rampage",
+		"name": "Rampage",
+		"effect": "good",
+		"battleStates": [
+			"prebattle",
+			"final"
+		],
+    "turn_prebattle": "character",
+    "turn_preresults": "",
+    "turn_postresults": "",
+    "turn_final": "character",
+		"description": "At the beginning of your turn, add 2 rampage stacks. Increase chance of victory by amount of rampage stacks divided by 2. If you dealt over 0 damage at the end of your turn, increase your damage dealt by 1% for every rampage stack you have. Max rampage stacks is 30.",
+		"duration": null
 	}
 }

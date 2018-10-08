@@ -14,13 +14,14 @@ let activesList = JSON.parse(fs.readFileSync("./values/actives.json", "utf8"));
 //ALL classes should have these.
 exports.className = "Magician";
 
-exports.CLASS_LEVEL_MAX = 5;
+exports.CLASS_LEVEL_MAX = 7;
 
 //Actives
 const LEVEL_1_ACTIVE = 'outsmart';
 const LEVEL_3_ACTIVE = 'rune_cast';
 const LEVEL_4_ACTIVE = 'explosion';
 const LEVEL_5_ACTIVE = 'barrier';
+const LEVEL_7_ACTIVE = 'multi_cast';
 
 const BASE_HP_EQ = 0;
 const BASE_POW_EQ = -5;
@@ -156,10 +157,16 @@ exports.setClassLevelFunc.magician5 = function(character){
 
 exports.setClassLevelFunc.magician6 = function(character){
 
+  character.wisEq += 8;
+  character.sklEq += 2;
 }
 
 exports.setClassLevelFunc.magician7 = function(character){
 
+  var active = classactivefunc.getActive(character, LEVEL_7_ACTIVE);
+  dbfunc.pushToState(character, active.id, active, active.battleStates, 1);
+  character.wisEq += 5;
+  character.defEq += 2;
 }
 
 exports.setClassLevelFunc.magician8 = function(character){
@@ -210,10 +217,16 @@ exports.removeClassLevelFunc.magician5 = function(character){
 
 exports.removeClassLevelFunc.magician6 = function(character){
 
+  character.wisEq -= 8;
+  character.sklEq -= 2;
 }
 
 exports.removeClassLevelFunc.magician7 = function(character){
 
+  var active = classactivefunc.getActive(character, LEVEL_7_ACTIVE);
+  dbfunc.spliceFromState(character, active.id, active, active.battleStates, active);
+  character.wisEq -= 5;
+  character.defEq -= 2;
 }
 
 exports.removeClassLevelFunc.magician8 = function(character){

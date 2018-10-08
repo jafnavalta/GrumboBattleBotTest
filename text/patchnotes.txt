@@ -2,7 +2,7 @@ GRUMBO PATCH NOTES
 Most recent from the top
 
 - Oct XX: Equip class reassignment + Rework of Equip stats
-- Oct XX: Rogue/Knight/Adventurer Lv 7.
+- Oct XX: Updated all Classes to Lv 7.
 - Oct XX: New Archer class up to Lv 5.
 - Oct XX: New class actives for Raids within first 5 class levels except for Adventurer.
 - Oct XX: Added Initial Turn Speed and Aggro stats for raids. These are hidden values.

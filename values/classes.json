@@ -40,7 +40,9 @@
 				"POW +10 when classed as a Warrior.",
 				"Increase your allies' battle strength with Warcry. POW +4 / DEF +2 / SPD +2 when classed as a Warrior.",
 				"The Warrior can reduce damage taken with Lifesteal.",
-				"Use Revenge as your HP lowers."
+				"Use Revenge as your HP lowers.",
+				"Rampage strengthens a Warrior in drawn out fights. POW +2 / SPD +2 / SKL +1 when classed as a Warrior.",
+				"POW +5 / SKL +5 when classed as a Warrior."
 		]
 	},
   "magician": {
@@ -61,7 +63,9 @@
 				"WIS +15 when classed as a Magician.",
 				"Increase an ally's damage dealt with Rune Cast. WIS +6 / RES +2 when classed as a Magician",
 				"Increase your damage dealt with Explosion.",
-				"Decrease your damage received with Barrier."
+				"Decrease your damage received with Barrier.",
+				"WIS +8 / SKL +2 when classed as a Magician.",
+				"The Magician's Multi Cast active amplifies their battle strength! WIS +5 / DEF +2 when classed as a Magician."
 		]
 	},
   "rogue": {
@@ -107,7 +111,7 @@
 				"Increase your battle strength with Holy.",
 				"Heal allies in need. RES +1 / WIS +8 when classed as a Cleric.",
 				"RES +1 / WIS +6 / SKL +2 when classed as a Cleric.",
-				"Protect your allies and counter attack with Reflect."
+				"Protect your allies and counter attack with Reflect. DEF +2 when classed as a Cleric."
 		]
 	},
   "knight": {
