@@ -109,7 +109,7 @@ exports.prebattle.crimson = function(message, character, battleState, eventId, a
 
 	battleState.maxMod += 3;
 	var random = Math.random() * 100;
-	var increase = (character.def/10) + (character.res*2);
+	var increase = (character.def/10) + (character.res);
 	if(random < increase){
 
 		battleState.chanceMod += 3;
@@ -228,7 +228,7 @@ exports.prebattle.double_attack = function(message, character, battleState, even
 	if(random < character.spd/2.5){
 
 		battleState.double_attack = true;
-		battleState.chanceMod += character.spd/5;
+		battleState.chanceMod += Math.ceil(character.spd/5);
 		battleState.preMessages.push("You double attacked!");
 	}
 }
@@ -677,13 +677,13 @@ exports.postresults.haste = function(message, character, battleState, eventId, a
 			var randomTurn = Math.floor((Math.random() * characters.length) - 0.0001);
 			var randomChar = characters[randomTurn];
 			var dead = [];
-			while(randomChar.hp <= 0 && dead < characters.length){
+			while(randomChar.hp <= 0 && dead.length < characters.length){
 
 				if(!dead.includes(randomChar._id)) dead.push(randomChar._id);
 				randomTurn = Math.floor((Math.random() * characters.length) - 0.0001);
 				randomChar = characters[randomTurn];
 			}
-			if(dead < characters.length){
+			if(dead.length < characters.length){
 
 				battleState.turnValueMap[randomChar._id] += raidfunc.RAID_TURN_VALUE;
 				battleState.endMessages.push("You hasted " + message.guild.members.get(randomChar._id).displayName + "!");
@@ -722,7 +722,7 @@ exports.postresults.mark = function(message, character, battleState, eventId, ac
 	if(battleState.state == statefunc.RAID){
 
 		var random = Math.random() * 100;
-		if(random < character.skl/9){
+		if(random < character.skl/8){
 
 			for(var i = 0; i < characters.length; i++){
 
@@ -747,19 +747,19 @@ exports.postresults.rune_cast = function(message, character, battleState, eventI
 	if(battleState.state == statefunc.RAID && characters.length > 1){
 
 		var random = Math.random() * 100;
-		if(random < character.wis/11){
+		if(random < character.wis/10){
 
 			//Choose a non dead ally
 			var randomChoice = Math.floor((Math.random() * characters.length) - 0.0001);
 			var ally = characters[randomChoice];
 			var dead = [];
-			while((randomChar.hp <= 0 && dead < characters.length) || ally._id == character._id){
+			while((ally.hp <= 0 && dead.length < characters.length) || ally._id == character._id){
 
 				if(!dead.includes(ally._id)) dead.push(ally._id);
 				randomChoice = Math.floor((Math.random() * characters.length) - 0.0001);
 				ally = characters[randomChoice];
 			}
-			if(dead < characters.length){
+			if(dead.length < characters.length){
 
 				if(!ally.postresults.includes('blast_rune')){
 

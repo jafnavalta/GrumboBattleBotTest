@@ -46,10 +46,10 @@ exports.BASE_AGGRO_EQ = BASE_AGGRO_EQ;
 
 exports.hpX = 0.87;
 exports.powX = 0.78;
-exports.wisX = 1.19;
+exports.wisX = 1.17;
 exports.sklX = 0.96;
 exports.defX = 0.73;
-exports.resX = 1.38;
+exports.resX = 1.36;
 exports.spdX = 1;
 exports.lukX = 1;
 

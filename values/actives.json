@@ -483,7 +483,7 @@
     "turn_preresults": "",
     "turn_postresults": "",
     "turn_final": "",
-		"description": "Increases max chance of victory by 3%. (DEF/10 + RES*2)% chance of increasing chance of victory by 3.",
+		"description": "Increases max chance of victory by 3%. (DEF/10 + RES)% chance of increasing chance of victory by 3.",
 		"duration": null
 	},
 	"regen": {
@@ -1260,7 +1260,7 @@
     "turn_preresults": "",
     "turn_postresults": "character",
     "turn_final": "",
-		"description": "Raid only. SKL/9 % chance to apply the Chance Up active on all your allies.",
+		"description": "Raid only. SKL/8 % chance to apply the Chance Up active on all your allies.",
 		"duration": null
 	},
 	"chance_up": {
@@ -1290,7 +1290,7 @@
     "turn_preresults": "",
     "turn_postresults": "character",
     "turn_final": "",
-		"description": "Raid only. WIS/11 % chance to apply the Blast Rune active on a random ally. Cannot be applied to yourself.",
+		"description": "Raid only. WIS/10 % chance to apply the Blast Rune active on a random ally. Cannot be applied to yourself.",
 		"duration": null
 	},
 	"blast_rune": {

@@ -21,7 +21,7 @@ Most recent from the top
 - Oct XX: Nerfed Observation activation rate.
 - Oct XX: Nerfed Revenge activation rate.
 - Oct XX: Nerfed Barrier damage reduction.
-- Oct XX: Nerfed Crimson again down to 3 from 4.
+- Oct XX: Nerfed Crimson again down to 3 from 4 and lowered the activation rate significantly.
 - Oct XX: Nerfed Equalizer activation thresholds.
 - Oct XX: Nerfed Outsmart activation rate.
 - Oct XX: Nerfed Vision activation rate to 12 from 20,
