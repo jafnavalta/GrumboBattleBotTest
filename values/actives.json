@@ -1202,5 +1202,20 @@
     "turn_final": "boss",
 		"description": "For 2 turns, increase your DEF by 7% of the caster's DEF. If you already have this active, it will not reapply.",
 		"duration": 2
+	},
+	"haste": {
+		"gameId": 70061,
+		"id": "haste",
+		"name": "Haste",
+		"effect": "good",
+		"battleStates": [
+			"postresults"
+		],
+    "turn_prebattle": "",
+    "turn_preresults": "",
+    "turn_postresults": "character",
+    "turn_final": "",
+		"description": "Raid only. SPD/3 % chance to increase a random ally's (or your) turn speed, making them likely to act soon.",
+		"duration": null
 	}
 }

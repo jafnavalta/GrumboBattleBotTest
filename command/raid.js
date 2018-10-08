@@ -23,7 +23,7 @@ let activeraidfunc = require('../actives/active_raid.js');
 const RAID_WAIT_TIME = 1; //6 hours
 const RAID_MIN_MEMBERS = 1;
 const RAID_MAX_MEMBERS = 4;
-const RAID_BASE_PER_TURN = 60;
+const RAID_BASE_PER_TURN = 70;
 const RAID_TURN_VALUE = 500;
 
 exports.RAID_WAIT_TIME = RAID_WAIT_TIME;
@@ -441,35 +441,35 @@ function doRaid(message, args, characters, activesMap, boss){
   battleState.phase = 0; //Increments only when a boss acts
   battleState.turn = 0; //Increments when either a character or boss acts
 
-  var turnValueMap = {};
-  var turnIds = [];
-  var turnIndex = 0;
+  battleState.turnValueMap = {};
+  battleState.turnIds = [];
+  battleState.turnIndex = 0;
   var beginRaidString = "";
   for(var x = 0; x < characters.length; x++){
 
     var character = characters[x];
-    turnValueMap[character._id] = character.turn + boss.char_turn;
+    battleState.turnValueMap[character._id] = character.turn + boss.char_turn;
     battleState[character._id] = 0;
-    turnIds.push(character._id);
+    battleState.turnIds.push(character._id);
     beginRaidString += message.guild.members.get(character._id).displayName;
     if(x != characters.length - 1) beginRaidString += ",";
     beginRaidString += " ";
   }
   //Init boss turn values
-  turnValueMap[statefunc.RAID] = boss.turn;
-  turnIds.push(statefunc.RAID);
+  battleState.turnValueMap[statefunc.RAID] = boss.turn;
+  battleState.turnIds.push(statefunc.RAID);
   var hashave = "has ";
-  if(turnIds.length > 2) hashave = "have ";
+  if(battleState.turnIds.length > 2) hashave = "have ";
   beginRaidString += hashave + "begun a raid against " + boss.name + "!";
 
   message.channel.send(beginRaidString);
-  recursiveRaidTurn(battleState, message, args, characters, activesMap, boss, turnValueMap, turnIds, turnIndex);
+  recursiveRaidTurn(battleState, message, args, characters, activesMap, boss);
 }
 
 /**
 * Determines what to do in the next turn.
 */
-function recursiveRaidTurn(battleState, message, args, characters, activesMap, boss, turnValueMap, turnIds, turnIndex){
+function recursiveRaidTurn(battleState, message, args, characters, activesMap, boss){
 
   setTimeout(function(){
 
@@ -491,14 +491,14 @@ function recursiveRaidTurn(battleState, message, args, characters, activesMap, b
         var turnId;
         while(true){
 
-          turnId = turnIds[turnIndex];
+          turnId = battleState.turnIds[battleState.turnIndex];
           //Get character or boss to get their SPD
           if(turnId != statefunc.RAID){
 
             for(var x = 0; x < characters.length; x++){
 
               grumbo = characters[x];
-              if(turnIds[turnIndex] == grumbo._id) break;
+              if(battleState.turnIds[battleState.turnIndex] == grumbo._id) break;
             }
           }
           else{
@@ -506,17 +506,17 @@ function recursiveRaidTurn(battleState, message, args, characters, activesMap, b
             grumbo = boss;
           }
 
-          turnValueMap[turnId] += RAID_BASE_PER_TURN + grumbo.spd;
-          if(turnValueMap[turnId] < RAID_TURN_VALUE || grumbo.hp <= 0){
+          battleState.turnValueMap[turnId] += RAID_BASE_PER_TURN + grumbo.spd;
+          if(battleState.turnValueMap[turnId] < RAID_TURN_VALUE || grumbo.hp <= 0){
 
-            turnIndex += 1;
-            if(turnIndex >= turnIds.length) turnIndex = 0;
+            battleState.turnIndex += 1;
+            if(battleState.turnIndex >= battleState.turnIds.length) battleState.turnIndex = 0;
           }
           else{
 
-            turnValueMap[turnId] -= RAID_TURN_VALUE;
-            turnIndex += 1;
-            if(turnIndex >= turnIds.length) turnIndex = 0;
+            battleState.turnValueMap[turnId] -= RAID_TURN_VALUE;
+            battleState.turnIndex += 1;
+            if(battleState.turnIndex >= battleState.turnIds.length) battleState.turnIndex = 0;
             break;
           }
         }
@@ -525,18 +525,18 @@ function recursiveRaidTurn(battleState, message, args, characters, activesMap, b
         if(turnId != statefunc.RAID){
 
           battleState[grumbo._id] += 1;
-          doCharacterTurn(battleState, message, args, characters, activesMap, boss, turnValueMap, turnIds, turnIndex, grumbo);
+          doCharacterTurn(battleState, message, args, characters, activesMap, boss, grumbo);
         }
         else{
 
           battleState.phase += 1;
-          var raidActiveId = activeraidfunc[boss.id](battleState, message, args, characters, activesMap, boss, turnValueMap, turnIds, turnIndex);
+          var raidActiveId = activeraidfunc[boss.id](battleState, message, args, characters, activesMap, boss);
           var raidActive = activeList[raidActiveId];
           if(raidActive.target != statefunc.MULTIPLE){
 
             //Do single target boss turn
-            var target = activeraidfunc[boss.id][raidActiveId](battleState, message, args, characters, activesMap, boss, turnValueMap, turnIds, turnIndex);
-            doBossTurnSingle(battleState, message, args, characters, activesMap, boss, turnValueMap, turnIds, turnIndex, target, raidActive);
+            var target = activeraidfunc[boss.id][raidActiveId](battleState, message, args, characters, activesMap, boss);
+            doBossTurnSingle(battleState, message, args, characters, activesMap, boss, target, raidActive);
           }
           else{
 
@@ -556,7 +556,7 @@ function recursiveRaidTurn(battleState, message, args, characters, activesMap, b
                 activeCount++;
                 if(activeCount == characters.length){
 
-                  doBossTurnMultiple(battleState, message, args, characters, activesMap, boss, turnValueMap, turnIds, turnIndex, raidActive);
+                  doBossTurnMultiple(battleState, message, args, characters, activesMap, boss, raidActive);
                 }
               });
             }
@@ -580,7 +580,7 @@ function recursiveRaidTurn(battleState, message, args, characters, activesMap, b
 /**
 * Do a character's turn.
 */
-function doCharacterTurn(battleState, message, args, characters, activesMap, boss, turnValueMap, turnIds, turnIndex, character){
+function doCharacterTurn(battleState, message, args, characters, activesMap, boss, character){
 
   setTimeout(function(){
 
@@ -601,7 +601,7 @@ function doCharacterTurn(battleState, message, args, characters, activesMap, bos
       preMessageString += "# Turn victory chance: " + battleState.chance + "%\n# ...";
       message.channel.send(preMessageString);
 
-      doCharacterTurnResults(battleState, message, args, characters, activesMap, boss, turnValueMap, turnIds, turnIndex, character);
+      doCharacterTurnResults(battleState, message, args, characters, activesMap, boss, character);
     });
   }, 1250);
 }
@@ -609,7 +609,7 @@ function doCharacterTurn(battleState, message, args, characters, activesMap, bos
 /**
 * Do a character's turn results.
 */
-function doCharacterTurnResults(battleState, message, args, characters, activesMap, boss, turnValueMap, turnIds, turnIndex, character){
+function doCharacterTurnResults(battleState, message, args, characters, activesMap, boss, character){
 
   setTimeout(function(){
 
@@ -678,7 +678,7 @@ function doCharacterTurnResults(battleState, message, args, characters, activesM
         }
       }
 
-      recursiveRaidTurn(battleState, message, args, characters, activesMap, boss, turnValueMap, turnIds, turnIndex);
+      recursiveRaidTurn(battleState, message, args, characters, activesMap, boss);
     });
   }, 4000);
 }
@@ -686,7 +686,7 @@ function doCharacterTurnResults(battleState, message, args, characters, activesM
 /**
 * Do single target boss turn.
 */
-function doBossTurnSingle(battleState, message, args, characters, activesMap, boss, turnValueMap, turnIds, turnIndex, character, raidActive){
+function doBossTurnSingle(battleState, message, args, characters, activesMap, boss, character, raidActive){
 
   setTimeout(function(){
 
@@ -708,7 +708,7 @@ function doBossTurnSingle(battleState, message, args, characters, activesMap, bo
       preMessageString += "# ...";
       message.channel.send(preMessageString);
 
-      doBossTurnSingleResults(battleState, message, args, characters, activesMap, boss, turnValueMap, turnIds, turnIndex, character, raidActive);
+      doBossTurnSingleResults(battleState, message, args, characters, activesMap, boss, character, raidActive);
     });
   }, 1250);
 }
@@ -716,7 +716,7 @@ function doBossTurnSingle(battleState, message, args, characters, activesMap, bo
 /**
 * Do single target boss turn.
 */
-function doBossTurnSingleResults(battleState, message, args, characters, activesMap, boss, turnValueMap, turnIds, turnIndex, character, raidActive){
+function doBossTurnSingleResults(battleState, message, args, characters, activesMap, boss, character, raidActive){
 
   setTimeout(function(){
 
@@ -781,7 +781,7 @@ function doBossTurnSingleResults(battleState, message, args, characters, actives
         }
       }
 
-      recursiveRaidTurn(battleState, message, args, characters, activesMap, boss, turnValueMap, turnIds, turnIndex);
+      recursiveRaidTurn(battleState, message, args, characters, activesMap, boss);
     });
   }, 4000);
 }
@@ -789,7 +789,7 @@ function doBossTurnSingleResults(battleState, message, args, characters, actives
 /**
 * Do multiple target boss turn.
 */
-function doBossTurnMultiple(battleState, message, args, characters, activesMap, boss, turnValueMap, turnIds, turnIndex, raidActive){
+function doBossTurnMultiple(battleState, message, args, characters, activesMap, boss, raidActive){
 
   setTimeout(function(){
 
@@ -799,7 +799,7 @@ function doBossTurnMultiple(battleState, message, args, characters, activesMap, 
       "# " + boss.name + "  HP  " + boss.hp + "\n#\n";
     message.channel.send(preMessageString);
 
-    doBossTurnMultipleResults(battleState, message, args, characters, activesMap, boss, turnValueMap, turnIds, turnIndex, raidActive);
+    doBossTurnMultipleResults(battleState, message, args, characters, activesMap, boss, raidActive);
 
   }, 1750);
 }
@@ -807,7 +807,7 @@ function doBossTurnMultiple(battleState, message, args, characters, activesMap, 
 /**
 * Do multiple target boss turn.
 */
-function doBossTurnMultipleResults(battleState, message, args, characters, activesMap, boss, turnValueMap, turnIds, turnIndex, raidActive){
+function doBossTurnMultipleResults(battleState, message, args, characters, activesMap, boss, raidActive){
 
   setTimeout(function(){
 
@@ -872,7 +872,7 @@ function doBossTurnMultipleResults(battleState, message, args, characters, activ
     endMessageString += "############ END TURN " + battleState.turn + " ###########";
     message.channel.send(endMessageString);
 
-    recursiveRaidTurn(battleState, message, args, characters, activesMap, boss, turnValueMap, turnIds, turnIndex);
+    recursiveRaidTurn(battleState, message, args, characters, activesMap, boss);
   }, 5000);
 }
 

@@ -1,7 +1,7 @@
 ///////////
 // DUMBO //
 ///////////
-exports.dumbo = function(battleState, message, args, characters, activesMap, boss, turnValueMap, turnIds, turnIndex){
+exports.dumbo = function(battleState, message, args, characters, activesMap, boss){
 
   var raidActiveId;
   if((battleState.phase - 1) % 3 == 0){
@@ -16,13 +16,13 @@ exports.dumbo = function(battleState, message, args, characters, activesMap, bos
 }
 
 //RAID Dumbo
-exports.dumbo.wallop = function(battleState, message, args, characters, activesMap, boss, turnValueMap, turnIds, turnIndex){
+exports.dumbo.wallop = function(battleState, message, args, characters, activesMap, boss){
 
   return targetByAggro(characters);
 }
 
 //RAID Dumbo
-exports.dumbo.dumb_down = function(battleState, message, args, characters, activesMap, boss, turnValueMap, turnIds, turnIndex){
+exports.dumbo.dumb_down = function(battleState, message, args, characters, activesMap, boss){
 
   //All members, no need to do anything here
 }

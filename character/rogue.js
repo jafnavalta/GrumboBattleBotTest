@@ -20,6 +20,7 @@ exports.CLASS_LEVEL_MAX = 7;
 const LEVEL_1_ACTIVE = 'second_chance';
 const LEVEL_3_ACTIVE = 'quick_step';
 const LEVEL_4_ACTIVE = 'power_of_wealth';
+const LEVEL_5_ACTIVE = 'haste';
 const LEVEL_6_ACTIVE = 'double_attack';
 
 const BASE_HP_EQ = 0;
@@ -149,6 +150,8 @@ exports.setClassLevelFunc.rogue4 = function(character){
 
 exports.setClassLevelFunc.rogue5 = function(character){
 
+  var active = classactivefunc.getActive(character, LEVEL_5_ACTIVE);
+  dbfunc.pushToState(character, active.id, active, active.battleStates, 1);
   character.spdEq += 2;
   character.powEq += 4;
   character.resEq += 1;
@@ -211,6 +214,8 @@ exports.removeClassLevelFunc.rogue4 = function(character){
 
 exports.removeClassLevelFunc.rogue5 = function(character){
 
+  var active = classactivefunc.getActive(character, LEVEL_5_ACTIVE);
+  dbfunc.spliceFromState(character, active.id, active, active.battleStates, active);
   character.spdEq -= 2;
   character.powEq -= 4;
   character.resEq -= 1;

@@ -11,6 +11,9 @@ let statefunc = require('../state/state.js');
 //Character functions
 let charfunc = require('../character/character.js');
 
+//Raid functions
+let raidfunc = require('../command/raid.js');
+
 //Initialize states
 exports.prebattle = {};
 exports.preresults = {};
@@ -653,6 +656,21 @@ exports.postresults.guardian = function(message, character, battleState, eventId
 			}
 		}
 		battleState.endMessages.push("You casted Guardian!");
+	}
+}
+
+exports.postresults.haste = function(message, character, battleState, eventId, actives, grumbo, characters){
+
+	if(battleState.state == statefunc.RAID){
+
+		var random = Math.random() * 100;
+		if(random < character.spd/3){
+
+			var randomTurn = Math.floor((Math.random() * characters.length) - 0.0001);
+			var randomChar = characters[randomTurn];
+			battleState.turnValueMap[randomChar._id] += raidfunc.RAID_TURN_VALUE;
+			battleState.endMessages.push("You hasted " + message.guild.members.get(randomChar._id).displayName + "!");
+		}
 	}
 }
 
