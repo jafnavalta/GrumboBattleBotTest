@@ -4,7 +4,7 @@
     "id": "dumbo",
     "name": "Dumbo",
     "level": 1,
-    "hp": 3000,
+    "hp": 1,
     "max_hp": 3000,
     "base_chance": 50,
     "powBase": 150,
@@ -29,7 +29,7 @@
     ],
     "victory": "Dumbo has finally been taught that he is in fact, incredibly dumb!",
 		"loss": "Your raid group was no match for Dumbo's absolutely insane intellect!",
-    "gold": 225,
+    "gold": 210,
     "lootchance": [100, 60, 20],
     "loot": ["", "medicine"],
     "weights": [20, 46]

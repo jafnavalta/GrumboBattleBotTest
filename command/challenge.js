@@ -69,9 +69,9 @@ exports.commandChallenge = function(message, args, character){
 			//Gold challenge
 			else if(args[4] == 'gold'){
 
-				if(args[3] > 500 || args[3] < 1){
+				if(args[3] > 1000 || args[3] < 1){
 
-					message.channel.send("A gold wager must be between 1 and 500.");
+					message.channel.send("A gold wager must be between 1 and 1000.");
 				}
 				else if(args[3] <= character.gold){
 

@@ -783,6 +783,15 @@ exports.postresults.blast_rune = function(message, character, battleState, event
 	dbfunc.reduceDuration(character, [character.postresults], eventId, actives);
 }
 
+exports.postresults.profit = function(message, character, battleState, eventId, actives, grumbo, characters){
+
+	if(battleState.state == statefunc.RAID && battleState.profit == null){
+
+		battleState.profit = true;
+		grumbo.gold = Math.ceil(grumbo.gold * 1.4);
+	}
+}
+
 ///////////////////////////////
 // CHARACTER FINAL FUNCTIONS //
 ///////////////////////////////

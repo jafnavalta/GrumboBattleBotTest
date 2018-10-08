@@ -1307,5 +1307,20 @@
     "turn_final": "",
 		"description": "Increase damage dealt by 25% in the next battle/phase/turn if your damage is above 0. If you already have this active, it will not reapply.",
 		"duration": 1
+	},
+	"profit": {
+		"gameId": 70068,
+		"id": "profit",
+		"name": "Profit",
+		"effect": "good",
+		"battleStates": [
+			"postresults"
+		],
+    "turn_prebattle": "",
+    "turn_preresults": "",
+    "turn_postresults": "character",
+    "turn_final": "",
+		"description": "Raid only. If you win a raid, increase all raid members gold reward by 40%. Does not stack.",
+		"duration": null
 	}
 }

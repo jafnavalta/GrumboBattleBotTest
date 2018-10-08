@@ -18,7 +18,8 @@
 				"POW/WIS/DEF +2 and RES/SPD/LUK +1 when classed as an Adventurer.",
 				"RES +4 / LUK +5 when classed as an Adventurer.",
 				"Try your chances for a small reward with the Adventurer's Grab Bag.",
-				"The Adventurer gets no perks at class level 6 except the permanent stat boost."
+				"The Adventurer gets no perks at class level 6 except the permanent stat boost.",
+				"Increase raid gold for allies with Profit. POW/WIS/DEF +2 and RES/SPD/LUK +1 when classed as an Adventurer."
 		]
 	},
   "warrior": {
@@ -82,7 +83,7 @@
 				"Quick Step your way to victory.",
 				"The Rogue can show enemies the Power of Wealth.",
 				"Speed up your allies with Haste. SPD +2 / POW +4 / RES +1 when classed as a Rogue.",
-				"SPD +2 / LUK +2 when classed as a Rogue. Rogue can trigger a Double Attack.",
+				"Rogue can trigger a Double Attack. SPD +2 / LUK +2 when classed as a Rogue.",
 				"SPD +1 / SKL +2 / LUK +5 / POW +4 when classed as a Rogue."
 		]
 	},
@@ -126,7 +127,8 @@
 				"Recoil can activate against enemies.",
 				"Bolster your allies' defense with Guardian. SPD +5 / RES +4 / POW +4 when classed as a Knight.",
 				"Stand Your Ground against weaker enemies and hard hitting attacks.",
-				"SPD +5 / RES +4 / POW +4 / SKL +1 / DEF +1 when classed as a Knight. Knight gains the For Honor active."
+				"Knight gains the For Honor active. SPD +5 / RES +4 / POW +4 / SKL +1 / DEF +1 when classed as a Knight.",
+				"POW +6 / SKL +2 / DEF +2 when classed as a Knight."
 		]
 	},
   "archer": {

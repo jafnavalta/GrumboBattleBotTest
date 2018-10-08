@@ -14,11 +14,12 @@ let activesList = JSON.parse(fs.readFileSync("./values/actives.json", "utf8"));
 //ALL classes should have these.
 exports.className = "Adventurer";
 
-exports.CLASS_LEVEL_MAX = 6;
+exports.CLASS_LEVEL_MAX = 7;
 
 //Actives
 const LEVEL_2_ACTIVE = 'observation';
 const LEVEL_5_ACTIVE = 'grab_bag';
+const LEVEL_7_ACTIVE = 'profit';
 
 const BASE_HP_EQ = 0;
 const BASE_POW_EQ = 1;
@@ -182,6 +183,14 @@ exports.setClassLevelFunc.adventurer6 = function(character){
 
 exports.setClassLevelFunc.adventurer7 = function(character){
 
+  var active = classactivefunc.getActive(character, LEVEL_7_ACTIVE);
+  dbfunc.pushToState(character, active.id, active, active.battleStates, 1);
+  character.powEq += 2;
+  character.wisEq += 2;
+  character.defEq += 2;
+  character.resEq += 1;
+  character.spdEq += 1;
+  character.lukEq += 1;
 }
 
 exports.setClassLevelFunc.adventurer8 = function(character){
@@ -239,6 +248,14 @@ exports.removeClassLevelFunc.adventurer6 = function(character){
 
 exports.removeClassLevelFunc.adventurer7 = function(character){
 
+  var active = classactivefunc.getActive(character, LEVEL_7_ACTIVE);
+  dbfunc.spliceFromState(character, active.id, active, active.battleStates, active);
+  character.powEq += 2;
+  character.wisEq += 2;
+  character.defEq += 2;
+  character.resEq += 1;
+  character.spdEq += 1;
+  character.lukEq += 1;
 }
 
 exports.removeClassLevelFunc.adventurer8 = function(character){

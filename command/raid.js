@@ -909,7 +909,7 @@ function finishRaid(battleState, message, args, characters, activesMap, boss){
     if(battleState.raidWin){
 
       var username = message.guild.members.get(character._id).displayName;
-      var gain = boss.gold;
+      var gain = boss.gold + Math.ceil(character.luk/100 * boss.gold);
       var lootcut = 0;
       if(avgLevel > boss.level + 15 && Math.abs(character.level - avgLevel) > 10 && character.level < boss.level + 15){
 
