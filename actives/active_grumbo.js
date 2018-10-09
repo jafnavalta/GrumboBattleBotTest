@@ -11,6 +11,9 @@ let statefunc = require('../state/state.js');
 //Character functions
 let charfunc = require('../character/character.js');
 
+//Raid functions
+let raidfunc = require('../command/raid.js');
+
 //Initialize states
 exports.prebattle = {};
 exports.preresults = {};
@@ -198,6 +201,45 @@ exports.preresults.i_am_smart = function(message, character, battleState, eventI
 
 		battleState.dmgMod -= grumbo.wis - character.wis;
 		battleState.preResMessages.push("Dumbo is smart!");
+	}
+}
+
+//RAID Grumboracle
+exports.preresults.judgment = function(message, character, battleState, eventId, actives, grumbo, characters){
+
+	if(battleState.turn_state == statefunc.BOSS){
+
+		var random = Math.random() * 100;
+		//Judge by DEF
+		if(random < 50){
+
+			var dmg = Math.floor((grumbo.wis - character.def)/10) + Math.floor((Math.random() * 2) - 1);
+			if(dmg < 10) dmg = 10;
+			battleState.hpLoss = dmg;
+			battleState.preResMessages.push("You DEF has been judged!");
+		}
+		//Judge by RES
+		else{
+
+			var dmg = Math.floor((grumbo.pow - character.res)/10) + Math.floor((Math.random() * 2) - 1);
+			if(dmg < 10) dmg = 10;
+			battleState.hpLoss = dmg;
+			battleState.preResMessages.push("Your RES has been judged!");
+		}
+
+		if(battleState.judgment == 0){
+
+			battleState.judgment += 1;
+			battleState.turnValueMa[statefunc.RAID] += raidfunc.RAID_TURN_VALUE;
+		}
+		else{
+
+			battleState.judgment = 0;
+			if(battleState.hpLoss > 0){
+
+				battleState.hpLoss = Math.ceil(battleState.hpLoss/2);
+			}
+		}
 	}
 }
 
@@ -418,6 +460,75 @@ exports.postresults.dumb_down = function(message, character, battleState, eventI
 		else{
 
 			battleState.endMessages.push("You were too smart to be dumbed down!");
+		}
+	}
+}
+
+//RAID Grumboracle
+exports.postresults.destiny = function(message, character, battleState, eventId, actives, grumbo, characters){
+
+	if(battleState.turn_state == statefunc.BOSS){
+
+		var active;
+		var random = Math.random() * 100;
+		if(random > character.res){
+
+			if(!character.postresults.includes(eventId)){
+
+				active = activesList[eventId];
+				active.value = battleState.highestRes;
+				dbfunc.pushToState(character, eventId, active, active.battleStates, 1);
+				battleState.endMessages.push("Grumboracle has foretold your Destiny!");
+			}
+			else{
+
+				battleState.endMessages.push("Your Destiny has already been foretold...");
+			}
+		}
+		else{
+
+			battleState.endMessages.push("You denied your Destiny!");
+		}
+	}
+}
+
+//RAID Grumboracle
+exports.postresults.seek_the_truth = function(message, character, battleState, eventId, actives, grumbo, characters){
+
+	if(battleState.turn_state == statefunc.BOSS){
+
+		//First turn using seek the truth
+		if(battleState.seek_the_truth == 1){
+
+			battleState.hpLoss += 10;
+			battleState.turnValueMap[statefunc.RAID] -= raidfunc.RAID_TURN_VALUE;
+			battleState.endMessages.push("Grumboracle has begun seeking the truth!");
+		}
+		//Heal or deal damage
+		else{
+
+			//Damage
+			if(battleState.seek_the_truth_dmg < 1500){
+
+				battleState.hpLoss += Math.ceil(battleState.highestWis/10);
+				battleState.endMessages.push("Grumboracle was angered by the truth!");
+			}
+			//Heal
+			else{
+
+				battleState.hpLoss -= Math.ceil(battleState.highestWis/20);
+				battleState.endMessages.push("Grumboracle was guided to the truth!");
+			}
+		}
+	}
+	else{
+
+		if(battleState.seek_the_truth == 1){
+
+			if(battleState.seek_the_truth_dmg == null) battleState.seek_the_truth_dmg = 0;
+			battleState.seek_the_truth_dmg += battleState.dmgMod;
+			battleState.dmgMod = 0;
+			battleState.endMessages.push("Grumboracle has negated " + battleState.seek_the_truth_dmg + " damage while seeking the truth");
 		}
 	}
 }

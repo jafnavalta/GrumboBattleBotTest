@@ -1474,5 +1474,53 @@
     "turn_final": "",
 		"description": "When Demonblade Grumbo reaches below 420 HP, the Demonblade unleashes and increases his SKL by 40.",
 		"duration": null
+	},
+	"judgment": {
+		"gameId": 70079,
+		"id": "judgment",
+		"name": "Judgment",
+		"effect": "neutral",
+		"target": "single",
+		"battleStates": [
+			"preresults"
+		],
+    "turn_prebattle": "",
+    "turn_preresults": "boss",
+    "turn_postresults": "",
+    "turn_final": "",
+		"description": "Grumboracle is likely to act first with this active. Grumboracle will judge a random target, either dealing damage equal to the difference between his WIS and the target's DEF divided by 10 or dealing damage equal to the difference between his POW and the target's RES divided by 10. His next action will then come in quick succession and he will repeat this active but the damage dealt will be cut in half. Does a minimum of 10 damage.",
+		"duration": null
+	},
+	"destiny": {
+		"gameId": 70080,
+		"id": "destiny",
+		"name": "Destiny",
+		"effect": "neutral",
+		"target": "multiple",
+		"battleStates": [
+			"postresults"
+		],
+    "turn_prebattle": "",
+    "turn_preresults": "",
+    "turn_postresults": "character",
+    "turn_final": "",
+		"description": "Grumboracle will apply this on all raid members on his 3rd turn and every 6 turns after that (unless he needs to cast his second Judgment). After 4 turns, receive damage equal to the highest RES among the raid group. If you already have this active, it will not reapply. Can be resisted.",
+		"duration": 4
+	},
+	"seek_the_truth": {
+		"gameId": 70081,
+		"id": "seek_the_truth",
+		"name": "Seek the Truth",
+		"effect": "neutral",
+		"target": "multiple",
+		"battleStates": [
+			"postresults"
+		],
+    "turn_prebattle": "",
+    "turn_preresults": "",
+    "turn_postresults": "both",
+    "turn_final": "",
+		"description": "When Grumboracle reaches below 7000 HP and again when he reaches below 2000 HP, Grumboracle will deal 10 damage to all raid members and significantly decrease his turn speed until his next action. Until his next action, he will receive 0 damage. On his next action, if the damage that would have been done to Grumboracle exceeds 1500, he will heal all raid members by the highest WIS among your raid group divided by 20. Otherwise, he will deal damage to all raid members by the highest WIS among your raid group divided by 10.",
+		"duration": null
 	}
 }

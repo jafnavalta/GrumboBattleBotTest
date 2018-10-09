@@ -630,6 +630,23 @@ exports.postresults.dumb_down = function(message, character, battleState, eventI
 	dbfunc.reduceDuration(character, [character.postresults], eventId, actives);
 }
 
+//RAID Grumboracle
+exports.postresults.destiny = function(message, character, battleState, eventId, actives, grumbo, characters){
+
+	for(var i = 0; i < actives.length; i++){
+
+		if(actives[i].id == eventId){
+
+			if(actives[i].duration <= 1){
+
+				battleState.hpLoss += active.value;
+			}
+			break;
+		}
+	}
+	dbfunc.reduceDuration(character, [character.postresults], eventId, actives);
+}
+
 exports.postresults.heal = function(message, character, battleState, eventId, actives, grumbo, characters){
 
 	if(battleState.state == statefunc.RAID){
