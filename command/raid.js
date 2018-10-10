@@ -20,7 +20,7 @@ let equipList = JSON.parse(fs.readFileSync("./values/equips.json", "utf8"));
 //Raid funcs
 let activeraidfunc = require('../actives/active_raid.js');
 
-const RAID_WAIT_TIME = 1; //6 hours
+const RAID_WAIT_TIME = 1; //8 hours
 const RAID_MIN_MEMBERS = 1;
 const RAID_MAX_MEMBERS = 4;
 const RAID_BASE_PER_TURN = 70;

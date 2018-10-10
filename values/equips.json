@@ -204,7 +204,7 @@
     "effect": "good",
 		"price": 899,
 		"value": 179,
-		"stock": 1,
+		"stock": null,
 		"weight": 7
 	},
   "grumbo_poncho": {
@@ -308,7 +308,7 @@
     "effect": "good",
 		"price": 1350,
 		"value": 270,
-		"stock": 1,
+		"stock": null,
 		"weight": 6
 	},
   "mighty_shirt": {
@@ -386,7 +386,7 @@
     "effect": "good",
 		"price": 777,
 		"value": 77,
-		"stock": 1,
+		"stock": null,
 		"weight": 7
 	},
   "venom_mask": {
@@ -620,7 +620,7 @@
     "effect": "good",
 		"price": 1499,
 		"value": 299,
-		"stock": 1,
+		"stock": null,
 		"weight": 5
 	},
   "academy_jacket": {
@@ -932,6 +932,32 @@
     "effect": "good",
 		"price": 0,
 		"value": 600,
+		"stock": 0,
+		"weight": 0
+	},
+  "machete": {
+		"gameId": 60035,
+		"id": "machete",
+		"name": "Machete",
+		"command": "!grumbo equip machete",
+		"type": "weapon",
+    "classId": null,
+    "level": 50,
+    "hp": 5,
+    "pow": 10,
+    "wis": 0,
+    "skl": 5,
+    "def": 0,
+    "res": 0,
+    "spd": 0,
+    "luk": 0,
+    "turn": 0,
+    "aggro": 0,
+    "active": null,
+		"description": "Everyone loves wielding a Machete! You are immune to 'Root' if you have this equipped. POW +10 / HP +5 / SKL +5",
+    "effect": "good",
+		"price": 0,
+		"value": 250,
 		"stock": 0,
 		"weight": 0
 	}

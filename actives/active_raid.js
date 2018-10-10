@@ -38,6 +38,7 @@ exports.grumboracle = function(battleState, message, args, characters, activesMa
     battleState.destiny = 0;
     battleState.seek_the_truth = 0;
     battleState.seek_done = 0;
+    battleState.doom = 0;
     return boss.actives[0]; //Judgment
   }
 
@@ -57,6 +58,10 @@ exports.grumboracle = function(battleState, message, args, characters, activesMa
 
     //Queue Destiny in case second Judgment needs to activate
     battleState.destiny = 1;
+  }
+  if(battleState.phase == 4){
+
+    battleState.doom = 1;
   }
 
   //Choose active based on Queue
@@ -78,6 +83,11 @@ exports.grumboracle = function(battleState, message, args, characters, activesMa
 
     battleState.destiny = 0;
     raidActiveId = boss.actives[1]; //Destiny
+  }
+  else if(battleState.doom == 1){
+
+    battleState.doom = 0;
+    raidActiveId = boss.actives[3]; //Doom
   }
   else{
 
@@ -117,6 +127,68 @@ exports.grumboracle.seek_the_truth = function(battleState, message, args, charac
     if(character.wis > highestWis) highestWis = character.wis;
   }
   battleState.highestWis = highestWis;
+}
+
+//RAID Grumboracle
+exports.grumboracle.doom = function(battleState, message, args, characters, activesMap, boss){
+
+  return targetByAggro(characters);
+}
+
+//RAID Ninja Grumbo
+exports.ninja_grumbo = function(battleState, message, args, characters, activesMap, boss){
+
+  var raidActiveId;
+  var random = Math.random() * 100;
+  if(battleState.phase % 5 != 0){
+
+    if(random < 80){
+
+      raidActiveId = boss.actives[0]; //Shuriken
+    }
+    else{
+
+      raidActiveId = boss.actives[1]; //Shadow Step
+    }
+  }
+  else{
+
+    raidActiveId = boss.actives[2]; //Shock Trap
+  }
+
+  return raidActiveId;
+}
+
+//RAID Ninja Grumbo
+exports.ninja_grumbo.shuriken = function(battleState, message, args, characters, activesMap, boss){
+
+  var alive = 0;
+  for(var i = 0; i < characters.length; i++){
+
+    var character = characters[i];
+    if(character.hp > 0) alive += 1;
+  }
+
+  var target = targetByAggro(characters);
+  //Don't choose same target twice unless you have to.
+  while(alive > 1 && battleState.shuriken != null && battleState.shuriken == target._id){
+
+    target = targetByAggro(characters);
+  }
+
+  return target;
+}
+
+//RAID Ninja Grumbo
+exports.ninja_grumbo.shadow_step = function(battleState, message, args, characters, activesMap, boss){
+
+  return targetByAggro(characters);
+}
+
+//RAID Ninja Grumbo
+exports.ninja_grumbo.shock_trap = function(battleState, message, args, characters, activesMap, boss){
+
+  //All members, no need to do anything here
 }
 
 //HELPERS

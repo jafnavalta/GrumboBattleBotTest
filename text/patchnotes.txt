@@ -3,14 +3,15 @@ Most recent from the top
 
 |||| GAME IS LIKELY INCREDIBLY UNBALANCED ||||
 
-- Oct XX: Content: 1 Boss
+- Oct XX: Content: 3 Raids, 1 Boss, 3 Grumbos, 5 Items, 1 Equip
 - Oct XX: Equip class reassignment + Rework of most equip stats
 - Oct XX: Updated all Classes to Lv 7.
 - Oct XX: New Archer class.
 - Oct XX: New 1 new class active for Raids within the first 5 levels of a class.
 - Oct XX: Added Initial Turn Speed and Aggro stats for raids. These are hidden values.
-- Oct XX: Added Raid command and 2 Raids.
+- Oct XX: Added Raid command.
 - Oct XX: Added another active to Master Grumbo.
+- Oct XX: Increased maximum amount of loot chances for bosses across the board. Adjusted loot weighting accordingly.
 - Oct XX: Minor change to current Boss stats.
 - Oct XX: Damage reduction on boss phase loss now scales off SKL.
 - Oct XX: Added SKL stat.
@@ -19,6 +20,8 @@ Most recent from the top
 - Oct XX: Duplicated loot is now converted into gold.
 - Oct XX: Increased class exp required to level to 30 from 25.
 - Oct XX: Increased gold challenge maximum to 1000 from 500.
+- Oct XX: Increased price of Battle Ticket to 800. Adjusted Specials accordingly.
+- Oct XX: Experience is reduced to 0 when HP is reduced to 0 in a battle (not boss).
 
 - Oct XX: Scaled Miracle and Regen.
 - Oct XX: Buffed/Reworked Knight skills and a little bit of stats.

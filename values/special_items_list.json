@@ -5,9 +5,9 @@
 		"name": "Battle Ticket Special",
 		"items": ["battle_ticket"],
 		"description": "A discounted Battle Ticket",
-		"price": 500,
+		"price": 700,
 		"stock": 2,
-		"weight": 15
+		"weight": 14
 	},
 	"special_2": {
 		"gameId": 30001,
@@ -17,7 +17,7 @@
 		"description": "A discounted Challenge Ticket",
 		"price": 250,
 		"stock": 2,
-		"weight": 15
+		"weight": 14
 	},
 	"special_3": {
 		"gameId": 30002,
@@ -57,7 +57,7 @@
 		"description": "This charm prevents a certain purple bad active effect. Perhaps food poisoning by grapes?",
 		"price": 2850,
 		"stock": 1,
-		"weight": 3
+		"weight": 2
 	},
 	"special_8": {
 		"gameId": 30007,
@@ -85,7 +85,7 @@
 		"name": "Pot of Grumbo",
 		"items": ["battle_ticket", "battle_ticket"],
 		"description": "Pot of Grumbo lets me battle two MORE times!",
-		"price": 850,
+		"price": 1300,
 		"stock": 1,
 		"weight": 5
 	},
@@ -97,7 +97,7 @@
 		"description": "Spend gold to make gold! That's what the Grumbot Miner will do for you!",
 		"price": 1000,
 		"stock": 1,
-		"weight": 4
+		"weight": 3
 	},
 	"special_11": {
 		"gameId": 30010,
@@ -127,6 +127,36 @@
 		"description": "A couple of your staple injection shots.",
 		"price": 900,
 		"stock": 1,
+		"weight": 7
+	},
+	"special_14": {
+		"gameId": 300013,
+		"id": "special_14",
+		"name": "Restoration Package",
+		"items": ["shock_tablet", "eyedrops", "scissors"],
+		"description": "For all your restoring needs.",
+		"price": 825,
+		"stock": 2,
+		"weight": 10
+	},
+	"special_15": {
+		"gameId": 300014,
+		"id": "special_15",
+		"name": "Discounted Class Ticket",
+		"items": ["class_ticket"],
+		"description": "A discounted Class Ticket.",
+		"price": 900,
+		"stock": 2,
+		"weight": 3
+	},
+	"special_16": {
+		"gameId": 300015,
+		"id": "special_16",
+		"name": "Discounted Boss Ticket",
+		"items": ["boss_ticket"],
+		"description": "A discounted Boss Ticket.",
+		"price": 800,
+		"stock": 2,
 		"weight": 5
 	}
 }

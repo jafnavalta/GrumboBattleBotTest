@@ -131,6 +131,21 @@ exports.prebattle.unleash = function(message, character, battleState, eventId, a
 		}
 }
 
+//RAID Ninja Grumbo
+exports.prebattle.smokescreen = function(message, character, battleState, eventId, actives, grumbo, characters){
+
+		if(battleState.state == statefunc.CHARACTER){
+
+			var diff = grumbo.spd - character.spd;
+			var random = Math.random() * 100;
+			if(random < diff){
+
+				battleState.chanceMod -= 100;
+				battleState.preMessages.push("Ninja Grumbo smokescreened!");
+			}
+		}
+}
+
 /////////////////////////////////
 // GRUMBO PRERESULTS FUNCTIONS //
 /////////////////////////////////
@@ -239,6 +254,45 @@ exports.preresults.judgment = function(message, character, battleState, eventId,
 
 				battleState.hpLoss = Math.ceil(battleState.hpLoss/2);
 			}
+		}
+	}
+}
+
+//RAID Ninja Grumbo
+exports.preresults.shuriken = function(message, character, battleState, eventId, actives, grumbo, characters){
+
+	if(battleState.turn_state == statefunc.BOSS){
+
+		battleState.shuriken = character._id;
+		var dmg = Math.floor((grumbo.pow - character.def)/1.5) + 5 + Math.floor((Math.random() * 4) - 2);
+		if(dmg < 15) dmg = 15;
+		battleState.hpLoss = dmg;
+		if(!character.postresults.includes('iron_pendant')){
+
+			var active;
+			if(character.postresults.includes(eventId)){
+
+				for(var i = 0; i < actives.length; i++){
+
+					if(actives[i].id == eventId){
+
+						active = actives[i];
+						active.duration += activesList[eventId].duration;
+						if(active.duration > 10) active.duration = 10;
+						dbfunc.updateActive(active);
+						break;
+					}
+				}
+			}
+			else{
+
+				character.resEq -= 5;
+				character.defEq -= 5;
+				active = activesList[eventId];
+				dbfunc.pushToState(character, eventId, active, active.battleStates, 1);
+			}
+			charfunc.calculateStats(character);
+			battleState.endMessages.push("You've started bleeding!");
 		}
 	}
 }
@@ -393,6 +447,68 @@ exports.postresults.bleed = function(message, character, battleState, eventId, a
 	}
 }
 
+exports.postresults.paralyze = function(message, character, battleState, eventId, actives, grumbo, characters){
+
+	if(!battleState.win){
+
+		var active;
+		if(character.postresults.includes(eventId)){
+
+			for(var i = 0; i < actives.length; i++){
+
+				if(actives[i].id == eventId){
+
+					active = actives[i];
+					active.duration += activesList[eventId].duration;
+					if(active.duration > 10) active.duration = 10;
+					dbfunc.updateActive(active);
+					break;
+				}
+			}
+		}
+		else{
+
+			active = activesList[eventId];
+			active.value = character.res;
+			character.resEq -= character.res;
+			dbfunc.pushToState(character, eventId, active, active.battleStates, 1);
+		}
+		charfunc.calculateStats(character);
+		battleState.endMessages.push("You've been paralyzed!");
+	}
+}
+
+exports.postresults.curse = function(message, character, battleState, eventId, actives, grumbo, characters){
+
+	if(!battleState.win){
+
+		var active;
+		if(character.postresults.includes(eventId)){
+
+			for(var i = 0; i < actives.length; i++){
+
+				if(actives[i].id == eventId){
+
+					active = actives[i];
+					active.duration += activesList[eventId].duration;
+					if(active.duration > 10) active.duration = 10;
+					dbfunc.updateActive(active);
+					break;
+				}
+			}
+		}
+		else{
+
+			active = activesList[eventId];
+			active.value = Math.ceil(character.maxHP/2);
+			character.hpEq -= active.value;
+			dbfunc.pushToState(character, eventId, active, active.battleStates, 1);
+		}
+		charfunc.calculateStats(character);
+		battleState.endMessages.push("You've been cursed!");
+	}
+}
+
 exports.postresults.petrify = function(message, character, battleState, eventId, actives, grumbo, characters){
 
 	if(!battleState.win && !character.postresults.includes('iron_pendant')){
@@ -533,9 +649,113 @@ exports.postresults.seek_the_truth = function(message, character, battleState, e
 	}
 }
 
+//RAID Ninja Grumbo
+exports.postresults.shadow_step = function(message, character, battleState, eventId, actives, grumbo, characters){
+
+	if(battleState.turn_state == statefunc.BOSS){
+
+		battleState.shadow_step = character._id;
+		var dmg = grumbo.spd - character.spd + 10 + Math.floor((Math.random() * 4) - 2) + 5;
+		if(dmg < 15) dmg = 15;
+		battleState.hpLoss += dmg;
+		battleState.turnValueMap[statefunc.RAID] += raidfunc.RAID_TURN_VALUE/2;
+	}
+	else{
+
+		if(battleState.shadow_step != null && battleState.shadow_step == character._id){
+
+			battleState.dmgMod = 0;
+			battleState.endMessages.push("Ninja Grumbo shadow stepped your damage!");
+			battleState.shadow_step = null; //Reset
+		}
+	}
+}
+
+//RAID Ninja Grumbo
+exports.postresults.shock_trap = function(message, character, battleState, eventId, actives, grumbo, characters){
+
+	if(battleState.turn_state == statefunc.BOSS){
+
+		var active;
+		battleState.hpLoss += 15;
+		var random = Math.random() * 100;
+		if(random > character.res){
+
+			var random2 = math.random() * 100;
+			if(random2 > character.spd * 1.5){
+
+				if(character.postresults.includes("paralyze")){
+
+					for(var i = 0; i < actives.length; i++){
+
+						if(actives[i].id == "paralyze"){
+
+							active = actives[i];
+							active.duration += activesList["paralyze"].duration;
+							if(active.duration > 10) active.duration = 10;
+							dbfunc.updateActive(active);
+							break;
+						}
+					}
+				}
+				else{
+
+					active = activesList["paralyze"];
+					active.value = character.res;
+					character.resEq -= character.res;
+					dbfunc.pushToState(character, "paralyze", active, active.battleStates, 1);
+				}
+				charfunc.calculateStats(character);
+				battleState.endMessages.push("You've been paralyzed!");
+			}
+			else{
+
+				battleState.endMessages.push("You avoided the shock trap!");
+			}
+		}
+		else{
+
+			battleState.endMessages.push("You avoided the shock trap!");
+		}
+	}
+}
+
+//RAID Grumboracle
+exports.postresults.doom = function(message, character, battleState, eventId, actives, grumbo, characters){
+
+	if(battleState.state == statefunc.BOSS){
+
+		var active;
+		if(character.postresults.includes('curse')){
+
+			for(var i = 0; i < actives.length; i++){
+
+				if(actives[i].id == 'curse'){
+
+					active = actives[i];
+					active.duration += activesList['curse'].duration;
+					if(active.duration > 10) active.duration = 10;
+					dbfunc.updateActive(active);
+					break;
+				}
+			}
+		}
+		else{
+
+			active = activesList['curse'];
+			active.value = Math.ceil(character.maxHP/2);
+			character.hpEq -= active.value;
+			dbfunc.pushToState(character, 'curse', active, active.battleStates, 1);
+		}
+		charfunc.calculateStats(character);
+		battleState.preMessages.push("You've been cursed!");
+		battleState.turnValueMap[statefunc.RAID] += raidfunc.RAID_TURN_VALUE;
+	}
+}
+
 exports.postresults.root = function(message, character, battleState, eventId, actives, grumbo, characters){
 
-	if(!battleState.win && character.classId != "rogue"){
+	if(!battleState.win && character.classId != "rogue" && character.weapon != "machete"){
 
 		var active;
 		if(character.postresults.includes(eventId)){
@@ -560,6 +780,36 @@ exports.postresults.root = function(message, character, battleState, eventId, ac
 		}
 		charfunc.calculateStats(character);
 		battleState.endMessages.push("You've been rooted!");
+	}
+}
+
+exports.postresults.blind = function(message, character, battleState, eventId, actives, grumbo, characters){
+
+	if(!battleState.win){
+
+		var active;
+		if(character.postresults.includes(eventId)){
+
+			for(var i = 0; i < actives.length; i++){
+
+				if(actives[i].id == eventId){
+
+					active = actives[i];
+					active.duration += activesList[eventId].duration;
+					if(active.duration > 10) active.duration = 10;
+					dbfunc.updateActive(active);
+					break;
+				}
+			}
+		}
+		else{
+
+			character.sklEq -= 30;
+			active = activesList[eventId];
+			dbfunc.pushToState(character, eventId, active, active.battleStates, 1);
+		}
+		charfunc.calculateStats(character);
+		battleState.endMessages.push("You've been blinded!");
 	}
 }
 

@@ -29,9 +29,46 @@
     ],
     "victory": "Dumbo has finally been taught that he is in fact, incredibly dumb!",
 		"loss": "Your raid group was no match for Dumbo's absolutely insane intellect!",
-    "gold": 210,
-    "lootchance": [100, 60, 20],
-    "loot": ["", "medicine"],
+    "gold": 220,
+    "lootchance": [80, 60, 40, 40, 20],
+    "loot": ["", "medicine", "charm_of_wumbo", "machete"],
+    "weights": [20, 46, 20, 5]
+  },
+  "ninja_grumbo": {
+    "gameId": 801,
+    "id": "ninja_grumbo",
+    "name": "Ninja Grumbo",
+    "level": 110,
+    "hp": 7500,
+    "max_hp": 7500,
+    "base_chance": 40,
+    "powBase": 177,
+    "wisBase": 185,
+    "sklBase": 136,
+    "spdBase": 50,
+    "powX": 1.00,
+		"wisX": 1.00,
+    "sklX": 1.00,
+    "spdX": 1.00,
+    "turn": 150,
+    "char_turn": 0,
+    "description": "Ninja Grumbo is a master in sneaky tactics, speedy attacks and of course, being a Samurai. Or a Ninja.",
+    "actives": ["shuriken", "shadow_step", "shock_trap", "smokescreen"],
+    "prebattle": [
+      "smokescreen"
+    ],
+		"preresults": [
+      "shuriken"
+    ],
+		"postresults": [
+      "shadow_step"
+      "shock_trap"
+    ],
+    "victory": "It seems Ninja Grumbo isn't the best Ninja around!",
+		"loss": "Sneaky, sneaky... and you're all dead now.",
+    "gold": 400,
+    "lootchance": [70, 60, 40, 35, 20],
+    "loot": ["", "medicine_ex"],
     "weights": [20, 46]
   },
   "grumboracle": {
@@ -39,8 +76,8 @@
     "id": "grumboracle",
     "name": "Grumboracle",
     "level": 175,
-    "hp": 11000,
-    "max_hp": 11000,
+    "hp": 12000,
+    "max_hp": 12000,
     "base_chance": 50,
     "powBase": 200,
     "wisBase": 400,
@@ -53,20 +90,22 @@
     "turn": 150,
     "char_turn": 0,
     "description": "The all knowing Oracle of the Grumbos. Not quite as smart as the Dumbo, but it's close.",
-    "actives": ["judgment", "destiny", "seek_the_truth"],
-    "prebattle": [],
+    "actives": ["judgment", "destiny", "seek_the_truth", "doom"],
+    "prebattle": [
+    ],
 		"preresults": [
       "judgment"
     ],
 		"postresults": [
       "destiny",
-      "seek_the_truth"
+      "seek_the_truth",
+      "doom"
     ],
     "victory": "The Grumboracle was not all knowing enough for your raid group!",
 		"loss": "Everyone was erased from history by the Grumboracle...",
-    "gold": 620,
-    "lootchance": [100, 60, 20],
-    "loot": ["", "medicine"],
+    "gold": 600,
+    "lootchance": [70, 50, 45, 20, 10],
+    "loot": ["", "medicine_ex"],
     "weights": [20, 46]
   }
 }

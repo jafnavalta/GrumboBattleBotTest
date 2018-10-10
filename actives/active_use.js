@@ -231,6 +231,93 @@ exports.immediate.bandages = function(message, character, state, eventId, event,
 	}
 }
 
+exports.immediate.eyedrops = function(message, character, state, eventId, event, amount){
+
+	if(character.postresults.includes('blind')){
+
+		var index = character.items.indexOf(eventId);
+		character.items.splice(index, 1);
+		index = character.postresults.indexOf('blind');
+		character.postresults.splice(index, 1);
+		var _id = character._id + 'blind';
+		var active = {
+			"_id": _id
+		}
+		dbfunc.removeActive(active);
+
+		character.sklEq += 30;
+		charfunc.calculateStats(character);
+
+		state.result = message.member.displayName + " has used eyedrops.";
+	}
+	else{
+
+		state.result = "You are not blind at this moment.";
+	}
+}
+
+exports.immediate.scissors = function(message, character, state, eventId, event, amount){
+
+	if(character.postresults.includes('root')){
+
+		var index = character.items.indexOf(eventId);
+		character.items.splice(index, 1);
+		index = character.postresults.indexOf('root');
+		character.postresults.splice(index, 1);
+		var _id = character._id + 'root';
+		var active = {
+			"_id": _id
+		}
+		dbfunc.removeActive(active);
+
+		character.spdEq += 10;
+		charfunc.calculateStats(character);
+
+		state.result = message.member.displayName + " has used scissors.";
+	}
+	else{
+
+		state.result = "You are not rooted at this moment.";
+	}
+}
+
+exports.immediate.shock_tablet = function(message, character, state, eventId, event, amount){
+
+	if(character.postresults.includes('paralyze')){
+
+		dbfunc.getDB().collection("actives").find({"character": character._id}).toArray(function(err, actives){
+
+			var index = character.items.indexOf(eventId);
+			character.items.splice(index, 1);
+			index = character.postresults.indexOf('paralylze');
+			character.postresults.splice(index, 1);
+			var _id = character._id + 'paralyze';
+			var active = {
+				"_id": _id
+			}
+			for(var i = 0; i < actives.length; i++){
+
+				if(actives[i].id == 'paralyze'){
+
+					if(actives[i].duration <= 1){
+
+						character.resEq += actives[i].value;
+					}
+					break;
+				}
+			}
+			charfunc.calculateStats(character);
+
+			state.result = message.member.displayName + " has used a shock tablet.";
+			dbfunc.removeActive(active);
+		});
+	}
+	else{
+
+		state.result = "You are not paralyzed at this moment.";
+	}
+}
+
 exports.immediate.master_grumbos_blessing = function(message, character, state, eventId, event, amount){
 
 	var index = character.items.indexOf(eventId);

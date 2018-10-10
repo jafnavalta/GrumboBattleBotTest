@@ -28,9 +28,9 @@
     "victory": "$name has claimed victory over Eddi-- Venom Grumbo!",
 		"loss": "$name lay defeated in a pool of Venom Grumbo's toxic wasteland!",
     "firstTime": "venom_mask",
-    "lootchance": [100, 60, 20],
-    "loot": ["", "antidote", "medicine", "challenge_ticket", "mini_magnet", "venom_plate", "venom_mask_ex"],
-    "weights": [20, 46, 34, 8, 8, 8, 8]
+    "lootchance": [100, 80, 60, 40, 20],
+    "loot": ["", "boss_ticket", "antidote", "medicine", "challenge_ticket", "mini_magnet", "venom_plate", "venom_mask_ex", "poison_charm"],
+    "weights": [20, 5, 46, 34, 8, 8, 8, 8, 2]
   },
   "mixtape_grumbo": {
     "gameId": 902,
@@ -61,9 +61,9 @@
     "victory": "$name dropped an even hotter album than Mixtape Grumbo!",
 		"loss": "Mixtape Grumbo's mixtape was too fire for $name!",
     "firstTime": "safety_boots",
-    "lootchance": [95, 55, 15, 5],
-    "loot": ["", "medicine", "bandages", "adrenaline", "class_ticket", "academy_jacket", "angel_wings"],
-    "weights": [15, 54, 29, 14, 5, 18, 9]
+    "lootchance": [95, 55, 40, 15, 5],
+    "loot": ["", "boss_ticket", "medicine", "bandages", "adrenaline", "class_ticket", "academy_jacket", "angel_wings"],
+    "weights": [15, 5, 54, 29, 14, 5, 18, 9]
   },
   "crimson_grumbo": {
     "gameId": 901,
@@ -94,9 +94,9 @@
     "victory": "Crimson Grumbo was vanquished by $name!",
 		"loss": "$name was smashed to bits by the Crimson Grumbo!",
     "firstTime": "crimson_dagger",
-    "lootchance": [90, 50, 10],
-    "loot": ["", "battle_potion", "feather_stone", "battle_ticket", "blood_potion", "crimson_staff", "crimson_scepter"],
-    "weights": [15, 52, 25, 10, 10, 11, 11]
+    "lootchance": [90, 60, 50, 30, 10],
+    "loot": ["", "boss_ticket", "battle_potion", "feather_stone", "battle_ticket", "blood_potion", "crimson_staff", "crimson_scepter", "iron_pendant"],
+    "weights": [15, 5, 52, 25, 10, 10, 11, 11, 2]
   },
   "master_grumbo": {
     "gameId": 903,
@@ -128,9 +128,9 @@
     "victory": "$name taught Master Grumbo the true way of the Grumbo!",
 		"loss": "It's 100 years too early for $name to take on Master Grumbo.",
     "firstTime": "master_cloak",
-    "lootchance": [65, 35, 10],
-    "loot": ["", "medicine", "battle_potion", "class_ticket", "adventurers_spellbook", "grumbot_miner", "grumbo_whistle", "master_grumbos_blessing"],
-    "weights": [15, 45, 50, 16, 16, 6, 4, 1]
+    "lootchance": [65, 55, 35, 30, 15],
+    "loot": ["", "boss_ticket", "medicine_ex", "battle_potion", "class_ticket", "adventurers_spellbook", "grumbot_miner", "grumbo_whistle", "master_grumbos_blessing"],
+    "weights": [15, 5, 45, 50, 16, 16, 6, 4, 1]
   },
   "demonblade_grumbo": {
     "gameId": 904,
@@ -160,9 +160,9 @@
     ],
     "victory": "$name is more demon and more blade than the Demonblade Grumbo!",
 		"loss": "$name was sliced up by the Demonblade!",
-    "firstTime": "medicine",
-    "lootchance": [65, 35, 10],
-    "loot": ["", "medicine"],
-    "weights": [15, 45]
+    "firstTime": "medicine_ex",
+    "lootchance": [50, 40, 40, 30, 30],
+    "loot": ["", "boss_ticket", "medicine_ex", "scissors"],
+    "weights": [15, 5, 45, 20]
   }
 }
