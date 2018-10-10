@@ -31,19 +31,19 @@
 		"loss": "Your raid group was no match for Dumbo's absolutely insane intellect!",
     "gold": 220,
     "lootchance": [80, 60, 40, 40, 20],
-    "loot": ["", "medicine", "charm_of_wumbo", "machete"],
-    "weights": [20, 46, 20, 5]
+    "loot": ["", "medicine", "battle_potion", "charm_of_wumbo", "berserk_potion", "adrenaline", "stimulus", "growth_pill", "machete"],
+    "weights": [20, 46, 20, 10, 10, 7, 7, 5, 5]
   },
   "ninja_grumbo": {
     "gameId": 801,
     "id": "ninja_grumbo",
     "name": "Ninja Grumbo",
     "level": 110,
-    "hp": 7500,
+    "hp": 8000,
     "max_hp": 7500,
     "base_chance": 40,
-    "powBase": 177,
-    "wisBase": 185,
+    "powBase": 181,
+    "wisBase": 190,
     "sklBase": 136,
     "spdBase": 50,
     "powX": 1.00,
@@ -68,20 +68,20 @@
 		"loss": "Sneaky, sneaky... and you're all dead now.",
     "gold": 400,
     "lootchance": [70, 60, 40, 35, 20],
-    "loot": ["", "medicine_ex"],
-    "weights": [20, 46]
+    "loot": ["", "medicine_ex", "flimsy_rope", "shock_tablet", "stimulus", "blood_potion"],
+    "weights": [20, 46, 20, 10, 10, 10]
   },
   "grumboracle": {
     "gameId": 802,
     "id": "grumboracle",
     "name": "Grumboracle",
     "level": 175,
-    "hp": 12000,
-    "max_hp": 12000,
+    "hp": 13000,
+    "max_hp": 13000,
     "base_chance": 50,
-    "powBase": 200,
-    "wisBase": 400,
-    "sklBase": 165,
+    "powBase": 210,
+    "wisBase": 420,
+    "sklBase": 175,
     "spdBase": 20,
     "powX": 1.00,
 		"wisX": 1.00,
@@ -105,7 +105,7 @@
 		"loss": "Everyone was erased from history by the Grumboracle...",
     "gold": 600,
     "lootchance": [70, 50, 45, 20, 10],
-    "loot": ["", "medicine_ex"],
-    "weights": [20, 46]
+    "loot": ["", "medicine_ex", "eyedrops", "class_ticket"],
+    "weights": [20, 46, 20, 5]
   }
 }

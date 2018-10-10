@@ -137,12 +137,12 @@
     "id": "demonblade_grumbo",
     "name": "Demonblade Grumbo",
     "level": 135,
-    "hp": 1950,
+    "hp": 2000,
     "max_hp": 3000,
     "base_chance": 66,
-    "powBase": 200,
+    "powBase": 210,
     "wisBase": 180,
-    "sklBase": 180,
+    "sklBase": 185,
     "powX": 1.00,
 		"wisX": 1.00,
     "sklX": 1.00,
@@ -162,7 +162,7 @@
 		"loss": "$name was sliced up by the Demonblade!",
     "firstTime": "medicine_ex",
     "lootchance": [50, 40, 40, 30, 30],
-    "loot": ["", "boss_ticket", "medicine_ex", "scissors"],
-    "weights": [15, 5, 45, 20]
+    "loot": ["", "boss_ticket", "medicine_ex", "scissors", "growth_pill", "demonblade"],
+    "weights": [15, 5, 45, 20, 8, 5]
   }
 }

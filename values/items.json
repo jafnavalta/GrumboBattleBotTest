@@ -524,5 +524,21 @@
 		"max": 5,
 		"stock": 3,
 		"weight": 9
+	},
+	"growth_pill": {
+		"gameId": 10029,
+		"id": "growth_pill",
+		"name": "Growth Pill",
+		"command": "!grumbo items use growth_pill",
+		"type": "immediate",
+		"battleStates": [],
+		"description": "Increases your max HP by 20 for 5 turns. Consumed after use.",
+		"effect": "good",
+		"duration": null,
+		"price": 660,
+		"value": 100,
+		"max": 2,
+		"stock": 3,
+		"weight": 6
 	}
 }

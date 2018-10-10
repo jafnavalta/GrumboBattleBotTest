@@ -289,7 +289,7 @@ exports.immediate.shock_tablet = function(message, character, state, eventId, ev
 
 			var index = character.items.indexOf(eventId);
 			character.items.splice(index, 1);
-			index = character.postresults.indexOf('paralylze');
+			index = character.postresults.indexOf('paralyze');
 			character.postresults.splice(index, 1);
 			var _id = character._id + 'paralyze';
 			var active = {
@@ -316,6 +316,41 @@ exports.immediate.shock_tablet = function(message, character, state, eventId, ev
 
 		state.result = "You are not paralyzed at this moment.";
 	}
+}
+
+exports.immediate.growth_pill = function(message, character, state, eventId, event, amount){
+
+	dbfunc.getDB().collection("actives").find({"character": character._id}).toArray(function(err, actives){
+
+		var index = character.items.indexOf(eventId);
+		character.items.splice(index, 1);
+		var active;
+		for(var i = 0; i < actives.length; i++){
+
+			if(actives[i].id == eventId){
+
+				var active = actives[i];
+				break;
+			}
+		}
+		if(active != null){
+
+			//Update active
+			active.duration += activesList[eventId].duration;
+			if(active.duration > 10) active.duration = 10;
+			dbfunc.updateActive(active);
+		}
+		else{
+
+			//Create new active
+			active = activesList[eventId];
+			character.hpEq += 20;
+			dbfunc.pushToState(character, eventId, active, active.battleStates, 1);
+		}
+		charfunc.calculateStats(character);
+
+		state.result = message.member.displayName + " has used a growth pill.";
+	});
 }
 
 exports.immediate.master_grumbos_blessing = function(message, character, state, eventId, event, amount){

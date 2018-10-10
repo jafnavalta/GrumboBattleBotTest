@@ -960,5 +960,31 @@
 		"value": 250,
 		"stock": 0,
 		"weight": 0
+	},
+  "demonblade": {
+		"gameId": 60036,
+		"id": "demonblade",
+		"name": "Demonblade",
+		"command": "!grumbo equip demonblade",
+		"type": "weapon",
+    "classId": "warrior",
+    "level": 135,
+    "hp": 10,
+    "pow": 40,
+    "wis": 0,
+    "skl": 10,
+    "def": 0,
+    "res": 0,
+    "spd": 0,
+    "luk": 0,
+    "turn": 0,
+    "aggro": 10,
+    "active": "demonblade",
+		"description": "A blade so demonic, it's only one word instead of two, the Demonblade. Increases your Aggro. POW +40 / HP +10 / SKL +10",
+    "effect": "good",
+		"price": 0,
+		"value": 250,
+		"stock": 0,
+		"weight": 0
 	}
 }

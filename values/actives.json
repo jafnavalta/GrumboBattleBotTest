@@ -1621,6 +1621,7 @@
 		"id": "doom",
 		"name": "Doom",
 		"effect": "neutral",
+		"target": "single",
 		"battleStates": [
 			"postresults"
 		],
@@ -1645,5 +1646,35 @@
     "turn_final": "",
 		"description": "Reduces your SKL by 30. Lasts 3 turns.",
 		"duration": 3
+	},
+	"demonblade": {
+		"gameId": 70089,
+		"id": "demonblade",
+		"name": "Demonblade",
+		"effect": "good",
+		"battleStates": [
+			"final"
+		],
+    "turn_prebattle": "",
+    "turn_preresults": "",
+    "turn_postresults": "",
+    "turn_final": "boss",
+		"description": "SKL/11 % chance to negate all damage.",
+		"duration": null
+	},
+	"growth_pill": {
+		"gameId": 70090,
+		"id": "growth_pill",
+		"name": "growth_pill",
+		"effect": "good",
+		"battleStates": [
+			"postresults"
+		],
+    "turn_prebattle": "",
+    "turn_preresults": "",
+    "turn_postresults": "character",
+    "turn_final": "",
+		"description": "Increases your max HP by 20.",
+		"duration": 5
 	}
 }

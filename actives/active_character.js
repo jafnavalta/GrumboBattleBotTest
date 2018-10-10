@@ -394,6 +394,23 @@ exports.postresults.curse = function(message, character, battleState, eventId, a
 	dbfunc.reduceDuration(character, [character.postresults], eventId, actives);
 }
 
+exports.postresults.growth_pill = function(message, character, battleState, eventId, actives, grumbo, characters){
+
+	for(var i = 0; i < actives.length; i++){
+
+		if(actives[i].id == eventId){
+
+			if(actives[i].duration <= 1){
+
+				character.hpEq -= 20;
+				charfunc.calculateStats(character);
+			}
+			break;
+		}
+	}
+	dbfunc.reduceDuration(character, [character.postresults], eventId, actives);
+}
+
 exports.postresults.petrify = function(message, character, battleState, eventId, actives, grumbo, characters){
 
 	for(var i = 0; i < actives.length; i++){
@@ -1105,5 +1122,15 @@ exports.final.pierce = function(message, character, battleState, eventId, active
 			battleState.dmgMod += Math.ceil(character.pow/5);
 			battleState.endMessages.push("You pierced the enemy!");
 		}
+	}
+}
+
+exports.final.demonblade = function(message, character, battleState, eventId, actives, grumbo, characters){
+
+	var random = Math.random() * 100;
+	if(random < character.skl/11 && battleState.hpLoss > 0){
+
+		battleState.hpLoss = 0;
+		battleState.endMessages.push("You are one with the Demonblade!");
 	}
 }

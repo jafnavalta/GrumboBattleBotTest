@@ -3,39 +3,42 @@ Most recent from the top
 
 |||| GAME IS LIKELY INCREDIBLY UNBALANCED ||||
 
-- Oct XX: Content: 3 Raids, 1 Boss, 3 Grumbos, 5 Items, 1 Equip
-- Oct XX: Equip class reassignment + Rework of most equip stats
-- Oct XX: Updated all Classes to Lv 7.
-- Oct XX: New Archer class.
-- Oct XX: New 1 new class active for Raids within the first 5 levels of a class.
-- Oct XX: Added Initial Turn Speed and Aggro stats for raids. These are hidden values.
-- Oct XX: Added Raid command.
-- Oct XX: Added another active to Master Grumbo.
-- Oct XX: Increased maximum amount of loot chances for bosses across the board. Adjusted loot weighting accordingly.
-- Oct XX: Minor change to current Boss stats.
-- Oct XX: Damage reduction on boss phase loss now scales off SKL.
-- Oct XX: Added SKL stat.
-- Oct XX: Added Max HP stat.
-- Oct XX: Capped SPD at 50.
-- Oct XX: Duplicated loot is now converted into gold.
-- Oct XX: Increased class exp required to level to 30 from 25.
-- Oct XX: Increased gold challenge maximum to 1000 from 500.
-- Oct XX: Increased price of Battle Ticket to 800. Adjusted Specials accordingly.
-- Oct XX: Experience is reduced to 0 when HP is reduced to 0 in a battle (not boss).
+## OCT XX ##
 
-- Oct XX: Scaled Miracle and Regen.
-- Oct XX: Buffed/Reworked Knight skills and a little bit of stats.
-- Oct XX: Buffed Second Chance activation rate.
-- Oct XX: Buffed Quick Step to 5 from 4.
-- Oct XX: Nerfed Observation activation rate.
-- Oct XX: Nerfed Revenge activation rate.
-- Oct XX: Nerfed Barrier damage reduction.
-- Oct XX: Nerfed Crimson again down to 3 from 4 and lowered the activation rate significantly.
-- Oct XX: Nerfed Equalizer activation thresholds.
-- Oct XX: Nerfed Outsmart activation rate.
-- Oct XX: Nerfed Vision activation rate to 12 from 20.
+- Content: 3 Raids, 1 Boss, 3 Grumbos, 6 Items, 2 Equips
+- Equip class reassignment + Rework of most equip stats
+- Updated all Classes to Lv 7.
+- New Archer class.
+- Added a class active for Raids within the first 5 levels of a class.
+- Added Initial Turn Speed and Aggro stats for raids. These are hidden values.
+- Added Raid command.
+- Added another active to Master Grumbo.
+- Duplicated loot is now converted into gold.
+- Added a bit more loot to existing bosses.
+- Increased maximum amount of loot chances for bosses. Adjusted loot drop chance accordingly.
+- Minor change to current Boss stats.
+- Damage reduction on boss phase loss now scales off SKL.
+- Added SKL stat.
+- Added Max HP stat.
+- Capped SPD at 50.
+- Increased class exp required to level to 30 from 25.
+- Increased gold challenge maximum to 1000 from 500.
+- Equips in Shop no longer have stock.
+- Increased price of Battle Ticket to 800. Adjusted Specials accordingly.
+- Experience is reduced to 0 when HP is reduced to 0 in a battle (not boss).
+- Nerfed overall experience gain. I've been stealth nerfing experience gain over the past two weeks.
 
-- Sep 30: Nerfed overall experience gain.
+- Scaled Miracle and Regen.
+- Buffed/Reworked Knight skills and a little bit of stats.
+- Buffed Second Chance activation rate.
+- Buffed Quick Step to 5 from 4.
+- Nerfed Observation activation rate.
+- Nerfed Revenge activation rate.
+- Nerfed Barrier damage reduction.
+- Nerfed Crimson again down to 3 from 4 and lowered the activation rate significantly.
+- Nerfed Equalizer activation thresholds.
+- Nerfed Outsmart activation rate.
+- Nerfed Vision activation rate to 12 from 20.
 
 Consult help/guide for more information
 !grumbo help
