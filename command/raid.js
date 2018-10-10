@@ -39,6 +39,8 @@ let raids = {}
 exports.commandRaid = function(message, args, character){
 
   //For testing
+  //character.level = 175;
+  //charfunc.calculateStats(character);
   character.hp = character.maxHP;
   character.battlesLeft = 5;
 
@@ -46,7 +48,6 @@ exports.commandRaid = function(message, args, character){
   //character.defEq -= 10;
   //character.final.push('defense_up');
   //character.postresults.splice(character.postresults.indexOf("haste"), 1);
-  //charfunc.calculateStats(character);
 
   //Determine how many battles they should have left
   var date = new Date();
@@ -541,6 +542,7 @@ function recursiveRaidTurn(battleState, message, args, characters, activesMap, b
           else{
 
             //Do multiple target boss turn
+            activeraidfunc[boss.id][raidActiveId](battleState, message, args, characters, activesMap, boss); //Prep active
             for(var y = 0; y < characters.length; y++){
 
               //Get all character active effects

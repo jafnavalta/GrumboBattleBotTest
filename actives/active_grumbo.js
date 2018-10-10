@@ -213,7 +213,7 @@ exports.preresults.judgment = function(message, character, battleState, eventId,
 		//Judge by DEF
 		if(random < 50){
 
-			var dmg = Math.floor((grumbo.wis - character.def)/10) + Math.floor((Math.random() * 2) - 1);
+			var dmg = Math.floor((grumbo.wis - character.def)/5) + Math.floor((Math.random() * 2) - 1);
 			if(dmg < 10) dmg = 10;
 			battleState.hpLoss = dmg;
 			battleState.preResMessages.push("You DEF has been judged!");
@@ -221,7 +221,7 @@ exports.preresults.judgment = function(message, character, battleState, eventId,
 		//Judge by RES
 		else{
 
-			var dmg = Math.floor((grumbo.pow - character.res)/10) + Math.floor((Math.random() * 2) - 1);
+			var dmg = Math.floor((grumbo.pow - character.res)/4) + Math.floor((Math.random() * 2) - 1);
 			if(dmg < 10) dmg = 10;
 			battleState.hpLoss = dmg;
 			battleState.preResMessages.push("Your RES has been judged!");
@@ -230,7 +230,7 @@ exports.preresults.judgment = function(message, character, battleState, eventId,
 		if(battleState.judgment == 0){
 
 			battleState.judgment += 1;
-			battleState.turnValueMa[statefunc.RAID] += raidfunc.RAID_TURN_VALUE;
+			battleState.turnValueMap[statefunc.RAID] += raidfunc.RAID_TURN_VALUE;
 		}
 		else{
 
@@ -500,7 +500,7 @@ exports.postresults.seek_the_truth = function(message, character, battleState, e
 		//First turn using seek the truth
 		if(battleState.seek_the_truth == 1){
 
-			battleState.hpLoss += 10;
+			battleState.hpLoss += 20;
 			battleState.turnValueMap[statefunc.RAID] -= raidfunc.RAID_TURN_VALUE;
 			battleState.endMessages.push("Grumboracle has begun seeking the truth!");
 		}
@@ -508,9 +508,9 @@ exports.postresults.seek_the_truth = function(message, character, battleState, e
 		else{
 
 			//Damage
-			if(battleState.seek_the_truth_dmg < 1500){
+			if(battleState.seek_the_truth_dmg < 1600){
 
-				battleState.hpLoss += Math.ceil(battleState.highestWis/10);
+				battleState.hpLoss += Math.ceil(battleState.highestWis/8);
 				battleState.endMessages.push("Grumboracle was angered by the truth!");
 			}
 			//Heal

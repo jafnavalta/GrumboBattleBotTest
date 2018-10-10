@@ -1488,7 +1488,7 @@
     "turn_preresults": "boss",
     "turn_postresults": "",
     "turn_final": "",
-		"description": "Grumboracle is likely to act first with this active. Grumboracle will judge a random target, either dealing damage equal to the difference between his WIS and the target's DEF divided by 10 or dealing damage equal to the difference between his POW and the target's RES divided by 10. His next action will then come in quick succession and he will repeat this active but the damage dealt will be cut in half. Does a minimum of 10 damage.",
+		"description": "Grumboracle is likely to act first with this active. Grumboracle will judge a random target, either dealing damage equal to the difference between his WIS and the target's DEF divided by 5 or dealing damage equal to the difference between his POW and the target's RES divided by 4. His next action will then come in quick succession and he will repeat this active but the damage dealt will be cut in half. Does a minimum of 10 damage.",
 		"duration": null
 	},
 	"destiny": {
@@ -1520,7 +1520,7 @@
     "turn_preresults": "",
     "turn_postresults": "both",
     "turn_final": "",
-		"description": "When Grumboracle reaches below 7000 HP and again when he reaches below 2000 HP, Grumboracle will deal 10 damage to all raid members and significantly decrease his turn speed until his next action. Until his next action, he will receive 0 damage. On his next action, if the damage that would have been done to Grumboracle exceeds 1500, he will heal all raid members by the highest WIS among your raid group divided by 20. Otherwise, he will deal damage to all raid members by the highest WIS among your raid group divided by 10.",
+		"description": "When Grumboracle reaches below 7000 HP and again when he reaches below 2000 HP, Grumboracle will deal 20 damage to all raid members and significantly decrease his turn speed until his next action. Until his next action, he will receive 0 damage. On his next action, if the damage that would have been done to Grumboracle exceeds 1600, he will heal all raid members by the highest WIS among your raid group divided by 20. Otherwise, he will deal damage to all raid members by the highest WIS among your raid group divided by 8.",
 		"duration": null
 	}
 }

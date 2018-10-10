@@ -39,8 +39,8 @@
     "id": "grumboracle",
     "name": "Grumboracle",
     "level": 175,
-    "hp": 12000,
-    "max_hp": 12000,
+    "hp": 11000,
+    "max_hp": 11000,
     "base_chance": 50,
     "powBase": 200,
     "wisBase": 400,
@@ -63,8 +63,8 @@
       "seek_the_truth"
     ],
     "victory": "The Grumboracle was not all knowing enough for your raid group!",
-		"loss": "Everyone was erased from history by the Grumboracle!",
-    "gold": 720,
+		"loss": "Everyone was erased from history by the Grumboracle...",
+    "gold": 620,
     "lootchance": [100, 60, 20],
     "loot": ["", "medicine"],
     "weights": [20, 46]

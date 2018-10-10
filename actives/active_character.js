@@ -639,7 +639,8 @@ exports.postresults.destiny = function(message, character, battleState, eventId,
 
 			if(actives[i].duration <= 1){
 
-				battleState.hpLoss += active.value;
+				battleState.endMessages.push("Destiny calls...!");
+				battleState.hpLoss += actives[i].value;
 			}
 			break;
 		}

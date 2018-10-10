@@ -45,7 +45,7 @@ exports.BASE_LUK_EQ = BASE_LUK_EQ;
 exports.BASE_TURN_EQ = BASE_TURN_EQ;
 exports.BASE_AGGRO_EQ = BASE_AGGRO_EQ;
 
-exports.hpX = 0.97;
+exports.hpX = 0.93;
 exports.powX = 0.92;
 exports.wisX = 0.88;
 exports.sklX = 1.30;

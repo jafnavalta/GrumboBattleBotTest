@@ -9,7 +9,7 @@ Most recent from the top
 - Oct XX: New Archer class.
 - Oct XX: New 1 new class active for Raids within the first 5 levels of a class.
 - Oct XX: Added Initial Turn Speed and Aggro stats for raids. These are hidden values.
-- Oct XX: Added Raid command and 1 Raid.
+- Oct XX: Added Raid command and 2 Raids.
 - Oct XX: Added another active to Master Grumbo.
 - Oct XX: Minor change to current Boss stats.
 - Oct XX: Damage reduction on boss phase loss now scales off SKL.
@@ -30,7 +30,7 @@ Most recent from the top
 - Oct XX: Nerfed Crimson again down to 3 from 4 and lowered the activation rate significantly.
 - Oct XX: Nerfed Equalizer activation thresholds.
 - Oct XX: Nerfed Outsmart activation rate.
-- Oct XX: Nerfed Vision activation rate to 12 from 20,
+- Oct XX: Nerfed Vision activation rate to 12 from 20.
 
 - Sep 30: Nerfed overall experience gain.
 
