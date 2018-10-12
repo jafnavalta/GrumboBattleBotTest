@@ -192,8 +192,12 @@ exports.prebattle.power_of_wealth = function(message, character, battleState, ev
 	var random = Math.random() * 100;
 	if(random < character.luk*0.0){ //TODO Should be 0.8
 
-		battleState.chanceMod += Math.floor(character.gold/1500);
-		battleState.dmgMod += Math.floor(character.gold/150);
+		var chanceUp = Math.floor(character.gold/1500);
+		if(chanceUp > 20) chanceUp = 20;
+		battleState.chanceMod += 20;
+		var dmgUp = Math.floor(character.gold/150);
+		if(dmgUp > 200) dmgUp = 200;
+		battleState.dmgMod += dmgUp;
 		battleState.preMessages.push("The enemy was shown the Power of Wealth!");
 	}
 }

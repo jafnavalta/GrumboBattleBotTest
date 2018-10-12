@@ -677,7 +677,7 @@
     "turn_preresults": "",
     "turn_postresults": "",
     "turn_final": "",
-		"description": "(LUK * 0.8)% chance of increasing chance of victory by amount of gold held divided by 1500 and damage dealt by amount of gold held divided by 150.",
+		"description": "(LUK * 0.8)% chance of increasing chance of victory by amount of gold held divided by 1500 (capped at 20) and damage dealt by amount of gold held divided by 150 (capped at 200).",
 		"duration": null
 	},
 	"quick_step": {
