@@ -40,9 +40,23 @@ exports.commandRaid = function(message, args, character){
 
   //For testing
   //character.level = 175;
-  //charfunc.calculateStats(character);
+  //character.resEq += 43;
+  charfunc.calculateStats(character);
   character.hp = character.maxHP;
   character.battlesLeft = 5;
+  //var active = {
+  //  _id: character._id + 'shuriken'
+  //}
+  //dbfunc.removeActive(active);
+  //character.preresults.splice(character.preresults.indexOf('shuriken'), 1);
+  //console.log(character.postresults);
+  //character.postresults.push("growth_pill");
+  // character.items.push("eyedrops", "eyedrops", "eyedrops", "eyedrops", "eyedrops");
+  // character.items.push("scissors", "scissors", "scissors", "scissors", "scissors");
+  // character.items.push("growth_pill", "growth_pill", "growth_pill", "growth_pill", "growth_pill");
+  // character.equips.push("machete");
+  // character.equips.push("demonblade");
+  // character.equips.push("demon_helmet");
 
   //character.wisEq += 100;
   //character.defEq -= 10;

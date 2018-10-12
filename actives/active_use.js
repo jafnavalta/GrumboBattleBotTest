@@ -285,6 +285,7 @@ exports.immediate.shock_tablet = function(message, character, state, eventId, ev
 
 	if(character.postresults.includes('paralyze')){
 
+		state.save = false;
 		dbfunc.getDB().collection("actives").find({"character": character._id}).toArray(function(err, actives){
 
 			var index = character.items.indexOf(eventId);
@@ -299,14 +300,12 @@ exports.immediate.shock_tablet = function(message, character, state, eventId, ev
 
 				if(actives[i].id == 'paralyze'){
 
-					if(actives[i].duration <= 1){
-
-						character.resEq += actives[i].value;
-					}
+					character.resEq += actives[i].value;
 					break;
 				}
 			}
 			charfunc.calculateStats(character);
+			dbfunc.updateCharacter(character);
 
 			state.result = message.member.displayName + " has used a shock tablet.";
 			dbfunc.removeActive(active);
@@ -320,6 +319,7 @@ exports.immediate.shock_tablet = function(message, character, state, eventId, ev
 
 exports.immediate.growth_pill = function(message, character, state, eventId, event, amount){
 
+	state.save = false;
 	dbfunc.getDB().collection("actives").find({"character": character._id}).toArray(function(err, actives){
 
 		var index = character.items.indexOf(eventId);
@@ -348,6 +348,7 @@ exports.immediate.growth_pill = function(message, character, state, eventId, eve
 			dbfunc.pushToState(character, eventId, active, active.battleStates, 1);
 		}
 		charfunc.calculateStats(character);
+		dbfunc.updateCharacter(character);
 
 		state.result = message.member.displayName + " has used a growth pill.";
 	});

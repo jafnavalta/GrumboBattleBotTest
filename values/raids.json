@@ -39,13 +39,13 @@
     "id": "ninja_grumbo",
     "name": "Ninja Grumbo",
     "level": 110,
-    "hp": 8000,
-    "max_hp": 8000,
+    "hp": 7700,
+    "max_hp": 7700,
     "base_chance": 40,
     "powBase": 184,
     "wisBase": 194,
     "sklBase": 138,
-    "spdBase": 50,
+    "spdBase": 60,
     "powX": 1.00,
 		"wisX": 1.00,
     "sklX": 1.00,
@@ -61,22 +61,22 @@
       "shuriken"
     ],
 		"postresults": [
-      "shadow_step"
+      "shadow_step",
       "shock_trap"
     ],
     "victory": "It seems Ninja Grumbo isn't the best Ninja around!",
 		"loss": "Sneaky, sneaky... and you're all dead now.",
     "gold": 400,
     "lootchance": [70, 60, 40, 35, 20],
-    "loot": ["", "medicine_ex", "flimsy_rope", "shock_tablet", "stimulus", "blood_potion", "throwing_shield"],
-    "weights": [20, 56, 18, 10, 8, 7, 7]
+    "loot": ["", "boss_ticket", "medicine_ex", "flimsy_rope", "shock_tablet", "stimulus", "blood_potion", "throwing_shield", "iron_pendant"],
+    "weights": [20, 5, 56, 18, 10, 8, 7, 7, 4]
   },
   "grumboracle": {
     "gameId": 802,
     "id": "grumboracle",
     "name": "Grumboracle",
     "level": 175,
-    "hp": 13000,
+    "hp": 12000,
     "max_hp": 13000,
     "base_chance": 50,
     "powBase": 212,
@@ -105,7 +105,7 @@
 		"loss": "Everyone was erased from history by the Grumboracle...",
     "gold": 600,
     "lootchance": [70, 50, 45, 20, 10],
-    "loot": ["", "medicine_ex", "eyedrops", "class_ticket"],
-    "weights": [20, 56, 15, 5]
+    "loot": ["", "medicine_ex", "eyedrops", "class_ticket", "grumbot_miner", "master_grumbos_blessing"],
+    "weights": [20, 56, 15, 5, 2, 1]
   }
 }

@@ -91,14 +91,18 @@ exports.immediate = function(message, character, eventId, event, amount){
 
 	var state = {
 
-		result: message.member.displayName + " has used " + event.name + " x" + amount
+		result: message.member.displayName + " has used " + event.name + " x" + amount,
+		save: true
 	}
 	usefunc.immediate[eventId](message, character, state, eventId, event, amount);
 
 	message.channel.send(state.result);
 
 	//Save character
-	dbfunc.updateCharacter(character);
+	if(state.save){
+
+		dbfunc.updateCharacter(character);
+	}
 }
 
 /**

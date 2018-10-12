@@ -5,7 +5,7 @@ Most recent from the top
 
 ## OCT XX ##
 
-- Content: 3 Raids, 1 Boss, 3 Grumbos, 6 Items, 2 Equips
+- Content: 3 Raids, 1 Boss, 3 Grumbos, 6 Items, 3 Equips
 - Equip class reassignment + Rework of most equip stats
 - Updated all Classes to Lv 7.
 - New Archer class.
@@ -26,9 +26,11 @@ Most recent from the top
 - Equips in Shop no longer have stock.
 - Increased price of Battle Ticket to 800. Adjusted Specials accordingly.
 - Experience is reduced to 0 when HP is reduced to 0 in a battle (not boss).
+- Nerfed RES chance of avoiding enemy effects to RES*0.8 from just RES %.
 - Nerfed overall experience gain. I've been stealth nerfing experience gain over the past two weeks.
 
 - Scaled Miracle and Regen.
+- Capped Power of Wealth chance at 20% and damage at 200.
 - Buffed/Reworked Knight skills and a little bit of stats.
 - Buffed Second Chance activation rate.
 - Buffed Quick Step to 5 from 4.

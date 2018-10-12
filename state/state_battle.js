@@ -59,7 +59,7 @@ exports.prebattle = function(message, args, character, battleState, actives, gru
 		if(grumbofunc.prebattle[eventId] != null){
 
 			var random = Math.random() * 100;
-			if(random < character.res && eventActive.effect == statefunc.BAD){
+			if(random < character.res*0.8 && eventActive.effect == statefunc.BAD){
 
 				battleState.preMessages.push(charfunc.resistMessage(eventActive.name));
 			}
@@ -124,7 +124,7 @@ exports.preresults = function(message, character, battleState, actives, grumbo){
 		if(grumbofunc.preresults[eventId] != null){
 
 			var random = Math.random() * 100;
-			if(random < character.res && eventActive.effect == statefunc.BAD){
+			if(random < character.res*0.8 && eventActive.effect == statefunc.BAD){
 
 				battleState.preResMessages.push(charfunc.resistMessage(eventActive.name));
 			}
@@ -174,7 +174,7 @@ exports.postresults = function(message, character, battleState, actives, grumbo)
 		if(grumbofunc.postresults[eventId] != null && !battleState.avoidPostResults){
 
 			var random = Math.random() * 100;
-			if(random < character.res && eventActive.effect == statefunc.BAD){
+			if(random < character.res*0.8 && eventActive.effect == statefunc.BAD){
 
 				battleState.endMessages.push(charfunc.resistMessage(eventActive.name));
 			}

@@ -1665,7 +1665,7 @@
 	"growth_pill": {
 		"gameId": 70090,
 		"id": "growth_pill",
-		"name": "growth_pill",
+		"name": "Growth Pill",
 		"effect": "good",
 		"battleStates": [
 			"postresults"

@@ -190,7 +190,7 @@ exports.prebattle.explosion = function(message, character, battleState, eventId,
 exports.prebattle.power_of_wealth = function(message, character, battleState, eventId, actives, grumbo, characters){
 
 	var random = Math.random() * 100;
-	if(random < character.luk*0.0){ //TODO Should be 0.8
+	if(random < character.luk*0.8){
 
 		var chanceUp = Math.floor(character.gold/1500);
 		if(chanceUp > 20) chanceUp = 20;

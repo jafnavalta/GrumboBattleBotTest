@@ -134,7 +134,7 @@ exports.prebattle.unleash = function(message, character, battleState, eventId, a
 //RAID Ninja Grumbo
 exports.prebattle.smokescreen = function(message, character, battleState, eventId, actives, grumbo, characters){
 
-		if(battleState.state == statefunc.CHARACTER){
+		if(battleState.turn_state == statefunc.CHARACTER){
 
 			var diff = grumbo.spd - character.spd;
 			var random = Math.random() * 100;
@@ -270,14 +270,14 @@ exports.preresults.shuriken = function(message, character, battleState, eventId,
 		if(!character.postresults.includes('iron_pendant')){
 
 			var active;
-			if(character.postresults.includes(eventId)){
+			if(character.postresults.includes('bleed')){
 
 				for(var i = 0; i < actives.length; i++){
 
-					if(actives[i].id == eventId){
+					if(actives[i].id == 'bleed'){
 
 						active = actives[i];
-						active.duration += activesList[eventId].duration;
+						active.duration += activesList['bleed'].duration;
 						if(active.duration > 10) active.duration = 10;
 						dbfunc.updateActive(active);
 						break;
@@ -288,11 +288,11 @@ exports.preresults.shuriken = function(message, character, battleState, eventId,
 
 				character.resEq -= 5;
 				character.defEq -= 5;
-				active = activesList[eventId];
-				dbfunc.pushToState(character, eventId, active, active.battleStates, 1);
+				active = activesList['bleed'];
+				dbfunc.pushToState(character, 'bleed', active, active.battleStates, 1);
 			}
 			charfunc.calculateStats(character);
-			battleState.endMessages.push("You've started bleeding!");
+			battleState.preResMessages.push("You've started bleeding!");
 		}
 	}
 }
@@ -678,10 +678,10 @@ exports.postresults.shock_trap = function(message, character, battleState, event
 
 		var active;
 		battleState.hpLoss += 15;
-		var random = Math.random() * 100;
+		var random = Math.random() * 1000; //TODO
 		if(random > character.res){
 
-			var random2 = math.random() * 100;
+			var random2 = Math.random() * 1000;
 			if(random2 > character.spd * 1.5){
 
 				if(character.postresults.includes("paralyze")){
@@ -723,7 +723,7 @@ exports.postresults.shock_trap = function(message, character, battleState, event
 //RAID Grumboracle
 exports.postresults.doom = function(message, character, battleState, eventId, actives, grumbo, characters){
 
-	if(battleState.state == statefunc.BOSS){
+	if(battleState.turn_state == statefunc.BOSS){
 
 		var active;
 		if(character.postresults.includes('curse')){
@@ -748,7 +748,7 @@ exports.postresults.doom = function(message, character, battleState, eventId, ac
 			dbfunc.pushToState(character, 'curse', active, active.battleStates, 1);
 		}
 		charfunc.calculateStats(character);
-		battleState.preMessages.push("You've been cursed!");
+		battleState.endMessages.push("You've been cursed!");
 		battleState.turnValueMap[statefunc.RAID] += raidfunc.RAID_TURN_VALUE;
 	}
 }
