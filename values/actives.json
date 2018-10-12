@@ -1092,7 +1092,7 @@
     "turn_preresults": "",
     "turn_postresults": "",
     "turn_final": "",
-		"description": "Deals damage equal to the difference between Dumbo's POW and the target's DEF. Minimum damage is 10. SPD*0.8 % chance that it misses completely. Target is chosen randomly but affected by Aggro.",
+		"description": "Deals damage equal to the difference between Dumbo's POW and the target's DEF. Minimum damage is 10. SPD*0.8 % chance that it misses completely. Target is chosen randomly based on Aggro.",
 		"duration": null
 	},
 	"mini_magnet": {
@@ -1522,5 +1522,159 @@
     "turn_final": "",
 		"description": "When Grumboracle reaches below 7000 HP and again when he reaches below 2000 HP, Grumboracle will deal 20 damage to all raid members and significantly decrease his turn speed until his next action. Until his next action, he will receive 0 damage. On his next action, if the damage that would have been done to Grumboracle exceeds 1600, he will heal all raid members by the highest WIS among your raid group divided by 20. Otherwise, he will deal damage to all raid members by the highest WIS among your raid group divided by 8.",
 		"duration": null
+	},
+	"smokescreen": {
+		"gameId": 70082,
+		"id": "smokescreen",
+		"name": "Smokescreen",
+		"effect": "neutral",
+		"battleStates": [
+			"prebattle"
+		],
+    "turn_prebattle": "character",
+    "turn_preresults": "",
+    "turn_postresults": "",
+    "turn_final": "",
+		"description": "Difference between your SPD and Ninja Grumbo's SPD % chance to reduce your chance of victory by 100%.",
+		"duration": null
+	},
+	"shuriken": {
+		"gameId": 70083,
+		"id": "shuriken",
+		"name": "Shuriken",
+		"effect": "neutral",
+		"target": "single",
+		"battleStates": [
+			"preresults"
+		],
+    "turn_prebattle": "",
+    "turn_preresults": "",
+    "turn_postresults": "",
+    "turn_final": "",
+		"description": "Deals 5 damage plus extra damage equal to the difference between Dumbo's POW and the target's DEF divided by 1.5. Minimum damage is 15. Inflicts bleed. Target is chosen randomly based on Aggro. If there are multiple possible targets, Ninja Grumbo will never target the same person twice in a row with this active.",
+		"duration": null
+	},
+	"shadow_step": {
+		"gameId": 70084,
+		"id": "shadow_step",
+		"name": "Shadow Step",
+		"effect": "neutral",
+		"target": "single",
+		"battleStates": [
+			"postresults"
+		],
+    "turn_prebattle": "",
+    "turn_preresults": "",
+    "turn_postresults": "both",
+    "turn_final": "",
+		"description": "Deals 5 damage plus extra damage equal to the difference between Dumbo's SPD and (target's SPD - 10) and slightly increases Ninja Grumbo's turn speed, making him act again sooner. Minimum damage is 15. On the target's next turn, they will deal 0 damage to Ninja Grumbo. Ninja Grumbo is 4x less likely to use this active over Shuriken. Target is chosen randomly based on Aggro.",
+		"duration": null
+	},
+	"paralyze": {
+		"gameId": 70085,
+		"id": "paralyze",
+		"name": "Paralyze",
+		"effect": "bad",
+		"battleStates": [
+			"postresults"
+		],
+    "turn_prebattle": "",
+    "turn_preresults": "",
+    "turn_postresults": "character",
+    "turn_final": "",
+		"description": "Lowers your RES by your current RES and reduces your damage to 0. Other actives may increase your damage above 0 after being reduced by Paralyze. Lasts 2 turns.",
+		"duration": 2
+	},
+	"shock_trap": {
+		"gameId": 70086,
+		"id": "shock_trap",
+		"name": "Shock Trap",
+		"effect": "neutral",
+		"target": "multiple",
+		"battleStates": [
+			"postresults"
+		],
+    "turn_prebattle": "",
+    "turn_preresults": "",
+    "turn_postresults": "boss",
+    "turn_final": "",
+		"description": "Ninja Grumbo will activate Shock Trap on all raid members every 5 turns. Deals 15 damage and inflicts Paralyze. The Paralyze can be resisted. If not resisted, SPD*1.5 % chance to avoid it.",
+		"duration": null
+	},
+	"curse": {
+		"gameId": 70086,
+		"id": "curse",
+		"name": "Curse",
+		"effect": "bad",
+		"battleStates": [
+			"postresults"
+		],
+    "turn_prebattle": "",
+    "turn_preresults": "",
+    "turn_postresults": "character",
+    "turn_final": "",
+		"description": "Reduces your max HP by half of your current max HP. Lasts 4 turns.",
+		"duration": 4
+	},
+	"doom": {
+		"gameId": 70087,
+		"id": "doom",
+		"name": "Doom",
+		"effect": "neutral",
+		"target": "single",
+		"battleStates": [
+			"postresults"
+		],
+    "turn_prebattle": "",
+    "turn_preresults": "",
+    "turn_postresults": "boss",
+    "turn_final": "",
+		"description": "On turn 4, Grumboracle inflicts curse on a random target then significantly increases his turn speed, making him act again very soon. Cannot be resisted.",
+		"duration": null
+	},
+	"blind": {
+		"gameId": 70088,
+		"id": "blind",
+		"name": "Blind",
+		"effect": "bad",
+		"battleStates": [
+			"postresults"
+		],
+    "turn_prebattle": "",
+    "turn_preresults": "",
+    "turn_postresults": "character",
+    "turn_final": "",
+		"description": "Reduces your SKL by 30. Lasts 3 turns.",
+		"duration": 3
+	},
+	"demonblade": {
+		"gameId": 70089,
+		"id": "demonblade",
+		"name": "Demonblade",
+		"effect": "good",
+		"battleStates": [
+			"final"
+		],
+    "turn_prebattle": "",
+    "turn_preresults": "",
+    "turn_postresults": "",
+    "turn_final": "boss",
+		"description": "SKL/11 % chance to negate all damage.",
+		"duration": null
+	},
+	"growth_pill": {
+		"gameId": 70090,
+		"id": "growth_pill",
+		"name": "growth_pill",
+		"effect": "good",
+		"battleStates": [
+			"postresults"
+		],
+    "turn_prebattle": "",
+    "turn_preresults": "",
+    "turn_postresults": "character",
+    "turn_final": "",
+		"description": "Increases your max HP by 20.",
+		"duration": 5
 	}
 }

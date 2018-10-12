@@ -229,10 +229,12 @@ function doBattle(message, args, character, currentTime, actives){
 				});
 			}
 
+			var preHpLoss = character.hp;
 			character.hp -= battleState.hpLoss;
 			if(character.hp < 0) character.hp = 0;
 			else if(character.hp > character.maxHP) character.hp = character.maxHP;
 			character.classExp += battleState.classExp;
+			if(character.hp <= 0 && preHpLoss > 0) character.experience = 0;
 			classfunc.levelUpClass(character, battleState);
 
 			endMessageString += "Here are your current stats:\n" + username + " Lv" + character.level + "  |  "

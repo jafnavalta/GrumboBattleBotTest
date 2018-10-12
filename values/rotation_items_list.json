@@ -255,5 +255,53 @@
 		"max": 1,
 		"stock": 2,
 		"weight": 2
+	},
+	"shock_tablet": {
+		"gameId": 10026,
+		"id": "shock_tablet",
+		"name": "Shock Tablet",
+		"command": "!grumbo items use shock_tablet",
+		"type": "immediate",
+		"battleStates": [],
+		"description": "Removes the 'Paralyze' active. Consumed after use.",
+		"effect": "good",
+		"duration": null,
+		"price": 225,
+		"value": 40,
+		"max": 10,
+		"stock": 4,
+		"weight": 12
+	},
+	"eyedrops": {
+		"gameId": 10027,
+		"id": "eyedrops",
+		"name": "Eyedrops",
+		"command": "!grumbo items use eyedrops",
+		"type": "immediate",
+		"battleStates": [],
+		"description": "Removes the 'Blind' active. Consumed after use.",
+		"effect": "good",
+		"duration": null,
+		"price": 250,
+		"value": 50,
+		"max": 10,
+		"stock": 6,
+		"weight": 13
+	},
+	"scissors": {
+		"gameId": 10028,
+		"id": "scissors",
+		"name": "Scissors",
+		"command": "!grumbo items use scissors",
+		"type": "immediate",
+		"battleStates": [],
+		"description": "Removes the 'Root' active. Consumed after use.",
+		"effect": "good",
+		"duration": null,
+		"price": 550,
+		"value": 95,
+		"max": 5,
+		"stock": 3,
+		"weight": 9
 	}
 }
