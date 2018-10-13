@@ -453,7 +453,7 @@
     "turn_preresults": "",
     "turn_postresults": "",
     "turn_final": "",
-		"description": "Deals damage equivalent to damage received during battles + 10. Following additional effects only activate on Phase 1 against Crimson Grumbo. If you are petrified, receive an additional 100 damage. Otherwise, receive additional damage equal to DEF/10.",
+		"description": "Deals damage equivalent to damage received during battles + 12. Following additional effects only activate on Phase 1 against Crimson Grumbo. If you are petrified, receive an additional 100 damage. Otherwise, receive additional damage equal to DEF/10.",
 		"duration": null
 	},
 	"crimson_blood": {
@@ -613,7 +613,7 @@
     "turn_preresults": "",
     "turn_postresults": "character",
     "turn_final": "",
-		"description": "75% chance to reduce damage received by 2% of POW.",
+		"description": "75% chance to reduce damage received by 1.5% of POW.",
 		"duration": null
 	},
 	"revenge": {
@@ -629,7 +629,7 @@
     "turn_preresults": "",
     "turn_postresults": "",
     "turn_final": "",
-		"description": "Higher chance of activation the lower the HP you are. Increases chance of victory by POW/13. Against bosses, deal extra damage equal to POW/5.",
+		"description": "Higher chance of activation the lower the HP you are. Increases chance of victory by POW/15, capped at 20. Against bosses, deal extra damage equal to POW/5.",
 		"duration": null
 	},
 	"explosion": {
@@ -661,7 +661,7 @@
     "turn_preresults": "",
     "turn_postresults": "boss",
     "turn_final": "",
-		"description": "RES% chance to reduce damage received by WIS/14. Can heal if damage reduced is more than damage received.",
+		"description": "RES*0.75 % chance to reduce damage received by WIS/20. Can heal if damage reduced is more than damage received.",
 		"duration": null
 	},
 	"power_of_wealth": {
@@ -950,7 +950,7 @@
     "turn_preresults": "",
     "turn_postresults": "",
     "turn_final": "",
-		"description": "Master Grumbo's regular attack every phase. Deals damage equivalent to damage received during battles + 22. Reduced by a random number between 0 and your SPD. Can be reduced below 0.",
+		"description": "Master Grumbo's regular attack every phase. Deals damage equivalent to damage received during battles + 25. Reduced by a random number between 0 and your SPD. Can be reduced below 0.",
 		"duration": null
 	},
 	"master_grumbos_protection": {
@@ -1735,6 +1735,51 @@
     "turn_postresults": "",
     "turn_final": "",
 		"description": "Prevents Petrify.",
+		"duration": null
+	},
+	"bloody": {
+		"gameId": 70095,
+		"id": "bloody",
+		"name": "Bloody",
+		"effect": "good",
+		"battleStates": [
+			"postresults"
+		],
+    "turn_prebattle": "",
+    "turn_preresults": "",
+    "turn_postresults": "character",
+    "turn_final": "",
+		"description": "SPD/2 % chance to deal extra damage equal to 1% of a boss' current HP.",
+		"duration": null
+	},
+	"sunglasses": {
+		"gameId": 70096,
+		"id": "sunglasses",
+		"name": "Sunglasses",
+		"effect": "good",
+		"battleStates": [
+			"postresults"
+		],
+    "turn_prebattle": "",
+    "turn_preresults": "",
+    "turn_postresults": "",
+    "turn_final": "",
+		"description": "Prevents Blind. Blind that is already active will remain active. Use to activate indefinitely. Use again to deactivate.",
+		"duration": null
+	},
+	"alphav": {
+		"gameId": 70097,
+		"id": "alphav",
+		"name": "AlphaV",
+		"effect": "good",
+		"battleStates": [
+			"prebattle"
+		],
+    "turn_prebattle": "character",
+    "turn_preresults": "",
+    "turn_postresults": "",
+    "turn_final": "",
+		"description": "While active, increase chance of victory by 1% in regular battles. Otherwise, increase chance of victory by 5%. Use to activate indefinitely. Use again to deactivate.",
 		"duration": null
 	}
 }

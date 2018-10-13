@@ -28,6 +28,18 @@ exports.prebattle.poison = function(message, character, battleState, eventId, ac
 	battleState.chanceMod -= 5;
 }
 
+exports.prebattle.alphav = function(message, character, battleState, eventId, actives, grumbo, characters){
+
+	if(battleState.state == statefunc.BATTLE){
+
+		battleState.chanceMod += 1;
+	}
+	else{
+
+		battleState.chanceMod += 5;
+	}
+}
+
 exports.prebattle.fear = function(message, character, battleState, eventId, actives, grumbo, characters){
 
 	var fearResults = Math.random() * 100;
@@ -88,11 +100,15 @@ exports.prebattle.wild_swing = function(message, character, battleState, eventId
 
 exports.prebattle.outsmart = function(message, character, battleState, eventId, actives, grumbo, characters){
 
-	if(battleState.multi_cast == null) battleState.multi_cast = 0;
+	if(battleState.multi_cast == null){
+
+		battleState.multi_cast = {};
+		battleState.multi_cast[character._id] = 0;
+	}
 	var random = Math.random() * 100;
 	if(random < 18 && battleState.wisMod > 0){
 
-		battleState.multi_cast += 1;
+		battleState.multi_cast[character._id] += 1;
 		battleState.dmgMod += battleState.wisMod;
 		battleState.chanceMod += battleState.wisMod;
 		battleState.preMessages.push("You outsmarted the enemy!");
@@ -166,7 +182,9 @@ exports.prebattle.revenge = function(message, character, battleState, eventId, a
 	var random = Math.random() * 100;
 	if(random < (character.maxHP - character.hp)/2.25){
 
-		battleState.chanceMod += Math.floor(character.pow/13);
+		var up = Math.floor(character.pow/15);
+		if(up > 20) up = 20;
+		battleState.chanceMod += up;
 		battleState.dmgMod += Math.floor(character.pow/5);
 		battleState.preMessages.push("You attack back in Revenge!");
 	}
@@ -176,11 +194,15 @@ exports.prebattle.explosion = function(message, character, battleState, eventId,
 
 	if(battleState.state != statefunc.BATTLE){
 
-		if(battleState.multi_cast == null) battleState.multi_cast = 0;
+		if(battleState.multi_cast == null){
+
+			battleState.multi_cast = {};
+			battleState.multi_cast[character._id] = 0;
+		}
 		var random = Math.random() * 100;
 		if(random < character.wis/11){
 
-			battleState.multi_cast += 1;
+			battleState.multi_cast[character._id] += 1;
 			battleState.dmgMod += Math.floor(character.wis/2);
 			battleState.preMessages.push("Explosion significantly increased your damage!");
 		}
@@ -260,12 +282,16 @@ exports.prebattle.chance_up = function(message, character, battleState, eventId,
 
 exports.prebattle.rampage = function(message, character, battleState, eventId, actives, grumbo, characters){
 
-	if(battleState.rampage == null) battleState.rampage = 0;
-	if(battleState.rampage < 30){
+	if(battleState.rampage == null){
 
-		battleState.rampage += 2;
+		battleState.rampage = {};
+		battleState.rampage[character._id] = 0;
 	}
-	battleState.chanceMod += Math.floor(battleState.rampage/2);
+	if(battleState.rampage[character._id] < 30){
+
+		battleState.rampage[character._id] += 2;
+	}
+	battleState.chanceMod += Math.floor(battleState.rampage[character._id]/2);
 }
 
 exports.prebattle.multi_cast = function(message, character, battleState, eventId, actives, grumbo, characters){
@@ -554,7 +580,7 @@ exports.postresults.lifesteal = function(message, character, battleState, eventI
 	var random = Math.random() * 100;
 	if(random < 75){
 
-		var stole = Math.ceil(character.pow * 0.02);
+		var stole = Math.ceil(character.pow * 0.015);
 		battleState.hpLoss -= stole;
 		battleState.endMessages.push("You lifestole for " + stole + " damage.");
 	}
@@ -562,12 +588,16 @@ exports.postresults.lifesteal = function(message, character, battleState, eventI
 
 exports.postresults.barrier = function(message, character, battleState, eventId, actives, grumbo, characters){
 
-	if(battleState.multi_cast == null) battleState.multi_cast = 0;
-	var random = Math.random() * 100;
-	if(random < character.res){
+	if(battleState.multi_cast == null){
 
-		battleState.multi_cast += 1;
-		battleState.hpLoss -= Math.floor(character.wis/14);
+		battleState.multi_cast = {};
+		battleState.multi_cast[character._id] = 0;
+	}
+	var random = Math.random() * 100;
+	if(random < character.res*0.75){
+
+		battleState.multi_cast[character._id] += 1;
+		battleState.hpLoss -= Math.floor(character.wis/20);
 		battleState.endMessages.push("Barrier reduced damage received!");
 	}
 }
@@ -926,6 +956,19 @@ exports.postresults.blast_rune = function(message, character, battleState, event
 	dbfunc.reduceDuration(character, [character.postresults], eventId, actives);
 }
 
+exports.postresults.bloody = function(message, character, battleState, eventId, actives, grumbo, characters){
+
+	if(battleState.state != statefunc.BATTLE){
+
+		var random = Math.random() * 100;
+		if(random < character.spd/2){
+
+			battleState.dmgMod += Math.ceil(grumbo.hp * 0.01);
+			battleState.endMessages.push("You made the enemy bleed!");
+		}
+	}
+}
+
 exports.postresults.profit = function(message, character, battleState, eventId, actives, grumbo, characters){
 
 	if(battleState.state == statefunc.RAID && battleState.profit == null){
@@ -1137,12 +1180,16 @@ exports.final.reflect = function(message, character, battleState, eventId, activ
 
 exports.final.multi_cast = function(message, character, battleState, eventId, actives, grumbo, characters){
 
-	if(battleState.multi_cast == null) battleState.multi_cast = 0;
-	if(battleState.multi_cast > 0 && battleState.dmgMod > 0){
+	if(battleState.multi_cast == null){
 
-		battleState.dmgMod += Math.ceil(battleState.dmgMod * (battleState.multi_cast / 10));
-		battleState.endMessages.push("You consumed " + battleState.multi_cast + " multi cast stacks!");
-		battleState.multi_cast = 0;
+		battleState.multi_cast = {};
+		battleState.multi_cast[character._id] = 0;
+	}
+	if(battleState.multi_cast[character._id] > 0 && battleState.dmgMod > 0){
+
+		battleState.dmgMod += Math.ceil(battleState.dmgMod * (battleState.multi_cast[character._id] / 10));
+		battleState.endMessages.push("You consumed " + battleState.multi_cast[character._id] + " multi cast stacks!");
+		battleState.multi_cast[character._id] = 0;
 	}
 }
 
@@ -1150,9 +1197,9 @@ exports.final.rampage = function(message, character, battleState, eventId, activ
 
 	if(battleState.dmgMod > 0){
 
-		battleState.dmgMod += Math.ceil(battleState.dmgMod * (battleState.rampage / 100));
+		battleState.dmgMod += Math.ceil(battleState.dmgMod * (battleState.rampage[character._id] / 100));
 	}
-	battleState.endMessages.push("You're rampaging with " + battleState.rampage + " stacks!");
+	battleState.endMessages.push("You're rampaging with " + battleState.rampage[character._id] + " stacks!");
 }
 
 exports.final.pierce = function(message, character, battleState, eventId, actives, grumbo, characters){

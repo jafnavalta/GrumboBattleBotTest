@@ -7,7 +7,7 @@
     "hp": 2500,
     "max_hp": 2500,
     "base_chance": 50,
-    "powBase": 150,
+    "powBase": 155,
     "wisBase": 45,
     "sklBase": 84,
     "spdBase": 10,
@@ -31,8 +31,8 @@
 		"loss": "Your raid group was no match for Dumbo's absolutely insane intellect!",
     "gold": 210,
     "lootchance": [80, 60, 40, 40, 20],
-    "loot": ["", "old_coin", "medicine", "battle_potion", "charm_of_wumbo", "berserk_potion", "adrenaline", "stimulus", "growth_pill", "machete", "hourglass"],
-    "weights": [20, 9, 56, 25, 10, 10, 7, 7, 5, 5, 6]
+    "loot": ["", "old_coin", "medicine", "battle_potion", "charm_of_wumbo", "berserk_potion", "adrenaline", "stimulus", "growth_pill", "machete", "hourglass", "ghillie_suit", "chauder_powder"],
+    "weights": [20, 9, 56, 25, 10, 10, 7, 7, 5, 6, 5, 5, 3]
   },
   "ninja_grumbo": {
     "gameId": 801,
@@ -42,9 +42,9 @@
     "hp": 7700,
     "max_hp": 7700,
     "base_chance": 40,
-    "powBase": 194,
-    "wisBase": 194,
-    "sklBase": 140,
+    "powBase": 220,
+    "wisBase": 220,
+    "sklBase": 145,
     "spdBase": 65,
     "powX": 1.00,
 		"wisX": 1.00,
@@ -68,8 +68,8 @@
 		"loss": "Sneaky, sneaky... and you're all dead now.",
     "gold": 375,
     "lootchance": [70, 60, 40, 35, 20],
-    "loot": ["", "coin_pouch", "boss_ticket", "medicine_ex", "flimsy_rope", "shock_tablet", "stimulus", "blood_potion", "throwing_shield", "iron_pendant"],
-    "weights": [20, 8, 5, 56, 18, 10, 8, 7, 7, 4]
+    "loot": ["", "coin_pouch", "boss_ticket", "medicine_ex", "flimsy_rope", "shock_tablet", "adrenaline", "stimulus", "blood_potion", "throwing_shield", "iron_pendant", "kunai", "slingshot", "sunglasses", "alphav"],
+    "weights": [20, 8, 5, 56, 18, 10, 8, 8, 7, 7, 4, 6, 7, 8, 3]
   },
   "grumboracle": {
     "gameId": 802,
@@ -79,9 +79,9 @@
     "hp": 12000,
     "max_hp": 13000,
     "base_chance": 50,
-    "powBase": 222,
-    "wisBase": 444,
-    "sklBase": 176,
+    "powBase": 232,
+    "wisBase": 464,
+    "sklBase": 180,
     "spdBase": 20,
     "powX": 1.00,
 		"wisX": 1.00,
@@ -105,7 +105,7 @@
 		"loss": "Everyone was erased from history by the Grumboracle...",
     "gold": 550,
     "lootchance": [70, 50, 45, 20, 10],
-    "loot": ["", "old_coin", "coin_pouch", "medicine_ex", "eyedrops", "monocle", "class_ticket", "grumbot_miner", "master_grumbos_blessing"],
-    "weights": [20, 20, 10, 56, 15, 11, 5, 2, 1]
+    "loot": ["", "old_coin", "coin_pouch", "grumbo_ticket", "gamblers_coin", "medicine_ex", "eyedrops", "monocle", "class_ticket", "grumbot_miner", "master_grumbos_blessing", "the_kids_gambit"],
+    "weights": [20, 20, 10, 2, 9, 56, 15, 11, 5, 2, 1, 6]
   }
 }

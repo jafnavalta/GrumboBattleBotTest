@@ -7,7 +7,7 @@
     "hp": 400,
     "max_hp": 400,
     "base_chance": 44,
-    "powBase": 90,
+    "powBase": 92,
     "wisBase": 94,
     "sklBase": 62,
     "powX": 1.00,
@@ -40,7 +40,7 @@
     "hp": 416,
     "max_hp": 416,
     "base_chance": 39,
-    "powBase": 80,
+    "powBase": 86,
     "wisBase": 146,
     "sklBase": 65,
     "powX": 1.00,
@@ -73,7 +73,7 @@
     "hp": 770,
     "max_hp": 770,
     "base_chance": 36,
-    "powBase": 118,
+    "powBase": 120,
     "wisBase": 132,
     "sklBase": 88,
     "powX": 1.00,
@@ -106,8 +106,8 @@
     "hp": 1437,
     "max_hp": 1437,
     "base_chance": 46,
-    "powBase": 170,
-    "wisBase": 190,
+    "powBase": 175,
+    "wisBase": 195,
     "sklBase": 130,
     "powX": 1.00,
 		"wisX": 1.00,
@@ -130,7 +130,7 @@
     "firstTime": "master_cloak",
     "lootchance": [65, 55, 35, 30, 15],
     "loot": ["", "coin_pouch", "boss_ticket", "medicine_ex", "battle_potion", "class_ticket", "adventurers_spellbook", "adventurers_mantle", "grumbot_miner", "grumbo_whistle", "master_grumbos_blessing"],
-    "weights": [15, 7, 5, 55, 55, 16, 8, 8, 4, 4, 1]
+    "weights": [15, 6, 5, 55, 55, 16, 8, 8, 4, 4, 1]
   },
   "demonblade_grumbo": {
     "gameId": 904,
@@ -162,7 +162,7 @@
 		"loss": "$name was sliced up by the Demonblade!",
     "firstTime": "demon_helmet",
     "lootchance": [50, 40, 40, 30, 30],
-    "loot": ["", "coin_pouch", "boss_ticket", "medicine_ex", "scissors", "growth_pill", "demonblade", "demon_mask"],
-    "weights": [15, 9, 5, 55, 20, 8, 7, 5]
+    "loot": ["", "coin_pouch", "boss_ticket", "medicine_ex", "stimulus", "blood_potion", "scissors", "growth_pill", "demonblade", "demon_mask", "cursed_hat"],
+    "weights": [15, 8, 5, 55, 20, 10, 20, 8, 7, 5, 5]
   }
 }

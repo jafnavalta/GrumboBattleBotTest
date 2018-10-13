@@ -436,7 +436,16 @@ function calculateGoldChallengeResults(message, victor, loser, victorName, loser
 	victor.gold = victor.gold + (guildChallenges[message.guild.id].wager * 1);
 
 	//Loser results
-	loser.gold = loser.gold - (guildChallenges[message.guild.id].wager * 1);
+	var loserGold = (guildChallenges[message.guild.id].wager * 1);
+	if(loser.head == 'the_kids_gambit'){
+
+		var random = Math.random() * 100;
+		if(random < 6){
+			
+			loserGold = 0;
+		}
+	}
+	loser.gold = loser.gold - loserGold;
 
 	victor.challengesLeft -= 1;
 	victor.challengeWins += 1;

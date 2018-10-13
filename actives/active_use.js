@@ -368,6 +368,31 @@ exports.immediate.master_grumbos_blessing = function(message, character, state, 
 	state.result = "Master Grumbo's Blessing gave you a permanent +1 boost to " + stat.toUpperCase() + "!";
 }
 
+exports.immediate.chauder_powder = function(message, character, state, eventId, event, amount){
+
+	var index = character.items.indexOf(eventId);
+	character.items.splice(index, 1);
+	var random = Math.random() * 100;
+	if(random < 30){
+
+		if(random < 10){
+
+			character.wisMod -= 1;
+			state.result = "Chauder Powder made you dumber!";
+		}
+		else{
+
+			character.wisMod += 1;
+			state.result = "Chauder Powder made you smarter!";
+		}
+	}
+	else{
+
+		state.result = "Chauder Powder did absolutely nothing!";
+	}
+	charfunc.calculateStats(character);
+}
+
 exports.immediate.feather_stone = function(message, character, state, eventId, event, amount){
 
 	if(character.postresults.includes('petrify')){

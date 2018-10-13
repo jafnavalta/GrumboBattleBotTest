@@ -785,7 +785,7 @@ exports.postresults.root = function(message, character, battleState, eventId, ac
 
 exports.postresults.blind = function(message, character, battleState, eventId, actives, grumbo, characters){
 
-	if(!battleState.win){
+	if(!battleState.win && !character.postresults.includes('sunglasses')){
 
 		var active;
 		if(character.postresults.includes(eventId)){
@@ -846,7 +846,7 @@ exports.postresults.equalizer = function(message, character, battleState, eventI
 //BOSS Crimson Grumbo
 exports.postresults.rock_smash = function(message, character, battleState, eventId, actives, grumbo, characters){
 
-	var damage = 10 + Math.floor((Math.random() * 6) - 3);
+	var damage = 12 + Math.floor((Math.random() * 6) - 3);
 	if(battleState.phase == 1){
 
 		damage = Math.ceil(character.def/10);
@@ -976,7 +976,7 @@ exports.postresults.evaluation = function(message, character, battleState, event
 //BOSS Master Grumbo
 exports.postresults.teaching = function(message, character, battleState, eventId, actives, grumbo, characters){
 
-	battleState.hpLoss += 22 - Math.floor(Math.random() * character.spd);
+	battleState.hpLoss += 25 - Math.floor(Math.random() * character.spd);
 }
 
 //BOSS Master Grumbo

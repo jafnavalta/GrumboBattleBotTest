@@ -168,5 +168,15 @@
 		"price": 660,
 		"stock": 3,
 		"weight": 6
+	},
+	"special_18": {
+		"gameId": 300017,
+		"id": "special_18",
+		"name": "AlphaV",
+		"items": ["alphav"],
+		"description": "Achoo! *****!",
+		"price": 2007,
+		"stock": 1,
+		"weight": 1
 	}
 }
