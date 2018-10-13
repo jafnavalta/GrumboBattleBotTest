@@ -29,10 +29,10 @@
     ],
     "victory": "Dumbo has finally been taught that he is in fact, incredibly dumb!",
 		"loss": "Your raid group was no match for Dumbo's absolutely insane intellect!",
-    "gold": 220,
+    "gold": 210,
     "lootchance": [80, 60, 40, 40, 20],
-    "loot": ["", "medicine", "battle_potion", "charm_of_wumbo", "berserk_potion", "adrenaline", "stimulus", "growth_pill", "machete", "hourglass"],
-    "weights": [20, 56, 25, 10, 10, 7, 7, 5, 5, 6]
+    "loot": ["", "old_coin", "medicine", "battle_potion", "charm_of_wumbo", "berserk_potion", "adrenaline", "stimulus", "growth_pill", "machete", "hourglass"],
+    "weights": [20, 9, 56, 25, 10, 10, 7, 7, 5, 5, 6]
   },
   "ninja_grumbo": {
     "gameId": 801,
@@ -42,10 +42,10 @@
     "hp": 7700,
     "max_hp": 7700,
     "base_chance": 40,
-    "powBase": 184,
+    "powBase": 194,
     "wisBase": 194,
-    "sklBase": 138,
-    "spdBase": 60,
+    "sklBase": 140,
+    "spdBase": 65,
     "powX": 1.00,
 		"wisX": 1.00,
     "sklX": 1.00,
@@ -66,10 +66,10 @@
     ],
     "victory": "It seems Ninja Grumbo isn't the best Ninja around!",
 		"loss": "Sneaky, sneaky... and you're all dead now.",
-    "gold": 400,
+    "gold": 375,
     "lootchance": [70, 60, 40, 35, 20],
-    "loot": ["", "boss_ticket", "medicine_ex", "flimsy_rope", "shock_tablet", "stimulus", "blood_potion", "throwing_shield", "iron_pendant"],
-    "weights": [20, 5, 56, 18, 10, 8, 7, 7, 4]
+    "loot": ["", "coin_pouch", "boss_ticket", "medicine_ex", "flimsy_rope", "shock_tablet", "stimulus", "blood_potion", "throwing_shield", "iron_pendant"],
+    "weights": [20, 8, 5, 56, 18, 10, 8, 7, 7, 4]
   },
   "grumboracle": {
     "gameId": 802,
@@ -79,8 +79,8 @@
     "hp": 12000,
     "max_hp": 13000,
     "base_chance": 50,
-    "powBase": 212,
-    "wisBase": 424,
+    "powBase": 222,
+    "wisBase": 444,
     "sklBase": 176,
     "spdBase": 20,
     "powX": 1.00,
@@ -103,9 +103,9 @@
     ],
     "victory": "The Grumboracle was not all knowing enough for your raid group!",
 		"loss": "Everyone was erased from history by the Grumboracle...",
-    "gold": 600,
+    "gold": 550,
     "lootchance": [70, 50, 45, 20, 10],
-    "loot": ["", "medicine_ex", "eyedrops", "class_ticket", "grumbot_miner", "master_grumbos_blessing"],
-    "weights": [20, 56, 15, 5, 2, 1]
+    "loot": ["", "old_coin", "coin_pouch", "medicine_ex", "eyedrops", "monocle", "class_ticket", "grumbot_miner", "master_grumbos_blessing"],
+    "weights": [20, 20, 10, 56, 15, 11, 5, 2, 1]
   }
 }

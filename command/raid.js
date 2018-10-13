@@ -55,8 +55,12 @@ exports.commandRaid = function(message, args, character){
   // character.items.push("scissors", "scissors", "scissors", "scissors", "scissors");
   // character.items.push("growth_pill", "growth_pill", "growth_pill", "growth_pill", "growth_pill");
 
-  // character.equips.push("demonblade");
-  // character.equips.push("demon_helmet");
+   // character.equips.push("chained_boots");
+   // character.equips.push("demon_mask");
+   // character.equips.push("adventurers_mantle");
+   // character.equips.push("feather_hat");
+   // character.equips.push("ragged_bow");
+   // character.equips.push("robin_shoes");
 
   //character.wisEq += 100;
   //character.defEq -= 10;

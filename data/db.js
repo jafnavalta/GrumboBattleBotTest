@@ -731,6 +731,10 @@ function runMigrations(version, callback){
 							character.powEq -= 5;
 							character.wisEq -= 5;
 						}
+						if(equip.id == 'crimson_dagger'){
+
+							character.powEq -= 6;
+						}
 						if(equip.id == 'mikes'){
 
 							character.spdEq += 3;

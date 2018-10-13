@@ -1691,5 +1691,50 @@
     "turn_final": "",
 		"description": "Raid only. 12% chance to slightly decrease the boss' turn speed.",
 		"duration": null
+	},
+	"chained": {
+		"gameId": 70092,
+		"id": "chained",
+		"name": "Chained",
+		"effect": "good",
+		"battleStates": [
+			"postresults"
+		],
+    "turn_prebattle": "",
+    "turn_preresults": "",
+    "turn_postresults": "boss",
+    "turn_final": "",
+		"description": "33% chance to deal damage equal to your SPD when attacked. In Raids, will also slightly decrease the enemy and your turn speed.",
+		"duration": null
+	},
+	"mantle": {
+		"gameId": 70093,
+		"id": "mantle",
+		"name": "Mantle",
+		"effect": "good",
+		"battleStates": [
+			"final"
+		],
+    "turn_prebattle": "",
+    "turn_preresults": "",
+    "turn_postresults": "",
+    "turn_final": "character",
+		"description": "Increases minimum experience gain to 10.",
+		"duration": null
+	},
+	"feather_hat": {
+		"gameId": 70094,
+		"id": "feather_hat",
+		"name": "Feather Hat",
+		"effect": "good",
+		"battleStates": [
+			"final"
+		],
+    "turn_prebattle": "",
+    "turn_preresults": "",
+    "turn_postresults": "",
+    "turn_final": "",
+		"description": "Prevents Petrify.",
+		"duration": null
 	}
 }

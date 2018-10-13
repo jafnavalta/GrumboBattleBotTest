@@ -817,6 +817,24 @@ exports.postresults.hourglass = function(message, character, battleState, eventI
 	}
 }
 
+exports.postresults.chained = function(message, character, battleState, eventId, actives, grumbo, characters){
+
+	if(battleState.state != statefunc.BATTLE){
+
+		var random = Math.random() * 100;
+		if(random < 33){
+
+			battleState.dmgMod += character.spd;
+			if(battleState.state == statefunc.RAID){
+
+				battleState.turnValueMap[character._id] -= Math.ceil(raidfunc.RAID_TURN_VALUE * 0.2);
+				battleState.turnValueMap[statefunc.RAID] -= Math.ceil(raidfunc.RAID_TURN_VALUE * 0.2);
+			}
+			battleState.endMessages.push("You've chained the enemy!");
+		}
+	}
+}
+
 exports.postresults.warcry = function(message, character, battleState, eventId, actives, grumbo, characters){
 
 	if(battleState.state == statefunc.RAID && (battleState[character._id] - 1) % 5 == 0){
@@ -953,6 +971,14 @@ exports.final.vision = function(message, character, battleState, eventId, active
 		battleState.hpLoss -= character.res;
 		if(battleState.hpLoss < 0) battleState.hpLoss = 0;
 		battleState.endMessages.push("Your vision helped you dodge significant damage!");
+	}
+}
+
+exports.final.mantle = function(message, character, battleState, eventId, actives, grumbo, characters){
+
+	if(battleState.state == statefunc.BATTLE && battleState.win){
+
+		if(battleState.exp < 10) battleState.exp = 10;
 	}
 }
 

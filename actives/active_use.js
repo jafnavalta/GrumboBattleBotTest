@@ -71,6 +71,7 @@ exports.immediate.battle_ticket = function(message, character, state, eventId, e
 
 	if((character.battlesLeft + amount) <= 5){
 
+		state.save = false;
 		for(var i = 0; i < amount; i++){
 
 			var index = character.items.indexOf(eventId);
@@ -412,3 +413,31 @@ exports.immediate.boss_ticket = function(message, character, state, eventId, eve
 //////////////////////////
 // NONCONSUME FUNCTIONS //
 //////////////////////////
+
+
+
+
+
+
+/**
+* Adds battle attempts to character if possible.
+*/
+exports.restockBattles = function(currentTime, character){
+
+	var timeSinceLastBattle = currentTime - character.battletime;
+	var addBattles = Math.floor(timeSinceLastBattle/charfunc.calculateWaitTime(character));
+	if(addBattles > 0){
+
+		character.battlesLeft += addBattles;
+		if(character.battlesLeft < 5){
+
+			character.battletime = character.battletime + (addBattles * charfunc.calculateWaitTime(character));
+		}
+		if(character.battlesLeft >= 5){
+
+			character.battlesLeft = 5;
+		}
+	}
+
+	dbfunc.updateCharacter(character);
+}

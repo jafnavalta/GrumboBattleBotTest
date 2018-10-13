@@ -74,7 +74,7 @@ exports.prebattle.red_eye = function(message, character, battleState, eventId, a
 
 	if(battleState.phase == 1){
 
-		if((!character.items.includes('feather_stone') || !character.items.includes('battle_potion')) && !character.postresults.includes('iron_pendant')){
+		if((!character.items.includes('feather_stone') || !character.items.includes('battle_potion')) && !character.postresults.includes('iron_pendant') && character.head != "feather_hat"){
 
 			var active;
 			if(character.postresults.includes('petrify')){
@@ -511,7 +511,7 @@ exports.postresults.curse = function(message, character, battleState, eventId, a
 
 exports.postresults.petrify = function(message, character, battleState, eventId, actives, grumbo, characters){
 
-	if(!battleState.win && !character.postresults.includes('iron_pendant')){
+	if(!battleState.win && !character.postresults.includes('iron_pendant') && character.head != "feather_hat"){
 
 		var active;
 		if(character.postresults.includes(eventId)){
