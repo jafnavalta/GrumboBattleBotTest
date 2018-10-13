@@ -54,7 +54,7 @@ exports.commandRaid = function(message, args, character){
   // character.items.push("eyedrops", "eyedrops", "eyedrops", "eyedrops", "eyedrops");
   // character.items.push("scissors", "scissors", "scissors", "scissors", "scissors");
   // character.items.push("growth_pill", "growth_pill", "growth_pill", "growth_pill", "growth_pill");
-  // character.equips.push("machete");
+
   // character.equips.push("demonblade");
   // character.equips.push("demon_helmet");
 

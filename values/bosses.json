@@ -62,8 +62,8 @@
 		"loss": "Mixtape Grumbo's mixtape was too fire for $name!",
     "firstTime": "safety_boots",
     "lootchance": [95, 55, 40, 15, 5],
-    "loot": ["", "boss_ticket", "medicine", "bandages", "adrenaline", "class_ticket", "academy_jacket", "angel_wings"],
-    "weights": [15, 5, 54, 29, 14, 5, 13, 9]
+    "loot": ["", "boss_ticket", "medicine", "bandages", "adrenaline", "class_ticket", "academy_jacket", "angel_wings", "merchants_tophat"],
+    "weights": [15, 5, 54, 30, 14, 5, 13, 8, 6]
   },
   "crimson_grumbo": {
     "gameId": 901,

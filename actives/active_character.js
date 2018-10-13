@@ -804,6 +804,19 @@ exports.postresults.haste = function(message, character, battleState, eventId, a
 	}
 }
 
+exports.postresults.hourglass = function(message, character, battleState, eventId, actives, grumbo, characters){
+
+	if(battleState.state == statefunc.RAID){
+
+		var random = Math.random() * 100;
+		if(random < 12){
+
+			battleState.turnValueMap[statefunc.RAID] -= Math.ceil(raidfunc.RAID_TURN_VALUE * 0.4);
+			battleState.endMessages.push("The hourglass slowed the enemy!");
+		}
+	}
+}
+
 exports.postresults.warcry = function(message, character, battleState, eventId, actives, grumbo, characters){
 
 	if(battleState.state == statefunc.RAID && (battleState[character._id] - 1) % 5 == 0){

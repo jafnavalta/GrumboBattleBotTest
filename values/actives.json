@@ -1676,5 +1676,20 @@
     "turn_final": "",
 		"description": "Increases your max HP by 20.",
 		"duration": 5
+	},
+	"hourglass": {
+		"gameId": 70091,
+		"id": "hourglass",
+		"name": "Hourglass",
+		"effect": "good",
+		"battleStates": [
+			"postresults"
+		],
+    "turn_prebattle": "",
+    "turn_preresults": "",
+    "turn_postresults": "character",
+    "turn_final": "",
+		"description": "Raid only. 12% chance to slightly decrease the boss' turn speed.",
+		"duration": null
 	}
 }
