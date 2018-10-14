@@ -1781,5 +1781,20 @@
     "turn_final": "",
 		"description": "While active, increase chance of victory by 1% in regular battles. Otherwise, increase chance of victory by 5%. Use to activate indefinitely. Use again to deactivate.",
 		"duration": null
+	},
+	"freebie": {
+		"gameId": 70098,
+		"id": "freebie",
+		"name": "Freebie",
+		"effect": "good",
+		"battleStates": [
+			"final"
+		],
+    "turn_prebattle": "",
+    "turn_preresults": "",
+    "turn_postresults": "",
+    "turn_final": "character",
+		"description": "In a regular battle, 10% chance to give you 1 battle stock.",
+		"duration": null
 	}
 }

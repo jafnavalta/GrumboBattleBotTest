@@ -1532,5 +1532,31 @@
 		"value": 500,
 		"stock": null,
 		"weight": 5
+	},
+  "machineagrumboots": {
+		"gameId": 60058,
+		"id": "machineagrumboots",
+		"name": "Machineagrumboots",
+		"command": "!grumbo equip machineagrumboots",
+		"type": "bottom",
+    "classId": null,
+    "level": 1,
+    "hp": 0,
+    "pow": 0,
+    "wis": 0,
+    "skl": 0,
+    "def": 0,
+    "res": 0,
+    "spd": 5,
+    "luk": 0,
+    "turn": 0,
+    "aggro": 0,
+    "active": "freebie",
+		"description": "ThesearetheMachineagrumbootshellyea. SPD +5",
+    "effect": "good",
+		"price": 0,
+		"value": 10,
+		"stock": null,
+		"weight": 0
 	}
 }

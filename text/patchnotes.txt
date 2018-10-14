@@ -5,7 +5,7 @@ Most recent from the top
 
 ## OCT XX ##
 
-- Content: 3 Raids, 1 Boss, 3 Grumbos, 11 Items, 23 Equips
+- Content: 3 Raids, 1 Boss, 3 Grumbos, 11 Items, 24 Equips
 - Equip class reassignment + Rework of most equip stats
 - Updated all Classes to Lv 7.
 - New Archer class.

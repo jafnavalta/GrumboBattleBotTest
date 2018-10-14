@@ -1224,3 +1224,16 @@ exports.final.demonblade = function(message, character, battleState, eventId, ac
 		battleState.endMessages.push("You are one with the Demonblade!");
 	}
 }
+
+exports.final.freebie = function(message, character, battleState, eventId, actives, grumbo, characters){
+
+	if(battleState.state == statefunc.BATTLE){
+
+		var random = Math.random() * 100;
+		if(random < 10){
+
+			character.battlesLeft += 1;
+			battleState.endMessages.push("Here's a Freebie!");
+		}
+	}
+}

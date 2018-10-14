@@ -105,7 +105,7 @@
 		"loss": "Everyone was erased from history by the Grumboracle...",
     "gold": 550,
     "lootchance": [70, 50, 45, 20, 10],
-    "loot": ["", "old_coin", "coin_pouch", "grumbo_ticket", "gamblers_coin", "medicine_ex", "eyedrops", "monocle", "class_ticket", "grumbot_miner", "master_grumbos_blessing", "the_kids_gambit"],
-    "weights": [20, 20, 10, 2, 9, 56, 15, 11, 5, 2, 1, 6]
+    "loot": ["", "old_coin", "coin_pouch", "grumbo_ticket", "gamblers_coin", "medicine_ex", "eyedrops", "monocle", "class_ticket", "grumbot_miner", "master_grumbos_blessing", "the_kids_gambit", "machineagrumboots"],
+    "weights": [20, 20, 10, 2, 9, 56, 15, 11, 5, 2, 1, 5, 5]
   }
 }

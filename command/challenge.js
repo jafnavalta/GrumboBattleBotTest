@@ -437,12 +437,14 @@ function calculateGoldChallengeResults(message, victor, loser, victorName, loser
 
 	//Loser results
 	var loserGold = (guildChallenges[message.guild.id].wager * 1);
+	var gambit = "";
 	if(loser.head == 'the_kids_gambit'){
 
 		var random = Math.random() * 100;
-		if(random < 6){
-			
+		if(random < 100){
+
 			loserGold = 0;
+			gambit = "Gambit!\n";
 		}
 	}
 	loser.gold = loser.gold - loserGold;
@@ -458,6 +460,7 @@ function calculateGoldChallengeResults(message, victor, loser, victorName, loser
 	message.channel.send("The challenge is over!\n"
 		+ victorName + " is the winner! They earned " + guildChallenges[message.guild.id].wager + " gold!\n"
 		+ victorName + " now has " + victor.gold + " gold\n"
+		+ gambit
 		+ loserName + " now has "+ loser.gold + " gold");
 }
 
